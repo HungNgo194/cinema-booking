@@ -33,4 +33,11 @@
   - Enables the admin to view and manage payment transactions.
 
 ##  GRAPHICAL USER INTERFACE (GUI)
+![](img_gui/gui1.jpg)
 ![](img_gui/gui2.jpg)
+![](img_gui/gui3.jpg)
+![](img_gui/gui4.jpg)
+![](img_gui/gui5.jpg)
+![](img_gui/gui6.jpg)
+![](img_gui/gui7.jpg)
+![](img_gui/gui8.jpg)

@@ -3,32 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package account;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author Admin
  */
-public class Account {
+public class AccountDTO {
 
     private String userName;
     private String password;
-    private String accountName;
+    private String lastName;
+    private String googleID;
+    private String googleName;
     private Date dob;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private boolean gender;
     private boolean role;
 
-    public Account() {
+    public AccountDTO() {
     }
 
-    public Account(String userName, String password, String accountName, Date dob, String email, int phoneNumber, boolean gender, boolean role) {
+    public AccountDTO(String userName, String password, String lastName, String googleID, String googleName, Date dob, String email, String phoneNumber, boolean gender, boolean role) {
         this.userName = userName;
         this.password = password;
-        this.accountName = accountName;
+        this.lastName = lastName;
+        this.googleID = googleID;
+        this.googleName = googleName;
         this.dob = dob;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -52,12 +57,28 @@ public class Account {
         this.password = password;
     }
 
-    public String getAccountName() {
-        return accountName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getGoogleID() {
+        return googleID;
+    }
+
+    public void setGoogleID(String googleID) {
+        this.googleID = googleID;
+    }
+
+    public String getGoogleName() {
+        return googleName;
+    }
+
+    public void setGoogleName(String googleName) {
+        this.googleName = googleName;
     }
 
     public Date getDob() {
@@ -76,11 +97,11 @@ public class Account {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -102,7 +123,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" + "userName=" + userName + ", password=" + password + ", accountName=" + accountName + ", dob=" + dob + ", email=" + email + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + '}';
+        return "AccountDTO{" + "userName=" + userName + ", password=" + password + ", lastName=" + lastName + ", googleID=" + googleID + ", googleName=" + googleName + ", dob=" + dob + ", email=" + email + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + '}';
     }
 
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package showTime;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -12,7 +12,7 @@ import java.sql.Time;
  *
  * @author Admin
  */
-public class ShowTime {
+public class ShowTimeDTO {
 
     private int showTimeID;
     private Date openDate;
@@ -23,10 +23,10 @@ public class ShowTime {
     private int roomID;
     private int movieID;
 
-    public ShowTime() {
+    public ShowTimeDTO() {
     }
 
-    public ShowTime(int showTimeID, Date openDate, Date closeDate, Time hourStart, Time hourEnd, boolean showStatus, int roomID, int movieID) {
+    public ShowTimeDTO(int showTimeID, Date openDate, Date closeDate, Time hourStart, Time hourEnd, boolean showStatus, int roomID, int movieID) {
         this.showTimeID = showTimeID;
         this.openDate = openDate;
         this.closeDate = closeDate;

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package movie;
 
 /**
  *
  * @author Admin
  */
-public class Movie {
+public class MovieDTO {
 //create table MOVIE
 //(
 //	movieID int identity(01,1) not null primary key,
@@ -27,10 +27,10 @@ public class Movie {
     private String director;
     private int age;
 
-    public Movie() {
+    public MovieDTO() {
     }
 
-    public Movie(int movieID, String movieName, String content, String actor, String director, int age) {
+    public MovieDTO(int movieID, String movieName, String content, String actor, String director, int age) {
         this.movieID = movieID;
         this.movieName = movieName;
         this.content = content;

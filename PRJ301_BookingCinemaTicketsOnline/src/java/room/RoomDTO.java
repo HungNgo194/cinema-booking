@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package room;
 
 /**
  *
  * @author Admin
  */
-public class Room {
+public class RoomDTO {
 
     private int roomID;
     private int numberOfSeats;
     private int cinemaID;
 
-    public Room() {
+    public RoomDTO() {
     }
 
-    public Room(int roomID, int numberOfSeats, int cinemaID) {
+    public RoomDTO(int roomID, int numberOfSeats, int cinemaID) {
         this.roomID = roomID;
         this.numberOfSeats = numberOfSeats;
         this.cinemaID = cinemaID;

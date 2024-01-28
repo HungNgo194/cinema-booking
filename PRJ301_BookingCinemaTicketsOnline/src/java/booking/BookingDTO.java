@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package booking;
 
 import java.sql.Date;
 
@@ -11,7 +11,7 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class Booking {
+public class BookingDTO {
 
     private String bookingID;
     private int numberOfBooking;
@@ -19,10 +19,10 @@ public class Booking {
     private Date bookingDate;
     private String userName;
 
-    public Booking() {
+    public BookingDTO() {
     }
 
-    public Booking(String bookingID, int numberOfBooking, int priceTotal, Date bookingDate, String userName) {
+    public BookingDTO(String bookingID, int numberOfBooking, int priceTotal, Date bookingDate, String userName) {
         this.bookingID = bookingID;
         this.numberOfBooking = numberOfBooking;
         this.priceTotal = priceTotal;

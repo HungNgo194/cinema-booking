@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package seat;
 
 /**
  *
  * @author Admin
  */
-public class Seat {
+public class SeatDTO {
 
     private String seatID;
     private boolean seatStatus;
     private int roomID;
 
-    public Seat() {
+    public SeatDTO() {
     }
 
-    public Seat(String seatID, boolean seatStatus, int roomID) {
+    public SeatDTO(String seatID, boolean seatStatus, int roomID) {
         this.seatID = seatID;
         this.seatStatus = seatStatus;
         this.roomID = roomID;

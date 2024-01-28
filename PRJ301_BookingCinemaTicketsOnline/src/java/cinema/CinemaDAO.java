@@ -3,23 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dal;
+package cinema;
 
+import dal.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import model.Cinema;
 
 /**
  *
  * @author Admin
  */
-public class DAO {
-
-    public Cinema getAll() throws SQLException {
+public class CinemaDAO {
+    public CinemaDTO getAll() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -36,7 +33,7 @@ public class DAO {
                 String city = rs.getString("city");
                 String address = rs.getString("address");
                 int hotline = rs.getInt("hotline");
-                Cinema cinema = new Cinema(cinemaID, cinemaName, city, address, hotline);
+                CinemaDTO cinema = new CinemaDTO(cinemaID, cinemaName, city, address, hotline);
                 return cinema;
             }
         } catch (SQLException e) {

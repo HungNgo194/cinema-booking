@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package membership;
 
 /**
  *
  * @author Admin
  */
-public class Membership {
+public class MembershipDTO {
 //    memberID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
 //	totalSpend money,
 //	discount int,
@@ -20,10 +20,10 @@ public class Membership {
     private int discount;
     private String userName;
 
-    public Membership() {
+    public MembershipDTO() {
     }
 
-    public Membership(String memberID, int totalSpend, int discount, String userName) {
+    public MembershipDTO(String memberID, int totalSpend, int discount, String userName) {
         this.memberID = memberID;
         this.totalSpend = totalSpend;
         this.discount = discount;

@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package cinema;
 
 /**
  *
  * @author Admin
  */
-public class Cinema {
+public class CinemaDTO {
 
     private int cinemaID;
     private String cinemaName;
@@ -17,10 +17,10 @@ public class Cinema {
     private String address;
     private int hotline;
 
-    public Cinema() {
+    public CinemaDTO() {
     }
 
-    public Cinema(int cinemaID, String cinemaName, String city, String address, int hotline) {
+    public CinemaDTO(int cinemaID, String cinemaName, String city, String address, int hotline) {
         this.cinemaID = cinemaID;
         this.cinemaName = cinemaName;
         this.city = city;

@@ -3,23 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package ticket;
 
 /**
  *
  * @author Admin
  */
-public class Ticket {
+public class TicketDTO {
 
     private int ticketID;
     private int showTimeID;
     private String seatID;
     private String bookingID;
 
-    public Ticket() {
+    public TicketDTO() {
     }
 
-    public Ticket(int ticketID, int showTimeID, String seatID, String bookingID) {
+    public TicketDTO(int ticketID, int showTimeID, String seatID, String bookingID) {
         this.ticketID = ticketID;
         this.showTimeID = showTimeID;
         this.seatID = seatID;

@@ -48,15 +48,18 @@ create table SHOWTIME
 )
 create table ACCOUNT
 (
-	userName varchar(30) not null primary key,
-	[password] varchar(30),
-	accountName nvarchar(200),
+	userName varchar(200) not null primary key,
+	[password] varchar(200),
+	lastName nvarchar(200),
+	googleID varchar(200),
+	googleName varchar(200),
 	dob date,
-	email varchar(100),
-	phoneNumber int,
+	email varchar(200),
+	phoneNumber varchar(200),
 	gender bit,
 	[role] bit
 )
+
 
 create table BOOKING
 (
@@ -64,7 +67,7 @@ create table BOOKING
 	numberOfBooking int,
 	priceTotal money,
 	bookingDate date,
-	userName varchar(30),
+	userName varchar(200),
 
 	CONSTRAINT FK_userName1 foreign key(userName) references ACCOUNT(userName)
 )
@@ -96,7 +99,11 @@ create table MEMBERSHIP
 	memberID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
 	totalSpend money,
 	discount int,
-	userName varchar(30),
+	userName varchar(200),
 
 	CONSTRAINT FK_user1 foreign key(userName) references ACCOUNT(userName)
 )
+
+select * from ACCOUNT
+
+delete from account

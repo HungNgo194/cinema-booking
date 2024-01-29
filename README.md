@@ -1,4 +1,9 @@
 # PRJ301 - SE1860 Assignment
+##MEMBER
+- SE182470 - Nguyễn Hoàng Phúc
+- SE182249 - Dương Minh An
+- SE182441 - Ngô Việt Hưng
+- SE182454 - Nguyễn Công Thiên Lộc
 ##  REQUIREMENT
 ### Name of system: **_BOOKING CINEMA TICKETS ONLINE_**.</br>
 ### Purpose of system: 

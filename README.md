@@ -1,5 +1,5 @@
 # PRJ301 - SE1860 Assignment
-##MEMBER
+## MEMBER
 - SE182470 - Nguyễn Hoàng Phúc
 - SE182249 - Dương Minh An
 - SE182441 - Ngô Việt Hưng
@@ -46,3 +46,8 @@
 ![](img_gui/gui6.jpg)
 ![](img_gui/gui7.jpg)
 ![](img_gui/gui8.jpg)
+
+  <strong>ADMIN PAGE (draw) - not done yet!!</strong>
+
+##  ENTITY RELATIONSHIP DIAGRAM (ERD)
+![](img_gui/ERD.png)

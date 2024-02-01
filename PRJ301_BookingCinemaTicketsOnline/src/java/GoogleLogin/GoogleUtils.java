@@ -28,7 +28,7 @@ import com.google.gson.JsonObject;
  */
 public class GoogleUtils {
 
-    public static String getToken(String code) throws ClientProtocolException, IOException {
+    public static String getToken(final String code) throws ClientProtocolException, IOException {
         String response = Request.Post(Constants.GOOGLE_LINK_GET_TOKEN)
                 .bodyForm(Form.form().add("client_id", Constants.GOOGLE_CLIENT_ID)
                         .add("client_secret", Constants.GOOGLE_CLIENT_SECRET)

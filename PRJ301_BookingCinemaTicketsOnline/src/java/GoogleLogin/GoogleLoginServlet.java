@@ -46,9 +46,8 @@ public class GoogleLoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String code = request.getParameter("code");
-        String accessToken;
 
-        String url = "index.html";
+        String url = "userWeb-page.jsp";
         try {
             HttpSession session = request.getSession();
 
@@ -56,7 +55,7 @@ public class GoogleLoginServlet extends HttpServlet {
                 RequestDispatcher dis = request.getRequestDispatcher("loginGoogle.jsp");
                 dis.forward(request, response);
             } else {
-                accessToken = GoogleUtils.getToken(code);
+                String accessToken = GoogleUtils.getToken(code);
                 GoogleDTO googlePojo = GoogleUtils.getUserInfo(accessToken);
 
                 AccountDAO accountDAO = new AccountDAO();

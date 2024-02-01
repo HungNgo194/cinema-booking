@@ -12,14 +12,13 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class AccountDTO {
+public class AccountDTO implements Serializable {
 
     private String userName;
     private String password;
-    private String lastName;
+    private String fullName;
     private String googleID;
     private String googleName;
-    private Date dob;
     private String email;
     private String phoneNumber;
     private boolean gender;
@@ -28,13 +27,12 @@ public class AccountDTO {
     public AccountDTO() {
     }
 
-    public AccountDTO(String userName, String password, String lastName, String googleID, String googleName, Date dob, String email, String phoneNumber, boolean gender, boolean role) {
+    public AccountDTO(String userName, String password, String fullName, String googleID, String googleName, String email, String phoneNumber, boolean gender, boolean role) {
         this.userName = userName;
         this.password = password;
-        this.lastName = lastName;
+        this.fullName = fullName;
         this.googleID = googleID;
         this.googleName = googleName;
-        this.dob = dob;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
@@ -57,12 +55,12 @@ public class AccountDTO {
         this.password = password;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getGoogleID() {
@@ -79,14 +77,6 @@ public class AccountDTO {
 
     public void setGoogleName(String googleName) {
         this.googleName = googleName;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
     }
 
     public String getEmail() {
@@ -123,7 +113,7 @@ public class AccountDTO {
 
     @Override
     public String toString() {
-        return "AccountDTO{" + "userName=" + userName + ", password=" + password + ", lastName=" + lastName + ", googleID=" + googleID + ", googleName=" + googleName + ", dob=" + dob + ", email=" + email + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + '}';
+        return "AccountDTO{" + "userName=" + userName + ", password=" + password + ", fullName=" + fullName + ", googleID=" + googleID + ", googleName=" + googleName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + '}';
     }
 
 }

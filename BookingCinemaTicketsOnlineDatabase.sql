@@ -26,7 +26,7 @@ create table MOVIE
 	movieID int identity(01,1) not null primary key,
 	movieName nvarchar(200),
 	movieContent nvarchar(200),
-	actor nvarchar(200),
+	actor nvarcha	r(200),
 	director nvarchar(200),
 	age int
 )
@@ -50,10 +50,9 @@ create table ACCOUNT
 (
 	userName varchar(200) not null primary key,
 	[password] varchar(200),
-	lastName nvarchar(200),
+	fullName nvarchar(200),
 	googleID varchar(200),
 	googleName varchar(200),
-	dob date,
 	email varchar(200),
 	phoneNumber varchar(200),
 	gender bit,
@@ -107,3 +106,6 @@ create table MEMBERSHIP
 select * from ACCOUNT
 
 delete from account
+
+insert into ACCOUNT values ('phucAdmin', 123, null, null, null, null, null, 0, 1);
+use BookingCinemaTicketsOnline

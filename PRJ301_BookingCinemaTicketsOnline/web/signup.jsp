@@ -47,25 +47,25 @@
                     <div class="col-12">
                         <div class="sign__content">
                             <!-- registration form -->
-                            <form action="./LoginActionServlet" class="sign__form" method="post">
+                            <form name="form" action="./SignupServlet" class="sign__form" method="post" onsubmit="return validLogin();">
                                 <a href="index.html" class="sign__logo">
                                     <img src="img/logo.svg" alt="">
                                 </a>
 
                                 <div class="sign__group">
-                                    <input type="email" class="sign__input" placeholder="Username" name="email">
+                                    <input required="true" type="email" class="sign__input" placeholder="Username" name="email">
                                 </div>
-                                
+
                                 <!--                                <div class="sign__group">
                                                                     <input type="email" class="sign__input" placeholder="Email" name="email">
                                                                 </div>-->
 
                                 <div class="sign__group">
-                                    <input type="password" class="sign__input" placeholder="Password" name="password">
+                                    <input required="true" type="password" class="sign__input" placeholder="Password" name="password">
                                 </div>
-                                
+
                                 <div class="sign__group">
-                                    <input type="password" class="sign__input" placeholder="Confirm Password" name="password">
+                                    <input required="true" type="password" class="sign__input" placeholder="Confirm Password" name="confirmPassword">
                                 </div>
 
                                 <div class="sign__group sign__group--checkbox">
@@ -76,7 +76,7 @@
                                 <!--                                <button class="sign__btn" type="button">Sign up</button>-->
                                 <input class="sign__btn" value="Sign up" type="submit"> 
 
-                                <span class="sign__text">Already have an account? <a href="loginGoogle.jsp">Sign in!</a></span>
+                                <span class="sign__text">Already have an account? <a href="signin.jsp">Sign in!</a></span>
                             </form>
                             <!-- registration form -->
                         </div>
@@ -98,5 +98,19 @@
         <script src="js/photoswipe.min.js"></script>
         <script src="js/photoswipe-ui-default.min.js"></script>
         <script src="js/main.js"></script>
+        <script>
+                                function validLogin() {
+                                    var password = document.form.password.value;
+                                    var confirmPassword = document.form.confirmPassword.value;
+
+                                    if (password !== confirmPassword) {
+                                        alert("Passwords do not match.");
+                                        document.form.confirmPassword.focus();
+                                        return false;
+                                    }
+                                    alert("Sign up successfully !!");
+                                    return true;
+                                }
+        </script>
     </body>
 </html>

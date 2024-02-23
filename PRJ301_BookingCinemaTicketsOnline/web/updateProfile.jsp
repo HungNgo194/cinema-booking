@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,7 +22,7 @@
     </head>
 
     <body>
-
+        <c:set value="${sessionScope.account}" var="account" />  
         <div class="nav-header">
             <nav class="nav-container">
                 <a href="#" class="nav-logo"><img src="images/logo.jpg" alt="logo"></a>
@@ -60,24 +60,32 @@
 
             <div class="body-content col-md-12">
                 <div class="box1">
-                    <h1 CLASS="title1">THÔNG TIN TÀI KHOẢN</h1>
-                    <form action="./UpdateProfileServlet" method="post">     
-                        <div class="body1 col-md-6">
-                            <ul class="inf_list">
-                                <c:set value="${sessionScope.updateData}" var="updateData" />       
-                                <li><b>Họ tên: ${updateData.fullName}</b></li>
-                                <li><b>Gioi tinh: ${updateData.gender}</b></li>
-                                <li><b>Điện thoại: ${updateData.phoneNumber}</b></li>
-                            </ul>
-                        </div>
-                    </form>
-
+                    <h1 CLASS="title1">THÔNG TIN TÀI KHOẢN</h1>   
+                    <div class="body1 col-md-6">
+                        <ul class="inf_list">
+                            <li><b>Email: ${account.getUserName()} </b></li>
+                            <li><b>Họ và tên: ${account.fullName} </b></li>
+                            <li><b>Giới tính: ${account.gender}</b></li>
+                            <li><b>Số điện thoại: ${account.phoneNumber}</b></li>
+                        </ul>
+                    </div>
                 </div>
+
                 <div class="box2">
                     <h1 CLASS="title1">HOẠT ĐỘNG VỚI RẠP</h1>
                     <div class="body2 col-md-6">
                         <p><b>Loại Thẻ:</b></p>
+                        <c:set var="sessionMember" value="${sessionScope.sessionMember}" /> 
+                        <c:choose>
+                            <c:when test="${sessionMember.getTotalSpend() > 5000}">
+                                <img src="image1.jpg" alt="Image 1" />
+                            </c:when>
+                            <c:otherwise>
+                                <img src="image2.jpg" alt="Image 2" />
+                            </c:otherwise>
+                        </c:choose>
                     </div>
+
                 </div>
             </div>
 
@@ -92,22 +100,15 @@
                     <h3 class="title1">Chỉnh sửa thông tin cá nhân</h3>
                     <form action="./UpdateProfileServlet" method="post" id="modify-top" data-gtm-form-interact-id="5">
                         <div class="require-col">
-                            <label class="gender"><input type="radio" name="gender" value="1"><span
-                                    class="gender-name">Nam</span><span class="gender-shape"></span></label>
-                            <label class="gender"><input type="radio" name="gender" value="0" checked=""><span
-                                    class="gender-name">Nữ</span><span class="gender-shape"></span></label>
-                        </div>
-                        <div class="require-col">
                             <div class="input-text email">
                                 <!-- <span class="focus-text hide">EMAIL (*)</span> -->
-                                <c:set value="${sessionScope.updateData}" var="updateData" /> 
-                                <input readonly="readonly" id="update_email" name="email" type="text" value="nphuc11111@gmail.com"
+                                <input readonly="readonly" id="update_email" name="email" type="text" value="${account.email}"
                                        placeholder="EMAIL (*)">
                             </div>
                             <div class="first-row col-md-12">
                                 <div class="input-text name">
                                     <!-- <span class="focus-text hide">HỌ TÊN (*)</span> -->
-                                    <input id="update_name" name="fullName" type="text" value="" placeholder="HỌ TÊN (*)">
+                                    <input required="true" id="update_name" name="fullName" type="text" placeholder="HỌ TÊN (*)">
                                 </div>
                                 <!--                                <div class="input-text birth">
                                                                      <span class="focus-text hide">DD/MM/YYYY ( Ngày sinh*)</span> 
@@ -118,14 +119,21 @@
                             <div class="first-row col-md-12">
                                 <div class="input-text tel">
                                     <!-- <span class="focus-text hide">ĐIỆN THOẠI (*)</span> -->
-                                    <input id="update_phone" name="phoneNumber" type="text" 
+                                    <input required="true" id="update_phone" name="phoneNumber" type="text" 
                                            placeholder="ĐIỆN THOẠI (*)">
                                 </div>
                             </div>
+                            <div class="require-col">
+                                <label class="gender"><input type="radio" name="gender" value="Nam" checked=""><span
+                                        class="gender-name">Nam</span><span class="gender-shape"></span></label>
+                                <label class="gender"><input type="radio" name="gender" value="Nữ"><span
+                                        class="gender-name">Nữ</span><span class="gender-shape"></span></label>
+                            </div>
                             <div class="input-but">
-                                <input type="button" class="modify-user-hide" value="Close" onclick="closeForm()"
+                                <input type="button" class="modify-user-hide" value="Đóng" onclick="closeForm()"
                                        id="show-btn">
-                                <input type="submit" value="Save" id="btn-save-top">
+                                <input type="submit" value="Lưu" id="btn-save-top">
+
                             </div>
                         </div>
                     </form>

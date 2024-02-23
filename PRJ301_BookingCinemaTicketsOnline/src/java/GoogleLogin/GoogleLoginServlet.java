@@ -59,12 +59,12 @@ public class GoogleLoginServlet extends HttpServlet {
                 GoogleDTO googlePojo = GoogleUtils.getUserInfo(accessToken);
 
                 AccountDAO accountDAO = new AccountDAO();
-                AccountDTO checkAccountGG = accountDAO.checkAccountGG(googlePojo.getEmail());
-                if (checkAccountGG == null) {
+                //AccountDTO checkAccountGG = accountDAO.checkAccountGG(googlePojo.getEmail());
+                //if (checkAccountGG == null) {
                     accountDAO.createAccountGG(googlePojo.getId(), googlePojo.getEmail());
-                }
+                //}
                 AccountDTO checkAccountGG1 = accountDAO.checkAccountGG(googlePojo.getEmail());
-                session.setAttribute("ACCOUNT", checkAccountGG1);
+                session.setAttribute("account", checkAccountGG1);
                 RequestDispatcher dis = request.getRequestDispatcher(url);
                 dis.forward(request, response);
             }

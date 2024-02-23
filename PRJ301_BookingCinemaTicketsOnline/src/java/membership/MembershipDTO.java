@@ -10,10 +10,6 @@ package membership;
  * @author Admin
  */
 public class MembershipDTO {
-//    memberID UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
-//	totalSpend money,
-//	discount int,
-//	userName varchar,
 
     private String memberID;
     private int totalSpend;

@@ -7,6 +7,8 @@ package showTime;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  *
@@ -15,10 +17,10 @@ import java.sql.Time;
 public class ShowTimeDTO {
 
     private int showTimeID;
-    private Date openDate;
-    private Date closeDate;
-    private Time hourStart;
-    private Time hourEnd;
+    private LocalDate openDate;
+    private LocalDate closeDate;
+    private LocalTime hourStart;
+    private LocalTime hourEnd;
     private boolean showStatus;
     private int roomID;
     private int movieID;
@@ -26,7 +28,7 @@ public class ShowTimeDTO {
     public ShowTimeDTO() {
     }
 
-    public ShowTimeDTO(int showTimeID, Date openDate, Date closeDate, Time hourStart, Time hourEnd, boolean showStatus, int roomID, int movieID) {
+    public ShowTimeDTO(int showTimeID, LocalDate openDate, LocalDate closeDate, LocalTime hourStart, LocalTime hourEnd, boolean showStatus, int roomID, int movieID) {
         this.showTimeID = showTimeID;
         this.openDate = openDate;
         this.closeDate = closeDate;
@@ -45,35 +47,35 @@ public class ShowTimeDTO {
         this.showTimeID = showTimeID;
     }
 
-    public Date getOpenDate() {
+    public LocalDate getOpenDate() {
         return openDate;
     }
 
-    public void setOpenDate(Date openDate) {
+    public void setOpenDate(LocalDate openDate) {
         this.openDate = openDate;
     }
 
-    public Date getCloseDate() {
+    public LocalDate getCloseDate() {
         return closeDate;
     }
 
-    public void setCloseDate(Date closeDate) {
+    public void setCloseDate(LocalDate closeDate) {
         this.closeDate = closeDate;
     }
 
-    public Time getHourStart() {
+    public LocalTime getHourStart() {
         return hourStart;
     }
 
-    public void setHourStart(Time hourStart) {
+    public void setHourStart(LocalTime hourStart) {
         this.hourStart = hourStart;
     }
 
-    public Time getHourEnd() {
+    public LocalTime getHourEnd() {
         return hourEnd;
     }
 
-    public void setHourEnd(Time hourEnd) {
+    public void setHourEnd(LocalTime hourEnd) {
         this.hourEnd = hourEnd;
     }
 
@@ -103,7 +105,7 @@ public class ShowTimeDTO {
 
     @Override
     public String toString() {
-        return "ShowTime{" + "showTimeID=" + showTimeID + ", openDate=" + openDate + ", closeDate=" + closeDate + ", hourStart=" + hourStart + ", hourEnd=" + hourEnd + ", showStatus=" + showStatus + ", roomID=" + roomID + ", movieID=" + movieID + '}';
+        return "ShowTimeDTO{" + "showTimeID=" + showTimeID + ", openDate=" + openDate + ", closeDate=" + closeDate + ", hourStart=" + hourStart + ", hourEnd=" + hourEnd + ", showStatus=" + showStatus + ", roomID=" + roomID + ", movieID=" + movieID + '}';
     }
 
 }

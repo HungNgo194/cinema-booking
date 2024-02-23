@@ -11,7 +11,7 @@
         <!-- Font -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet"> 
 
-        <!-- CSS -->
+        <!-- CSS -->z
         <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
         <link rel="stylesheet" href="css/bootstrap-grid.min.css">
         <link rel="stylesheet" href="css/owl.carousel.min.css">
@@ -44,17 +44,16 @@
                         <div class="col-12">
                             <div class="sign__content">
                                 <!-- authorization form -->
-                                <form action="./LoginActionServlet" method="post" class="sign__form">          <!-- dang hieu sai van de - phai qua loginActionservlet de check user hay accounnt-->
+                                <form name="form" action="./LoginActionServlet" method="post" class="sign__form" onsubmit="return validLogin();"> 
                                     <a href="index.html" class="sign__logo">
                                         <img src="img/logo.svg" alt="">
                                     </a>
-
                                     <div class="sign__group">
-                                        <input type="text" name="email" class="sign__input" placeholder="Username">
+                                        <input required="true" type="text" name="email" class="sign__input" placeholder="Username">
                                     </div>
 
                                     <div class="sign__group">
-                                        <input type="password" name="password" class="sign__input" placeholder="Password">
+                                        <input required="true" type="password" name="password" class="sign__input" placeholder="Password">
                                     </div>
 
                                     <div class="sign__group sign__group--checkbox">
@@ -86,23 +85,36 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-<!-- JS -->
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/jquery.mousewheel.min.js"></script>
-<script src="js/jquery.mCustomScrollbar.min.js"></script>
-<script src="js/wNumb.js"></script>
-<script src="js/nouislider.min.js"></script>
-<script src="js/plyr.min.js"></script>
-<script src="js/jquery.morelines.min.js"></script>
-<script src="js/photoswipe.min.js"></script>
-<script src="js/photoswipe-ui-default.min.js"></script>
-<script src="js/main.js"></script>
-
-</body>
+        <!-- JS -->
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/jquery.mousewheel.min.js"></script>
+        <script src="js/jquery.mCustomScrollbar.min.js"></script>
+        <script src="js/wNumb.js"></script>
+        <script src="js/nouislider.min.js"></script>
+        <script src="js/plyr.min.js"></script>
+        <script src="js/jquery.morelines.min.js"></script>
+        <script src="js/photoswipe.min.js"></script>
+        <script src="js/photoswipe-ui-default.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+                                    function validLogin() {
+                                        if (document.form.email.value == "") {
+                                            alert("Please enter Login Name.");
+                                            document.loginform.email.focus();
+                                            return false;
+                                        }
+                                        if (document.form.password.value == "") {
+                                            alert("Please enter password.");
+                                            document.userform.password.focus();
+                                            return false;
+                                        }
+//                                        alert("Welcome User");
+//                                        return true;
+                                    }
+        </script>
+    </body>
 </html>

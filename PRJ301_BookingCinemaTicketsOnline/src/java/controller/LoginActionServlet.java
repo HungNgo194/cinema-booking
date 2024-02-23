@@ -44,26 +44,24 @@ public class LoginActionServlet extends HttpServlet {
         String url = "";
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-            account.AccountDAO dao = new AccountDAO();
-            account.AccountDTO checkAccount = dao.checkExistAccount(userName, password);
+            AccountDAO dao = new AccountDAO();
+            AccountDTO checkAccount = dao.checkExistAccount(userName, password);
             if (checkAccount != null) {
                 if (checkAccount.isRole()) {
-                    url = "AdminPageAllServlet";
-                    //session.setAttribute("accountAdmin", checkAccount);
+                    url = "adminWeb-page.jsp";
                     response.sendRedirect(url);
                 } else {
                     url = "UserPageAllServlet";
-                    session.setAttribute("account", checkAccount);
                     response.sendRedirect(url);
                 }
+                session.setAttribute("account", checkAccount);
             } else {
-                url = "loginGoogle.jsp";
+                url = "signin.jsp";
                 response.sendRedirect(url);
             }
         } catch (SQLException ex) {
             System.out.println("SQL: ");
             ex.printStackTrace();
-
         }
     }
 

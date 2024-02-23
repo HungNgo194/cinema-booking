@@ -21,13 +21,13 @@ public class AccountDTO implements Serializable {
     private String googleName;
     private String email;
     private String phoneNumber;
-    private boolean gender;
+    private String gender;
     private boolean role;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(String userName, String password, String fullName, String googleID, String googleName, String email, String phoneNumber, boolean gender, boolean role) {
+    public AccountDTO(String userName, String password, String fullName, String googleID, String googleName, String email, String phoneNumber, String gender, boolean role) {
         this.userName = userName;
         this.password = password;
         this.fullName = fullName;
@@ -95,11 +95,11 @@ public class AccountDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

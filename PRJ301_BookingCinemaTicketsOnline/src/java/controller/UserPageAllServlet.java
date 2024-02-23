@@ -6,12 +6,12 @@
 package controller;
 
 import account.AccountDAO;
+import account.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,29 +34,19 @@ public class UserPageAllServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        String password = request.getParameter("password");
-        String userName = request.getParameter("email");
-        String email = request.getParameter("email");
         String url = "";
         HttpSession session = request.getSession();
+        AccountDTO account = (AccountDTO) session.getAttribute("account");
         try (PrintWriter out = response.getWriter()) {
-            account.AccountDAO dao = new AccountDAO();
-            account.AccountDTO checkAccount = dao.checkExistAccount(userName, password);
-            if (checkAccount == null) {
-                account.AccountDTO createAnNormalAccount = dao.createAnNormalAccount(userName, password, email);
-                url = "userWeb-page.jsp";
-                response.sendRedirect(url);
-            } else {
-                account.AccountDTO check = dao.checkExistAccount(userName, password);
-                session.setAttribute("usersession", checkAccount);
-                url = "userWeb-page.jsp";
-                response.sendRedirect(url);
-            }
-
+            AccountDAO dao = new AccountDAO();
+            account.AccountDTO check = dao.checkExistAccount(account.getUserName(), account.getPassword());
+            url = "userWeb-page.jsp";
+            response.sendRedirect(url);
         } catch (SQLException ex) {
             System.out.println("SQL: ");
             ex.printStackTrace();

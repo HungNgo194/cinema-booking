@@ -5,23 +5,27 @@
  */
 package controller;
 
-import account.AccountDAO;
+import account.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import membership.MembershipDAO;
+import membership.MembershipDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "AdminPageAllServlet", urlPatterns = {"/AdminPageAllServlet"})
-public class AdminPageAllServlet extends HttpServlet {
+@WebServlet(name = "LoadMemberShipServlet", urlPatterns = {"/LoadMemberShipServlet"})
+public class LoadMemberShipServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,20 +40,25 @@ public class AdminPageAllServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AdminPageAllServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AdminPageAllServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            HttpSession session = request.getSession();
+            AccountDTO account = (AccountDTO) session.getAttribute("account");
+            try {
+                MembershipDAO dao = new MembershipDAO();
+                MembershipDTO member = dao.getUserByUserName(account.getUserName());
+                HttpSession sessionMember = request.getSession();
+                sessionMember.setAttribute("sessionMember", member);
+                response.sendRedirect("updateProfile.jsp");
+            } catch (SQLException ex) {
+                Logger.getLogger(LoadMemberShipServlet.class.getName()).log(Level.SEVERE, "Error retrieving membership data", ex);
+                //response.sendRedirect("error.jsp");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(LoadMemberShipServlet.class.getName()).log(Level.SEVERE, "Unexpected error", e);
+            //response.sendRedirect("error.jsp");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -75,23 +84,7 @@ public class AdminPageAllServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String userName = request.getParameter("userName");
-        String password = request.getParameter("password");
-        String url = "";
-        HttpSession session = request.getSession();
-        try (PrintWriter out = response.getWriter()) {
-            account.AccountDAO dao = new AccountDAO();
-            account.AccountDTO checkAccount = dao.checkExistAccount(userName, password);
-            if (checkAccount != null) {
-                account.AccountDTO check = dao.checkExistAccount(userName, password);
-                session.setAttribute("usersession", checkAccount);
-                url = "adminWeb-page.jsp";
-                response.sendRedirect(url);
-            }
-        } catch (SQLException ex) {
-            System.out.println("SQL: ");
-            ex.printStackTrace();
-        }
+        processRequest(request, response);
     }
 
     /**

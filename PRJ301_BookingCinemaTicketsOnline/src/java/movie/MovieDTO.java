@@ -10,19 +10,10 @@ package movie;
  * @author Admin
  */
 public class MovieDTO {
-//create table MOVIE
-//(
-//	movieID int identity(01,1) not null primary key,
-//	movieName nvarchar(200),
-//	movieContent nvarchar(200),
-//	actor nvarchar(200),
-//	director nvarchar(200),
-//	age int
-//)
 
     private int movieID;
     private String movieName;
-    private String content;
+    private String movieContent;
     private String actor;
     private String director;
     private int age;
@@ -30,10 +21,10 @@ public class MovieDTO {
     public MovieDTO() {
     }
 
-    public MovieDTO(int movieID, String movieName, String content, String actor, String director, int age) {
+    public MovieDTO(int movieID, String movieName, String movieContent, String actor, String director, int age) {
         this.movieID = movieID;
         this.movieName = movieName;
-        this.content = content;
+        this.movieContent = movieContent;
         this.actor = actor;
         this.director = director;
         this.age = age;
@@ -55,12 +46,12 @@ public class MovieDTO {
         this.movieName = movieName;
     }
 
-    public String getContent() {
-        return content;
+    public String getMovieContent() {
+        return movieContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMovieContent(String movieContent) {
+        this.movieContent = movieContent;
     }
 
     public String getActor() {
@@ -89,7 +80,7 @@ public class MovieDTO {
 
     @Override
     public String toString() {
-        return "Movie{" + "movieID=" + movieID + ", movieName=" + movieName + ", content=" + content + ", actor=" + actor + ", director=" + director + ", age=" + age + '}';
+        return "MovieDTO{" + "movieID=" + movieID + ", movieName=" + movieName + ", movieContent=" + movieContent + ", actor=" + actor + ", director=" + director + ", age=" + age + '}';
     }
 
 }

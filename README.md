@@ -47,7 +47,7 @@
 ![](img_gui/gui7.jpg)
 ![](img_gui/gui8.jpg)
 
-  <strong>ADMIN PAGE (draw) - not done yet!!</strong>
-
 ##  ENTITY RELATIONSHIP DIAGRAM (ERD)
 ![](img_gui/ERD.png)
+![](img_gui/table_db.jpg
+)

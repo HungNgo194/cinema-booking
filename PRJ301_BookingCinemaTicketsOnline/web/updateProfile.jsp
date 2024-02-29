@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -78,7 +79,7 @@
                         <c:set var="sessionMember" value="${sessionScope.sessionMember}" /> 
                         <c:choose>
                             <c:when test="${sessionMember.getTotalSpend() > 5000}">
-                                <img src="image1.jpg" alt="Image 1" />
+                                <img style="height: 200px; width: 200px" src="images/membershipcard.jpg" alt="Image 1" />
                             </c:when>
                             <c:otherwise>
                                 <img src="image2.jpg" alt="Image 2" />

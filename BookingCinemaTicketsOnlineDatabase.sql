@@ -28,11 +28,14 @@ create table MOVIE
 	movieContent nvarchar(200),
 	actor nvarchar(200),
 	director nvarchar(200),
-	age int
+	age int,
+	movieImage nvarchar(200)
 )
 ALTER TABLE movie
 ADD CONSTRAINT UQ_movieName UNIQUE (movieName);
 
+ALTER TABLE movie
+add movieImage nvarchar(200)
 
 create table SHOWTIME
 (
@@ -128,11 +131,13 @@ insert into ACCOUNT values ('phucAdmin', 123, null, null, null, null, null, 'Nam
 
 insert into ACCOUNT values ('nphuc11111@gmail.com', 123, null, null, null, null, null, 0, 0);
 
+delete from account where userName like 'nphuc11111@gmail.com'
+
 insert into MOVIE values (default, 'ten phim', 'check', 'nguyen hoang phuc, ngo viet hung, duong minh an, ...', 'thien loc', 18); 
 
 select * from movie where movieName like '%Nobita%'
 
-delete from MOVIE
+delete from MOVIE where movieName like '%Red%'
 
 select * from MEMBERSHIP
 
@@ -151,3 +156,4 @@ select * from ROOM
 insert into SHOWTIME values ()
 select * from SHOWTIME
 delete from SHOWTIME 
+

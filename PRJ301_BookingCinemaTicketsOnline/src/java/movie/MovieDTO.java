@@ -17,17 +17,19 @@ public class MovieDTO {
     private String actor;
     private String director;
     private int age;
+    private String movieImage;
 
     public MovieDTO() {
     }
 
-    public MovieDTO(int movieID, String movieName, String movieContent, String actor, String director, int age) {
+    public MovieDTO(int movieID, String movieName, String movieContent, String actor, String director, int age, String movieImage) {
         this.movieID = movieID;
         this.movieName = movieName;
         this.movieContent = movieContent;
         this.actor = actor;
         this.director = director;
         this.age = age;
+        this.movieImage = movieImage;
     }
 
     public int getMovieID() {
@@ -78,9 +80,17 @@ public class MovieDTO {
         this.age = age;
     }
 
+    public String getMovieImage() {
+        return movieImage;
+    }
+
+    public void setMovieImage(String movieImage) {
+        this.movieImage = movieImage;
+    }
+
     @Override
     public String toString() {
-        return "MovieDTO{" + "movieID=" + movieID + ", movieName=" + movieName + ", movieContent=" + movieContent + ", actor=" + actor + ", director=" + director + ", age=" + age + '}';
+        return "MovieDTO{" + "movieID=" + movieID + ", movieName=" + movieName + ", movieContent=" + movieContent + ", actor=" + actor + ", director=" + director + ", age=" + age + ", movieImage=" + movieImage + '}';
     }
 
 }

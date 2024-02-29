@@ -114,20 +114,20 @@ public class ModifyShowTimeAdminServlet extends HttpServlet {
             
             List<ShowTimeDTO> existingShowTimes = dao.getShowTimesForRoomAndDateRange(roomID, openDate, closeDate);
 
-            List<ShowTimeDTO> getAllShowTimesFromSearch = (List<ShowTimeDTO>) request.getAttribute("getAllShowTimes");
-            if (getAllShowTimesFromSearch == null || getAllShowTimesFromSearch.isEmpty()) {
-                System.out.println("hello");
-            }
+            //List<ShowTimeDTO> getAllShowTimesFromSearch = (List<ShowTimeDTO>) request.getAttribute("getAllShowTimes");
+//            if (getAllShowTimesFromSearch == null || getAllShowTimesFromSearch.isEmpty()) {
+//                System.out.println("hello");
+//            }
             // ngay bat dau < ngay ket thuc
             if (!openDate.isAfter(closeDate)) {
                 for (ShowTimeDTO existingShowTime : existingShowTimes) {
-                    LocalTime existingStart = existingShowTime.getHourStart();
+                    LocalTime existingStart = existingShowTime.getHourStart().minusMinutes(30);
                     LocalTime existingEnd = existingShowTime.getHourEnd().plusMinutes(30);
                     // 4 trường hợp - check thử các trường hợp
                     if (hourStart.isBefore(existingEnd) && hourEnd.isAfter(existingStart)) {
                         System.out.println("overlap showTime");
                         request.setAttribute("existingShowTime", existingShowTime);
-                        request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
+                        //request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
                         //request.getRequestDispatcher("modifyShowTime-Admin.jsp").forward(request, response);
                         overlapchecked = true;
                     }
@@ -135,25 +135,25 @@ public class ModifyShowTimeAdminServlet extends HttpServlet {
                 if (hourStart.isAfter(hourEnd)) {
                     System.out.println("ngu");
                     request.setAttribute("hourStartAfterHourEnd", hourStart.isAfter(hourEnd));
-                    request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
+                    //request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
                     //request.getRequestDispatcher("modifyShowTime-Admin.jsp").forward(request, response);
                     overlapchecked = true;
                 }
                 if (!overlapchecked) {
                     Boolean showTime = dao.modifyShowTime(openDate, closeDate, hourStart, hourEnd, showStatus, roomID, movieID, showTimeID);
                     request.setAttribute("showTime", showTime);
-                    request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
+                    //request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
                     //request.getRequestDispatcher("modifyShowTime-Admin.jsp").forward(request, response);
                 }
             } else {
                 System.out.println("sai ngay");
-                request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
+                //request.setAttribute("getAllShowTimesFromSearch", getAllShowTimesFromSearch);
                 request.setAttribute("openDateAfterCloseDate", openDate.isAfter(closeDate));
                 //request.getRequestDispatcher("modifyShowTime-Admin.jsp").forward(request, response);
             }
             request.getRequestDispatcher("modifyShowTime-Admin.jsp").forward(request, response);
-        } catch (DateTimeParseException | SQLException e) {
-            System.out.println("Wrong: ");
+        } catch (StackOverflowError | DateTimeParseException | SQLException e) {
+            //System.out.println("Wrong: ");
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input provided");
         }

@@ -38,7 +38,8 @@ public class MovieDAO {
                 String actor = rs.getString("actor");
                 String director = rs.getString("director");
                 int age = rs.getInt("age");
-                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age);
+                String movieImage = rs.getString("movieImage");
+                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
                 list.add(movie);
                 return list;
             }
@@ -78,7 +79,8 @@ public class MovieDAO {
                 String actor = rs.getString("actor");
                 String director = rs.getString("director");
                 int age = rs.getInt("age");
-                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age);
+                String movieImage = rs.getString("movieImage");
+                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
                 return movie;
             }
         } catch (SQLException e) {
@@ -98,10 +100,10 @@ public class MovieDAO {
         return null;
     }
 
-    public boolean addNewMovie(String movieName, String movieContent, String actor, String director, int age) throws SQLException {
+    public boolean addNewMovie(String movieName, String movieContent, String actor, String director, int age, String movieImage) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        StringBuilder query = new StringBuilder("INSERT INTO MOVIE VALUES (?, ?, ?, ?, ?)");
+        StringBuilder query = new StringBuilder("INSERT INTO MOVIE VALUES (?, ?, ?, ?, ?, ?)");
         try {
             String sql = null;
             sql = String.valueOf(query);
@@ -113,6 +115,7 @@ public class MovieDAO {
             stm.setString(3, actor);
             stm.setString(4, director);
             stm.setInt(5, age);
+            stm.setString(6, movieImage);
             
             int executeUpdate = stm.executeUpdate();
             return true;
@@ -159,20 +162,22 @@ public class MovieDAO {
         }
     }
 
-    public void modifyMovie(String movieName, String movieContent, String actor, String director, int age) {
+    public boolean modifyMovie(String movieName, String movieContent, String actor, String director, int age, String movieImage) {
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBUtils.getConnection();
-            String query = "UPDATE MOVIE SET movieName = ?,  movieContent = ?, actor = ?, director = ?, age = ? WHERE movieName = ?";
+            String query = "UPDATE MOVIE SET movieName = ?,  movieContent = ?, actor = ?, director = ?, age = ?, movieImage = ? WHERE movieName = ?";
             stm = con.prepareStatement(query);
             stm.setString(1, movieName);
             stm.setString(2, movieContent);
             stm.setString(3, actor);
             stm.setString(4, director);
             stm.setInt(5, age);
-            stm.setString(6, movieName); // setting movieName again for WHERE clause
+            stm.setString(6, movieImage);
+            stm.setString(7, movieName); // setting movieName again for WHERE clause
             stm.executeUpdate();
+            return true;
         } catch (SQLException e) {
             System.out.println("An SQL error occurred: ");
             e.printStackTrace();
@@ -189,6 +194,7 @@ public class MovieDAO {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     public List<MovieDTO> search(String movieName) throws SQLException {
@@ -216,7 +222,8 @@ public class MovieDAO {
                 String actor = rs.getString("actor");
                 String director = rs.getString("director");
                 int age = rs.getInt("age");
-                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age);
+                String movieImage = rs.getString("movieImage");
+                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
                 list.add(movie);
             }
         } catch (SQLException e) {

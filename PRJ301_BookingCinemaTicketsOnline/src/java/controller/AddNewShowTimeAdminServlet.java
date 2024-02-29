@@ -156,7 +156,7 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
             // ngay bat dau < ngay ket thuc
             if (!openDate.isAfter(closeDate)) {
                 for (ShowTimeDTO existingShowTime : existingShowTimes) {
-                    LocalTime existingStart = existingShowTime.getHourStart();  // coi lai
+                    LocalTime existingStart = existingShowTime.getHourStart().minusMinutes(30);  // coi lai
                     LocalTime existingEnd = existingShowTime.getHourEnd().plusMinutes(30); 
                     // 4 trường hợp - check thử các trường hợp
                     if (hourStart.isBefore(existingEnd) && hourEnd.isAfter(existingStart)) {

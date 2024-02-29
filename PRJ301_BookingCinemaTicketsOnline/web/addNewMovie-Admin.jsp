@@ -31,33 +31,34 @@
         </style>
     </head>
     <body>
-        <form action="AddNewMovieAdminServlet" method="post">
+        <form action="AddNewMovieAdminServlet" enctype="multipart/form-data" method="post">
             <div class="movie-add">
                 <input required="true" type="text" name="movieName" placeholder="Tên"><br>
                 <input required="true" type="text" name="movieContent" placeholder="Nội Dung"><br>
                 <input required="true" type="text" name="actor" placeholder="Diễn viên"><br>
                 <input required="true" type="text" name="director" placeholder="Đạo Diễn"><br>
                 <input required="true" type="number" name="age" placeholder="Giới hạn tuổi"><br>
+                <input required="true" type="text" name="movieImage" value="" placeholder="Tên hình ảnh"/><br>
+                <input required="true" type="file" name="file" accept="image/png, image/jpg"/><br>
             </div>
             <div class="check-button">
                 <a href="adminWeb-page.jsp"><input type="button" name="" value="Quay Lại"></a>
                 <input type="submit" name="" value="Xác Nhận">
             </div>
-            <%
-                MovieDTO existingMovie = (MovieDTO) request.getAttribute("existingMovie");
-                if (existingMovie != null && !existingMovie.equals("")) {
-            %>
-            <p>Phim đã tồn tại, nhập lại</p>
-            <%
-                }
-                Boolean movieCreated = (Boolean) request.getAttribute("movieCreated");
-                if (Boolean.TRUE.equals(movieCreated)) {
-            %>
-            <p>Successfully added new movie!</p>
-            <%
-                }
-            %>
         </form>
-
+        <%
+            MovieDTO existingMovie = (MovieDTO) request.getAttribute("existingMovie");
+            if (existingMovie != null && !existingMovie.equals("")) {
+        %>
+        <p>Phim đã tồn tại, nhập lại</p>
+        <%
+            }
+            Boolean addNewMovie = (Boolean) request.getAttribute("addNewMovie");
+            if (Boolean.TRUE.equals(addNewMovie)) {
+        %>
+        <p>Khởi tạo phim thành công !</p>
+        <%
+            }
+        %>
     </body>
 </html>

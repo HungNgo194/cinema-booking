@@ -5,18 +5,26 @@
  */
 package controller;
 
-import account.AccountDTO;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Hashtable;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import movie.MovieDAO;
 import movie.MovieDTO;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -38,20 +46,103 @@ public class AddNewMovieAdminServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet addNewMovieAdminServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet addNewMovieAdminServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            response.setContentType("text/plain; charset=UTF-8");
+            String url = "addNewMovie-Admin.jsp";
+            try {
+                boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+                if (isMultipart) {
+                    FileItemFactory factory = new DiskFileItemFactory();
+                    ServletFileUpload upload = new ServletFileUpload(factory);
+                    List<FileItem> items = upload.parseRequest(request);
+                    Hashtable<String, String> params = new Hashtable<>();
+                    String img = null;
+                    String extension = null;
+                    for (FileItem item : items) {
+                        if (item.isFormField()) {
+                            params.put(item.getFieldName(), item.getString());
+                            img = (String) params.get("movieImage");
+                        } else {
+                            String itemName = item.getName();
+                            if (itemName != null && !itemName.isEmpty()) {
+                                String fileName = itemName.substring(itemName.lastIndexOf(File.separator) + 1);
+                                if (fileName.equals("null")) {
+                                    System.out.println("Invalid filename: 'null'");
+                                    throw new IllegalArgumentException("Invalid filename: 'null'");
+                                }
+                                String RealPath = getPath() + "/web/img/" + fileName;
+                                System.out.println("RealPath: " + RealPath);
+                                File saveFile = new File(RealPath);
+
+                                if (saveFile.exists()) {
+                                    System.out.println("File already exists: " + saveFile.getName());
+                                    String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+                                    extension = fileName.substring(fileName.lastIndexOf('.'));
+                                    int count = 1;
+                                    do {
+                                        saveFile = new File(RealPath.replace(fileName, baseName + "_" + count + extension));
+                                        count++;
+                                    } while (saveFile.exists());
+                                    System.out.println("Renamed file: " + saveFile.getName());
+                                }
+                                try {
+                                    System.out.println("Attempting to write file: " + saveFile.getName());
+                                    item.write(saveFile);
+                                    System.out.println("File written successfully.");
+                                } catch (Exception ex) {
+                                    System.out.println("Failed to write file: " + ex.getMessage());
+                                    ex.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+
+                    String movieName = (String) params.get("movieName");
+                    String movieContent = (String) params.get("movieContent");
+                    String actor = (String) params.get("actor");
+                    String director = (String) params.get("director");
+                    String age_raw = (String) params.get("age");
+                    int movieID = 0;
+                    int age = 0;
+                    try {
+                        age = Integer.parseInt(age_raw);
+                        MovieDAO dao = new MovieDAO();
+                        MovieDTO existingMovie = dao.checkExistMovie(movieName);
+                        request.setAttribute("existingMovie", existingMovie);
+                        if (existingMovie == null) {
+                            boolean addNewMovie = dao.addNewMovie(movieName, movieContent, actor, director, age, img + extension);
+                            System.out.println("Khởi tạo phim thành công !");
+                            request.setAttribute("addNewMovie", addNewMovie);
+                        } else {
+                            System.out.println("Phim đã tồn tại, nhập lại");
+                        }
+                    } catch (NumberFormatException ex) {
+                        log("NumberFormatException: " + ex.getMessage());
+                        request.setAttribute("ERRORS", "NumberFormatException");
+                    }
+                }
+            } catch (FileUploadException ex) {
+                log("Error occurred during file upload: " + ex.getMessage());
+                request.setAttribute("ERRORS", "An error occurred during file upload.");
+            } catch (Exception ex) {
+                log("Unexpected error occurred: " + ex.getMessage());
+                request.setAttribute("ERRORS", "An unexpected error occurred.");
+            } finally {
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+                out.close();
+            }
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    public String getPath() throws UnsupportedEncodingException {
+        String path = this.getClass().getClassLoader().getResource("").getPath();
+        String fullPath = URLDecoder.decode(path, "UTF-8");
+        String pathArr[] = fullPath.split("/build/web/WEB-INF/classes/");
+        fullPath = pathArr[0];
+        return fullPath;
+    }
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -77,37 +168,7 @@ public class AddNewMovieAdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain; charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        MovieDAO dao = new MovieDAO();
-        HttpSession session = request.getSession();
-        AccountDTO accountDTO = (AccountDTO) session.getAttribute("account");
-
-        String movieName = request.getParameter("movieName");
-        String movieContent = request.getParameter("movieContent");
-        String actor = request.getParameter("actor");
-        String director = request.getParameter("director");
-        String age_raw = request.getParameter("age");
-        int age = 0;
-        String url = "";
-        try {
-            age = Integer.parseInt(age_raw);
-            MovieDTO existingMovie = dao.checkExistMovie(movieName);
-            request.setAttribute("existingMovie", existingMovie);
-            if (existingMovie == null) {
-                Boolean movieCreated = dao.addNewMovie(movieName, movieContent, actor, director, age);
-                System.out.println("Create success");
-                request.setAttribute("movieCreated", movieCreated);
-            } else {
-                System.out.println("Phim đã tồn tại, nhập lại");
-            }
-            url = "addNewMovie-Admin.jsp";
-            request.getRequestDispatcher(url).forward(request, response);
-
-        } catch (NumberFormatException | SQLException e) {
-            System.out.println("Error : ");
-            e.printStackTrace();
-        }
+        processRequest(request, response);
     }
 
     /**

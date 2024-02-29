@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@page import="movie.MovieDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -24,6 +25,9 @@
             }
             .check-button input{
                 margin-top:10px;
+            }
+            p {
+                color: red;
             }
         </style>
     </head>
@@ -55,19 +59,38 @@
             </c:forEach>
         </table>
 
-        <form action="ModifyMovieAdminServlet" method="POST">
+        <form action="ModifyMovieAdminServlet" enctype="multipart/form-data" method="POST">
             <div class="movie-add">
-<!--                <input readonly="readonly" name="movieID" value=""><br>-->
-                <input name="movieName" placeholder="Tên"><br>
-                <input name="movieContent" placeholder="Nội Dung"><br>
-                <input name="actor" placeholder="Diễn viên"><br>
-                <input name="director" placeholder="Đạo Diễn"><br>
-                <input name="age" placeholder="Giới hạn tuổi"><br>
+                <input required="true" type="text" name="movieName" placeholder="Tên"><br>
+                <input required="true" type="text" name="movieContent" placeholder="Nội Dung"><br>
+                <input required="true" type="text" name="actor" placeholder="Diễn viên"><br>
+                <input required="true" type="text" name="director" placeholder="Đạo Diễn"><br>
+                <input required="true" type="number" name="age" placeholder="Giới hạn tuổi"><br>
+                <input required="true" type="text" name="movieImage" value="" placeholder="Tên hình ảnh"/><br>
+                <input required="true" type="file" name="file" accept="image/png, image/jpg"/><br>
             </div>
             <div class="check-button">
                 <a href="adminWeb-page.jsp"><input type="button" name="" value="Quay Lại"></a>
                 <input type="submit" name="" value="Xác Nhận">
             </div>
         </form>
+        <c:set value="${requestScope.ERRORS}" var="errors" />
+        
+        <%
+            MovieDTO existingMovie = (MovieDTO) request.getAttribute("existingMovie");
+            Boolean modifyMovie = (Boolean) request.getAttribute("modifyMovie");
+
+            if (existingMovie == null) {
+        %>
+        <p>${errors}</p>
+        <%
+            }
+            if (Boolean.TRUE.equals(modifyMovie)) {
+        %>
+        <p>Thay đổi thông tin phim thành công !</p>
+        <%
+            }
+        %>
+
     </body>
 </html>

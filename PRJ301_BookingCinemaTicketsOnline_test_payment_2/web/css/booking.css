@@ -1,0 +1,315 @@
+/* dành cho trang booking */
+body {
+    background: white;
+    margin: auto;
+    margin: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+}
+
+.body-container {
+    height: auto;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+/* TICKET CHOOSING */
+.order-wrap {
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 9px 0;
+    text-align: center;
+}
+
+.about-ticket {
+    display: flex;
+    justify-content: center;
+}
+
+.order-overview {
+    background-color: #761818;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.about-movieImg img {
+    width: 250px;
+    height: 300px;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right bottom, #6a5af9, #f62682);
+}
+.swiper-container{
+    display: flex;
+    justify-content: center;
+}
+.about-movie h2 {
+    text-align: left;
+    color: white;
+    align-items: center;
+}
+
+.about-ticket li {
+    color: aliceblue;
+    list-style: none;
+    margin-left: 5px;
+    height: 80px;
+    text-align: start;
+    box-shadow: 5px px 0 rgba(0, 0, 0, 0.2);
+}
+
+.about-ticket li p {
+    margin-top: auto;
+    font-size: 20px;
+    margin: -0.5px;
+}
+
+.about-ticket li:nth-child(1) {
+
+    background-color: #B54041;
+    padding: 20px;
+    font-size: larger;
+    width: auto;
+}
+
+.about-ticket li:nth-child(2) {
+    background-color: #B54041;
+    padding: 20px;
+}
+
+.about-ticket li:nth-child(3) {
+    background-color: #e85e61;
+    padding: 15px;
+}
+.about-ticket li:nth-child(3) sub{
+    font-size: larger;
+}
+.value,.value1 {
+    display: flex;
+}
+.input-but input {
+    font-size: 20px;
+    padding: 15px;
+    border: 2px solid;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 30px 30px 30px 0;
+    color: peru;
+    margin-bottom: 20px;
+}
+.value input{
+    font-size: larger;
+    border: none;
+    background-color: transparent;
+    outline: none; /* Removes the default focus outline */
+    color: inherit; /* Inherits text color from its parent */
+    width: 127px; /* Adjust width as needed */
+    cursor: default; /* Disable cursor change on hover */
+}
+.value1 input{
+
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    outline: none; /* Removes the default focus outline */
+    color: inherit; /* Inherits text color from its parent */
+    cursor: default; /* Disable cursor change on hover */
+}
+.value1 p {
+    text-align: left;
+}
+.about-ticket li:nth-child(4) {
+    background-color: #e85e61;
+    padding: 20px;
+    width: 300px;
+}
+.about-ticket li:nth-child(4) sub{
+    font-size: 20px;
+    margin-left: -20px;
+    margin-top: 5px;
+}
+.about-ticket li:nth-child(4) input{
+    width: 110px;
+}
+/* END TICKET CHOOSING */
+/* SEAT */
+.about-seat {
+    list-style: none;
+    font-size: 20px;
+    color: white;
+    display: flex;
+    justify-content: left;
+    background-color: #F3686A;
+    border-radius: 20px;
+    border: 2px solid #112142;
+}
+
+/* END SEAT */
+/* THEATER */
+.cinema-wrap {
+    position: relative;
+    justify-self: center;
+    width: auto;
+}
+
+.seat {
+    text-align: center;
+    color: wheat;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.seat.occupied {
+    background: linear-gradient(to top, #761818, #761818, #761818, #761818, #761818, #B54041, #F3686A);
+}
+
+.television {
+    margin: 0 auto;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    border-radius: 50px;
+    border: 1px gainsboro;
+    background-color: grey;
+    padding: 2px;
+    width: 30%;
+
+}
+
+.input-but {
+    text-align: center;
+    color: white;
+    margin: 10px 0;
+
+}
+
+.seats {
+    display: flex;
+    flex-direction: column;
+    /* Display seats in a column */
+    align-items: center;
+    /* Center align seats horizontally */
+    gap: 10px;
+    padding: 50px;
+    margin-top: 40px;
+}
+.seat,
+.seat1{
+    background-color: #444451;
+    height: 12px;
+    width: 20px;
+    margin: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: #a6736c;
+    border: 2px solid #112142;
+    transition: all .2s ease;
+    width: 35px;
+    height: 50px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    transform: skew(-15deg);
+    margin-top: -32px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5)
+}
+
+.row {
+    display: flex;
+    /* Display seats in a row */
+    gap: 10px;
+    /* Set row background color */
+}
+.seat.selected,
+.seat1.selected {
+    background: linear-gradient(to top, #761818, #761818, #761818, #761818, #761818, #B54041, #F3686A);
+}
+.already-selected{
+    background: red;
+}
+.normal p,
+.seat-selected p,
+seat-selected_already p{
+    margin-top: -10px;
+    font-size: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+.normal,
+.seat-selected{
+    display: flex;
+    justify-content: center;
+}
+/* END THEATER */
+/* CONTAINER */
+.showcase {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    padding: 30px;
+}
+
+.container {
+    /*  it simply enables a 3D-space for children elements. */
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px 0 40px 0;
+}
+/* BUTTON */
+.buy-btn,
+.back-btn {
+    cursor: pointer;
+}
+/* Footer */
+.footer {
+    position: relative;
+    width: 100%;
+    height: auto;
+
+}
+.copyright{
+
+    margin: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+.payment{
+    background-color: #B54041;
+    padding: 7px;
+    color : white;
+}
+.payment ul li {
+    display: inline-block;
+    margin: 0 2px 4px 2px;
+    vertical-align: middle;
+}
+.final-check{
+    background-color: #761818;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.2);
+}
+.item-time{
+    background-color: wheat;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 20px;
+    border-radius: 10px;
+}

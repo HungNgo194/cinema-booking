@@ -1,0 +1,58 @@
+
+.box-time {
+    font-size: 20px;
+    list-style: none;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1.2rem;
+}
+
+.box-time .active {
+    background: #761818;
+}
+/*.*/
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 52.2rem; /* Same width as .content */
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.content {
+    width: 50rem; /* Same width as .collapsible */
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align items to the left */
+}
+
+.list-time {
+    text-align: center;
+    list-style: none;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 1.2rem;
+    padding: 10px;
+}
+.active{
+    background: #761818;
+}
+.addr{
+    text-align: left;
+}
+.hidden {
+    display: none;
+}

@@ -37,7 +37,6 @@ public class SearchShowTimeAdminServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             ShowTimeDAO dao = new ShowTimeDAO();
             try {
                 List<ShowTimeDTO> getAllShowTimes = dao.getAll();

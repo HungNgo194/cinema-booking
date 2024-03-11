@@ -39,6 +39,8 @@ public class UpdateProfileServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             // check for Exist Account
             HttpSession session = request.getSession();
@@ -53,7 +55,7 @@ public class UpdateProfileServlet extends HttpServlet {
 
             AccountDAO dao = new AccountDAO();
             AccountDTO checkUpdate = new AccountDTO();
-            
+
             HttpSession sessionMember = request.getSession();
             MembershipDTO member = (MembershipDTO) sessionMember.getAttribute("sessionMember");
             sessionMember.setAttribute("sessionMember", member);

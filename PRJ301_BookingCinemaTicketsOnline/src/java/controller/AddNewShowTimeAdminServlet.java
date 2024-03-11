@@ -17,11 +17,16 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import movie.MovieDTO;
+import seatDetail.SeatDetailDAO;
 import showTime.ShowTimeDAO;
 import showTime.ShowTimeDTO;
 
@@ -42,23 +47,102 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddNewShowTimeAdminServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddNewShowTimeAdminServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String openDate_raw = request.getParameter("openDate").trim();
+            String closeDate_raw = request.getParameter("closeDate").trim();
+            String hourStart_raw = request.getParameter("hourStart").trim();
+            String hourEnd_raw = request.getParameter("hourEnd").trim();
+            String showStatus_raw = request.getParameter("showStatus");
+            String roomID_raw = request.getParameter("roomID");
+            String movieID_raw = request.getParameter("movieID");
+            LocalDate openDate;
+            LocalDate closeDate;
+            LocalTime hourStart;
+            LocalTime hourEnd;
+            boolean showStatus;
+            int roomID;
+            int movieID;
+            boolean overlapchecked = false;
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                openDate = LocalDate.parse(openDate_raw, formatter);
+                closeDate = LocalDate.parse(closeDate_raw, formatter);
+
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
+                hourStart = LocalTime.parse(hourStart_raw, formatter2);
+                hourEnd = LocalTime.parse(hourEnd_raw, formatter2);
+
+                showStatus = Boolean.parseBoolean(showStatus_raw);
+                roomID = Integer.parseInt(roomID_raw);
+                movieID = Integer.parseInt(movieID_raw);
+                ShowTimeDAO dao = new ShowTimeDAO();
+                List<ShowTimeDTO> existingShowTimes = dao.getShowTimesForRoomAndDateRangeForAddAction(movieID, roomID, openDate, closeDate);
+                // ngay bat dau < ngay ket thuc
+                if (!openDate.isAfter(closeDate)) {
+                    for (ShowTimeDTO existingShowTime : existingShowTimes) {
+                        LocalTime existingStart = existingShowTime.getHourStart().minusMinutes(30);  // coi lai
+                        LocalTime existingEnd = existingShowTime.getHourEnd().plusMinutes(30);
+                        // 4 trường hợp - check thử các trường hợp
+                        if (existingShowTime.equals("") || existingShowTime == null) {
+                            request.setAttribute("notExist", "phòng phim không tồn tại");
+                        }
+                        if (hourStart.isBefore(existingEnd) && hourEnd.isAfter(existingStart)) {
+                            System.out.println("overlap showTime");
+                            request.setAttribute("existingShowTime", existingShowTime);
+                            overlapchecked = true;
+                        }
+                    }
+                    if (hourStart.isAfter(hourEnd)) {
+                        System.out.println("ngu");
+                        request.setAttribute("hourStartAfterHourEnd", hourStart.isAfter(hourEnd));
+                        overlapchecked = true;
+                    }
+                    if (!overlapchecked) {
+                        Boolean showTime = dao.insertNewShowTime(openDate, closeDate, hourStart, hourEnd, showStatus, roomID, movieID);
+                        request.setAttribute("showTime", showTime);
+                        if (showTime) {
+                            ShowTimeDTO getLastestShowTime = dao.getLatestShowTime(); 
+                            SeatDetailDAO seatDao = new SeatDetailDAO();
+                            int numSeatsToAdd = 20;
+
+                            for (char row = 'A'; row <= 'B'; row++) {
+                                for (int seatNumber = 0; seatNumber < 10; seatNumber++) {
+                                    String seatID = String.format("%c%d", row, seatNumber);
+                                    Boolean success = seatDao.addSeat(seatID, true, roomID, getLastestShowTime.getShowTimeID());
+                                    if (!success) {
+                                        System.out.println("Failed to add seat: " + seatID);
+                                    }
+                                    numSeatsToAdd--;
+                                    if (numSeatsToAdd == 0) {
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            System.out.println("Failed to insert show time.");
+                        }
+                    } else {
+                        System.out.println("sai ngay");
+                        request.setAttribute("openDateAfterCloseDate", openDate.isAfter(closeDate));
+                    }
+                    request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
+
+                }
+            } catch (StackOverflowError | SQLException e) {
+                e.printStackTrace();
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input provided");
+            } catch (DateTimeParseException e) {
+                e.printStackTrace();
+                request.setAttribute("timeFormatError", "Sai format của giờ bắt đầu và giờ kêt thúc phim. Nhập lại theo HH:mm format.");
+                request.setAttribute("dateFormatError", "Sai format của ngày bắt đầu và ngày kết thúc. Nhập lại theo yyy-MM-dd format.");
+                request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
+            }
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -70,7 +154,13 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AddNewShowTimeAdminServlet.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -124,69 +214,108 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
 //    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String openDate_raw = request.getParameter("openDate").trim();
-        String closeDate_raw = request.getParameter("closeDate").trim();
-        String hourStart_raw = request.getParameter("hourStart").trim();
-        String hourEnd_raw = request.getParameter("hourEnd").trim();
-        String showStatus_raw = request.getParameter("showStatus");
-        String roomID_raw = request.getParameter("roomID");
-        String movieID_raw = request.getParameter("movieID");
-        LocalDate openDate;
-        LocalDate closeDate;
-        LocalTime hourStart;
-        LocalTime hourEnd;
-        boolean showStatus;
-        int roomID;
-        int movieID;
-        boolean overlapchecked = false;
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            openDate = LocalDate.parse(openDate_raw, formatter);
-            closeDate = LocalDate.parse(closeDate_raw, formatter);
+            processRequest(request, response);
+//        String openDate_raw = request.getParameter("openDate").trim();
+//        String closeDate_raw = request.getParameter("closeDate").trim();
+//        String hourStart_raw = request.getParameter("hourStart").trim();
+//        String hourEnd_raw = request.getParameter("hourEnd").trim();
+//        String showStatus_raw = request.getParameter("showStatus");
+//        String roomID_raw = request.getParameter("roomID");
+//        String movieID_raw = request.getParameter("movieID");
+//        LocalDate openDate;
+//        LocalDate closeDate;
+//        LocalTime hourStart;
+//        LocalTime hourEnd;
+//        boolean showStatus;
+//        int showTimeID;
+//        int roomID;
+//        int movieID;
+//        boolean overlapchecked = false;
+//        try {
+//
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//            openDate = LocalDate.parse(openDate_raw, formatter);
+//            closeDate = LocalDate.parse(closeDate_raw, formatter);
+//
+//            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
+//            hourStart = LocalTime.parse(hourStart_raw, formatter2);
+//            hourEnd = LocalTime.parse(hourEnd_raw, formatter2);
+//
+//            showStatus = Boolean.parseBoolean(showStatus_raw);
+//            roomID = Integer.parseInt(roomID_raw);
+//            movieID = Integer.parseInt(movieID_raw);
+//
+//            ShowTimeDAO dao = new ShowTimeDAO();
+//            //SeatDetailDAO seatDao = new SeatDetailDAO();
+//
+//            // session truyen tu SearchMovieAdminServlet
+//            HttpSession session = request.getSession();
+//            List<MovieDTO> allMovies = (List<MovieDTO>) session.getAttribute("allMovies");    // list
+//            MovieDTO oneMovieByName = (MovieDTO) session.getAttribute("oneMovieByName");      // 1
+//
+//            List<ShowTimeDTO> existingShowTimes = dao.getShowTimesForRoomAndDateRangeForAddAction(oneMovieByName.getMovieID(), roomID, openDate, closeDate);
+//            ShowTimeDTO temp = dao.getShowTime(oneMovieByName.getMovieID(), roomID, openDate, closeDate, hourStart, hourEnd);
+//
+//            if (existingShowTimes.isEmpty()) {
+//                request.setAttribute("notExist", "Phim hoặc rạp phim không tồn tại");
+//            }
+//            // ngay bat dau < ngay ket thuc
+//            if (!openDate.isAfter(closeDate)) {
+//                for (ShowTimeDTO existingShowTime : existingShowTimes) {
+//                    LocalTime existingStart = existingShowTime.getHourStart().minusMinutes(30);  // coi lai
+//                    LocalTime existingEnd = existingShowTime.getHourEnd().plusMinutes(30);
+//                    // 4 trường hợp - check thử các trường hợp
+//                    if (hourStart.isBefore(existingEnd) && hourEnd.isAfter(existingStart)) {
+//                        System.out.println("overlap showTime");
+//                        request.setAttribute("existingShowTime", existingShowTime);
+//                        overlapchecked = true;
+//                    }
+//                }
+//                if (hourStart.isAfter(hourEnd)) {
+//                    System.out.println("ngu");
+//                    request.setAttribute("hourStartAfterHourEnd", hourStart.isAfter(hourEnd));
+//                    overlapchecked = true;
+//                }
+//                if (!overlapchecked) {
+//                    Boolean showTime = dao.insertNewShowTime(openDate, closeDate, hourStart, hourEnd, showStatus, roomID, oneMovieByName.getMovieID());
+//
+////                    int numSeatsToAdd = 20;
+////
+////                    for (char row = 'A'; row <= 'B'; row++) {
+////                        for (int seatNumber = 0; seatNumber < 10; seatNumber++) {
+////                            String seatID = String.format("%c%d", row, seatNumber);
+////                            Boolean success = seatDao.addSeat(seatID, true, roomID, showTimeID);
+////                            if (!success) {
+////                                System.out.println("add" + numSeatsToAdd);
+////                            }
+////                            numSeatsToAdd--;
+////                            if (numSeatsToAdd == 0) {
+////                                break;
+////                            }
+////                        }
+////                    }
+//                    request.setAttribute("showTime", showTime);
+//                }
+//            } else {
+//                System.out.println("sai ngay");
+//                request.setAttribute("openDateAfterCloseDate", openDate.isAfter(closeDate));
+//            }
+//            request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
+//
+//        } catch (StackOverflowError | SQLException e) {
+//            e.printStackTrace();
+//            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input provided");
+//        } catch (DateTimeParseException e) {
+//            e.printStackTrace();
+//            request.setAttribute("timeFormatError", "Sai format của giờ bắt đầu và giờ kêt thúc phim. Nhập lại theo HH:mm format.");
+//            request.setAttribute("dateFormatError", "Sai format của ngày bắt đầu và ngày kết thúc. Nhập lại theo yyy-MM-dd format.");
+//            request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
+//        }
 
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
-            hourStart = LocalTime.parse(hourStart_raw, formatter2);
-            hourEnd = LocalTime.parse(hourEnd_raw, formatter2);
-
-            showStatus = Boolean.parseBoolean(showStatus_raw);
-            roomID = Integer.parseInt(roomID_raw);
-            movieID = Integer.parseInt(movieID_raw);
-            ShowTimeDAO dao = new ShowTimeDAO();
-            List<ShowTimeDTO> existingShowTimes = dao.getShowTimesForRoomAndDateRange(roomID, openDate, closeDate);
-            // ngay bat dau < ngay ket thuc
-            if (!openDate.isAfter(closeDate)) {
-                for (ShowTimeDTO existingShowTime : existingShowTimes) {
-                    LocalTime existingStart = existingShowTime.getHourStart().minusMinutes(30);  // coi lai
-                    LocalTime existingEnd = existingShowTime.getHourEnd().plusMinutes(30); 
-                    // 4 trường hợp - check thử các trường hợp
-                    if (hourStart.isBefore(existingEnd) && hourEnd.isAfter(existingStart)) {
-                        System.out.println("overlap showTime");
-                        request.setAttribute("existingShowTime", existingShowTime);
-                        request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
-                        overlapchecked = true;
-                    }
-                }
-                if (hourStart.isAfter(hourEnd)) {
-                    System.out.println("ngu");
-                    request.setAttribute("hourStartAfterHourEnd", hourStart.isAfter(hourEnd));
-                    request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
-                    overlapchecked = true;
-                }
-                if (!overlapchecked) {
-                    Boolean showTime = dao.insertNewShowTime(openDate, closeDate, hourStart, hourEnd, showStatus, roomID, movieID);
-                    request.setAttribute("showTime", showTime);
-                    //request.getRequestDispatcher("adminWeb-page.jsp").forward(request, response);
-                    request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
-                }
-            } else {
-                System.out.println("sai ngay");
-                request.setAttribute("openDateAfterCloseDate", openDate.isAfter(closeDate));
-                request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
-            }
-        } catch (DateTimeParseException | SQLException e) {
-            System.out.println("Wrong: ");
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input provided");
+        } catch (SQLException ex) {
+            Logger.getLogger(AddNewShowTimeAdminServlet.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

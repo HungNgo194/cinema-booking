@@ -63,7 +63,7 @@
                                     </button>
                                     <li class="dropdown header__nav-item">
                                         <a style=" border-radius: 100px/100px;
-                                           background: white;
+                                           background: black;
                                            padding: 20px; "
                                            class="dropdown-toggle header__nav-link header__nav-link--more" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user"></i></a>
                                         <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
@@ -114,9 +114,6 @@
         <div class="collapse" id="ui-basic">
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="addNewMovie-Admin.jsp">Add new Movie</a></li>
-                <i class="fa-solid fa-user"></i>
-                <li class="nav-item"> <a class="nav-link" href="modifyMovie-Admin.jsp">Modify Movie</a></li>
-                <li class="nav-item"> <a class="nav-link" href="deleteMovie-Admin.jsp">Delete Movie</a></li>
             </ul>
         </div>
     </li>
@@ -131,10 +128,24 @@
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="addNewShowTime-Admin.jsp">Add new ShowTime</a></li>
                 <i class="fa-solid fa-user"></i>
-                <li class="nav-item"> <a class="nav-link" href="SearchShowTimeAdminServlet">Modify ShowTime</a></li>
+                <li class="nav-item"> <a class="nav-link" href="SearchShowTimeAdminServlet">Modify ShowTime</a></li>        
             </ul>
         </div>
     </li>
+    
+    <li style="margin-top: 10px; margin-left: 5%"  class="header__nav-item">
+        <a class="dropdown-toggle header__nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+            <i class="icon-head menu-ico"></i>
+            <span class="menu-title">List Of Movies</span>
+            <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="auth">
+            <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="LoadAllMovieAdminServlet">List Of Movies</a></li>
+            </ul>
+        </div>
+    </li>
+    
 </body>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>

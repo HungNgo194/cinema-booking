@@ -21,6 +21,7 @@ $(document).ready(function () {
 	$('.header__search-btn').on('click', function() {
 		$(this).toggleClass('active');
 		$('.header__search').toggleClass('header__search--active');
+		$('.body').toggleClass('body--active');
 
 		if ($('.header__btn').hasClass('header__btn--active')) {
 			$('.header__btn').toggleClass('header__btn--active');

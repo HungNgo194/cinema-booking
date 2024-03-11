@@ -77,19 +77,22 @@ public class ModifyMovieAdminServlet extends HttpServlet {
                         }
                     }
                 }
+                String movieID_raw = params.get("movieID");
                 String movieName = params.get("movieName");
                 String movieContent = params.get("movieContent");
                 String actor = params.get("actor");
                 String director = params.get("director");
                 String age_raw = params.get("age");
                 int age = 0;
+                int movieID = 0;
                 try {
+                    movieID = Integer.parseInt(movieID_raw);
                     age = Integer.parseInt(age_raw);
                     MovieDAO dao = new MovieDAO();
-                    MovieDTO existingMovie = dao.checkExistMovie(movieName);
+                    MovieDTO existingMovie = dao.checkExistMovieById(movieID);
                     request.setAttribute("existingMovie", existingMovie);
                     if (existingMovie != null) {   // da ton tai
-                        boolean modifyMovie = dao.modifyMovie(movieName, movieContent, actor, director, age, img + extension);
+                        boolean modifyMovie = dao.modifyMovie(movieID, movieName, movieContent, actor, director, age, img + extension);
                         request.setAttribute("modifyMovie", modifyMovie);
                     } else {
                         request.setAttribute("ERRORS", "Phim chưa tồn tại, nhập lại !");

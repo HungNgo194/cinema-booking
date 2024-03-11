@@ -5,11 +5,13 @@
  */
 package movie;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Admin
  */
-public class MovieDTO {
+public class MovieDTO implements Serializable{
 
     private int movieID;
     private String movieName;
@@ -92,5 +94,4 @@ public class MovieDTO {
     public String toString() {
         return "MovieDTO{" + "movieID=" + movieID + ", movieName=" + movieName + ", movieContent=" + movieContent + ", actor=" + actor + ", director=" + director + ", age=" + age + ", movieImage=" + movieImage + '}';
     }
-
 }

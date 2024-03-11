@@ -41,7 +41,91 @@ public class MovieDAO {
                 String movieImage = rs.getString("movieImage");
                 MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
                 list.add(movie);
-                return list;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
+    public MovieDTO getByName(String movieName) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT * FROM MOVIE ");
+        if (movieName != null && !movieName.isEmpty()) {
+            query.append(" WHERE movieName like ? ");
+        }
+        try {
+            con = DBUtils.getConnection();
+            String sql;
+            sql = String.valueOf(query);
+            stm = con.prepareStatement(sql);
+            if (movieName != null && !movieName.isEmpty()) {
+                stm.setString(1, "%" + movieName + "%");
+            }
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int movieID = rs.getInt("movieID");
+                movieName = rs.getString("movieName");
+                String movieContent = rs.getString("movieContent");
+                String actor = rs.getString("actor");
+                String director = rs.getString("director");
+                int age = rs.getInt("age");
+                String movieImage = rs.getString("movieImage");
+                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
+                return movie;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return null;
+    }
+    
+    public MovieDTO checkExistMovieById(int movieID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("SELECT * FROM MOVIE WHERE movieID = ?");
+        try {
+            String sql = null;
+            sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, movieID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                movieID = rs.getInt("movieID");
+                String movieName = rs.getString("movieName");
+                String movieContent = rs.getString("movieContent");
+                String actor = rs.getString("actor");
+                String director = rs.getString("director");
+                int age = rs.getInt("age");
+                String movieImage = rs.getString("movieImage");
+                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
+                return movie;
             }
         } catch (SQLException e) {
             System.out.println("SQL: ");
@@ -116,7 +200,7 @@ public class MovieDAO {
             stm.setString(4, director);
             stm.setInt(5, age);
             stm.setString(6, movieImage);
-            
+
             int executeUpdate = stm.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -162,12 +246,12 @@ public class MovieDAO {
         }
     }
 
-    public boolean modifyMovie(String movieName, String movieContent, String actor, String director, int age, String movieImage) {
+    public boolean modifyMovie(int movieID, String movieName, String movieContent, String actor, String director, int age, String movieImage) {
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBUtils.getConnection();
-            String query = "UPDATE MOVIE SET movieName = ?,  movieContent = ?, actor = ?, director = ?, age = ?, movieImage = ? WHERE movieName = ?";
+            String query = "UPDATE MOVIE SET movieName = ?,  movieContent = ?, actor = ?, director = ?, age = ?, movieImage = ? WHERE movieID = ?";
             stm = con.prepareStatement(query);
             stm.setString(1, movieName);
             stm.setString(2, movieContent);
@@ -175,7 +259,7 @@ public class MovieDAO {
             stm.setString(4, director);
             stm.setInt(5, age);
             stm.setString(6, movieImage);
-            stm.setString(7, movieName); // setting movieName again for WHERE clause
+            stm.setInt(7, movieID); 
             stm.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -197,7 +281,7 @@ public class MovieDAO {
         return false;
     }
 
-    public List<MovieDTO> search(String movieName) throws SQLException {
+    public List<MovieDTO> searchByName(String movieName) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -243,4 +327,44 @@ public class MovieDAO {
         return list;
     }
 
+    public MovieDTO searchByID(int movieID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        MovieDTO movie = new MovieDTO();
+        StringBuilder query = new StringBuilder("SELECT * FROM MOVIE WHERE movieID = ?");
+        try {
+            con = DBUtils.getConnection();
+            String sql;
+            sql = String.valueOf(query);
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, movieID);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                movieID = rs.getInt("movieID");
+                String movieName = rs.getString("movieName");
+                String movieContent = rs.getString("movieContent");
+                String actor = rs.getString("actor");
+                String director = rs.getString("director");
+                int age = rs.getInt("age");
+                String movieImage = rs.getString("movieImage");
+                movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
+                return movie;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return movie;
+    }
 }

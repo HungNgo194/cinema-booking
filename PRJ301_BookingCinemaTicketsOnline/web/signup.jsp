@@ -8,11 +8,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Font -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
 
         <!-- CSS -->
         <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="css/main.css">
 
         <!-- Favicons -->
-        <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/logo.jpg" sizes="32x32">
         <link rel="apple-touch-icon" href="icon/favicon-32x32.png">
         <link rel="apple-touch-icon" sizes="72x72" href="icon/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="icon/apple-touch-icon-114x114.png">
@@ -36,11 +36,10 @@
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="author" content="Dmitry Volkov">
-        <title>FlixGo – Online Movies, TV Shows & Cinema HTML Template</title>
+        <title>Những cậu trai thân mật</title>
 
     </head>
     <body class="body">
-
         <div class="sign section--bg" data-bg="img/section/section.jpg">
             <div class="container">
                 <div class="row">
@@ -49,16 +48,12 @@
                             <!-- registration form -->
                             <form name="form" action="./SignupServlet" class="sign__form" method="post" onsubmit="return validLogin();">
                                 <a href="index.html" class="sign__logo">
-                                    <img src="img/logo.svg" alt="">
+                                    <img src="img/logo.jpg" alt="">
                                 </a>
 
                                 <div class="sign__group">
                                     <input required="true" type="email" class="sign__input" placeholder="Username" name="email">
                                 </div>
-
-                                <!--                                <div class="sign__group">
-                                                                    <input type="email" class="sign__input" placeholder="Email" name="email">
-                                                                </div>-->
 
                                 <div class="sign__group">
                                     <input required="true" type="password" class="sign__input" placeholder="Password" name="password">
@@ -69,14 +64,14 @@
                                 </div>
 
                                 <div class="sign__group sign__group--checkbox">
-                                    <input id="remember" name="remember" type="checkbox" checked="checked">
-                                    <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
+                                    <input required="true" id="remember" name="remember" type="checkbox" checked="checked">
+                                    <label for="remember">Tôi đồng ý với <a href="#">Điều khoản</a></label>
                                 </div>
-
                                 <!--                                <button class="sign__btn" type="button">Sign up</button>-->
-                                <input class="sign__btn" value="Sign up" type="submit"> 
+                                <!--<button class="sign__btn" type="button">Đăng ký</button>-->
+                                <input type="submit" class="sign__btn" value="Đăng ký">
 
-                                <span class="sign__text">Already have an account? <a href="signin.jsp">Sign in!</a></span>
+                                <span class="sign__text">Đã có tài khoản? <a href="signin.jsp">Đăng nhập!</a></span>
                             </form>
                             <!-- registration form -->
                         </div>

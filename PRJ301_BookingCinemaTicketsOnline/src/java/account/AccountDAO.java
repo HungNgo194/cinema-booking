@@ -219,5 +219,24 @@ public class AccountDAO implements Serializable {
         }
         return null;
     }
+    
+        public AccountDTO findAccountByEmail(String email) {
+        AccountDTO acc = null;
+        Connection con = DBUtils.getConnection();
+        String sql = "SELECT * FROM ACCOUNT WHERE email = ?";
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+          
+            if (rs.next()) {
+                acc = new AccountDTO(rs.getString("userName"), rs.getString("password"), null, null, null, rs.getString("email"), null, null, true);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return acc;
+    }
 
 }

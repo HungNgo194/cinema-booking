@@ -7,20 +7,26 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import movie.MovieDAO;
+import movie.MovieDTO;
+import showTime.ShowTimeDAO;
+import showTime.ShowTimeDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "LoadFromShowTimeToModifyShowTimeServlet", urlPatterns = {"/LoadFromShowTimeToModifyShowTimeServlet"})
+public class LoadFromShowTimeToModifyShowTimeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +38,24 @@ public class LogoutServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            HttpSession session = request.getSession(false);
-            session.invalidate();
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher("signin.jsp");
-            rd.forward(request, response);
-            out.close();
+        try (PrintWriter out = response.getWriter()) {
+            String showTimeId_raw = request.getParameter("showTimeId");
+            int showTimeId = 0;
+            try {
+                showTimeId = Integer.parseInt(showTimeId_raw);
+                ShowTimeDAO dao = new ShowTimeDAO();
+                ShowTimeDTO getShowTimeByID = dao.getShowTimeByID(showTimeId);
+                if (getShowTimeByID != null) {
+                    request.setAttribute("getShowTimeByID", getShowTimeByID);
+                } else {
+                    System.out.println("kh co getShowTimeByID ne` !");
+                }
+                request.getRequestDispatcher("modifyShowTime-Admin.jsp").forward(request, response);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -57,7 +71,11 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadFromShowTimeToModifyShowTimeServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -71,7 +89,11 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadFromShowTimeToModifyShowTimeServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -45,8 +45,9 @@ public class AddNewMovieAdminServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            response.setContentType("text/plain; charset=UTF-8");
             String url = "addNewMovie-Admin.jsp";
             try {
                 boolean isMultipart = ServletFileUpload.isMultipartContent(request);

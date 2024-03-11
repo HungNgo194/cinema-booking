@@ -26,7 +26,7 @@
         <c:set value="${sessionScope.account}" var="account" />  
         <div class="nav-header">
             <nav class="nav-container">
-                <a href="#" class="nav-logo"><img src="images/logo.jpg" alt="logo"></a>
+                <a href="userWeb-page.jsp" class="nav-logo"><img src="images/logo.jpg" alt="logo"></a>
 
                 <div class="nav-menu" id="nav-menu">
                     <ul class="nav-list">
@@ -109,7 +109,7 @@
                             <div class="first-row col-md-12">
                                 <div class="input-text name">
                                     <!-- <span class="focus-text hide">HỌ TÊN (*)</span> -->
-                                    <input required="true" id="update_name" name="fullName" type="text" placeholder="HỌ TÊN (*)">
+                                    <input required="true" id="update_name" name="fullName" type="text" placeholder="HỌ TÊN">
                                 </div>
                                 <!--                                <div class="input-text birth">
                                                                      <span class="focus-text hide">DD/MM/YYYY ( Ngày sinh*)</span> 
@@ -121,7 +121,7 @@
                                 <div class="input-text tel">
                                     <!-- <span class="focus-text hide">ĐIỆN THOẠI (*)</span> -->
                                     <input required="true" id="update_phone" name="phoneNumber" type="text" 
-                                           placeholder="ĐIỆN THOẠI (*)">
+                                           placeholder="ĐIỆN THOẠI">
                                 </div>
                             </div>
                             <div class="require-col">

@@ -11,6 +11,7 @@ create table CINEMA
 	address nvarchar(200),
 	hotline varchar(200)
 )
+go
 
 create table ROOM
 (
@@ -20,6 +21,7 @@ create table ROOM
 
 	CONSTRAINT FK_cinemaID1 foreign key(cinemaID) references CINEMA(cinemaID)
 )
+go
 
 create table MOVIE
 (
@@ -29,13 +31,15 @@ create table MOVIE
 	actor nvarchar(200),
 	director nvarchar(200),
 	age int,
-	movieImage nvarchar(200)
-)
-ALTER TABLE movie
-ADD CONSTRAINT UQ_movieName UNIQUE (movieName);
+	movieImage nvarchar(200),
 
-ALTER TABLE movie
-add movieImage nvarchar(200)
+	CONSTRAINT UQ_movieName UNIQUE (movieName)
+)
+go
+alter table movie
+drop CONSTRAINT UQ_movieName
+--ALTER TABLE movie
+--ADD CONSTRAINT UQ_movieName UNIQUE (movieName);
 
 create table SHOWTIME
 (
@@ -51,6 +55,7 @@ create table SHOWTIME
 	CONSTRAINT FK_roomID1 foreign key(roomID) references ROOM(roomID),
 	CONSTRAINT FK_MovieID1 foreign key(movieID) references MOVIE(movieID)
 )
+go
 --ALTER TABLE SHOWTIME
 --ADD CONSTRAINT UQ_hourStart UNIQUE (hourStart);
 --ALTER TABLE SHOWTIME
@@ -67,12 +72,10 @@ create table ACCOUNT
 	phoneNumber varchar(200),
 	gender nvarchar(200),
 	[role] bit
-)
-alter table account
-alter column gender nvarchar(200)
 
-ALTER TABLE account
-ADD CONSTRAINT UQ_userName UNIQUE (userName);
+	CONSTRAINT UQ_userName UNIQUE (userName)
+)
+go
 
 create table BOOKING
 (
@@ -82,20 +85,23 @@ create table BOOKING
 	bookingDate date,
 	userName varchar(200),
 
-	CONSTRAINT FK_userName1 foreign key(userName) references ACCOUNT(userName)
+	CONSTRAINT FK_userName1 foreign key(userName) references ACCOUNT(userName),
+	CONSTRAINT UQ_userName2 UNIQUE (userName)
 )
+go
 
-ALTER TABLE BOOKING
-ADD CONSTRAINT UQ_userName2 UNIQUE (userName);
 
-create table SEAT 
-(
-	seatID varchar(3) not null primary key,
+create table SEATDETAILS (
+	seatID varchar(3) not null,
 	seatStatus bit,
 	roomID int,
+	showtimeID int not null,
 
-	CONSTRAINT FK_roomID2 foreign key(roomID) references ROOM(roomID)
+	primary key (seatID, showTimeID),
+	CONSTRAINT FK_roomID2 foreign key(roomID) references ROOM(roomID),
+	CONSTRAINT FK_showTimeID2 foreign key(showtimeID) references SHOWTIME(showtimeID)
 )
+go
 
 create table TICKET
 (
@@ -104,11 +110,12 @@ create table TICKET
 	seatID varchar(3),
 	bookingID UNIQUEIDENTIFIER,
 
+	CONSTRAINT FK_seatID1 foreign key(seatID, showTimeID) references SEATDETAILS(seatID, showTimeID),
 	CONSTRAINT FK_showTimeID1 foreign key(showTimeID) references SHOWTIME(showTimeID),
-	CONSTRAINT FK_seatID1 foreign key(seatID) references SEAT(seatID),
 	CONSTRAINT FK_bookingID1 foreign key(bookingID) references BOOKING(bookingID)
-
 )
+go
+
 
 create table MEMBERSHIP
 (
@@ -117,11 +124,31 @@ create table MEMBERSHIP
 	discount int,
 	userName varchar(200),
 
-	CONSTRAINT FK_user1 foreign key(userName) references ACCOUNT(userName)
+	CONSTRAINT FK_user1 foreign key(userName) references ACCOUNT(userName),
+	CONSTRAINT UQ_userName3 UNIQUE (userName)
 )
+go
 
-ALTER TABLE MEMBERSHIP
-ADD CONSTRAINT UQ_userName3 UNIQUE (userName);
+--ALTER TABLE MEMBERSHIP
+--ADD CONSTRAINT UQ_userName3 UNIQUE (userName);
+
+CREATE TABLE PAYMENT (
+	id decimal(19, 2) PRIMARY KEY,
+	amount int,
+	orderInfo nvarchar(250),
+	responseCode char,
+	transactionNo int,
+	bank char,
+	payDate date,
+	transactionStatus bit,
+	bookingID UNIQUEIDENTIFIER,
+	userName varchar(200),
+	CONSTRAINT FK_bookingID2 foreign key(bookingID) references BOOKING(bookingID),
+	CONSTRAINT FK_userName4 foreign key(userName) references ACCOUNT(userName)
+)
+go
+
+
 
 select * from ACCOUNT	
 
@@ -144,16 +171,28 @@ select * from MEMBERSHIP
 delete from MEMBERSHIP
 
 insert into MEMBERSHIP values (default, 50000, 10, 'nphuc11111@gmail.com');
+insert into MEMBERSHIP values (default, 50000, 10, 'hieu123@gmail.com');
 
 select * from MEMBERSHIP where userName = 'nphuc11111@gmail.com'
 
 insert into CINEMA values ('Cinema1', 'HCM', 'thu duc', '0123456789')
 select * from CINEMA
 
-insert into ROOM values (50, 1)
+insert into ROOM values (30, 1)
 select * from ROOM
 
-insert into SHOWTIME values ()
+insert into SHOWTIME
 select * from SHOWTIME
 delete from SHOWTIME 
+delete from SEATDETAILS
 
+select * from MOVIE
+select * from ROOM
+select * from SHOWTIME
+select * from SEATDETAILS
+
+SELECT TOP 1 * FROM ShowTime ORDER BY showTimeID DESC;
+
+update SEATDETAILS set seatStatus = 1 where showTimeID = 26 and seatID = 'A0'
+
+delete from movie where movieID = 14

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : modifyMovie
-    Created on : Feb 5, 2024, 10:19:58 PM
-    Author     : Admin
---%>
 
 <%@page import="movie.MovieDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -145,41 +140,57 @@
         </style>
     </head>
     <body>
-        <c:set value="${requestScope.movieByID}" var="movieByID" />
-        <form action="ModifyMovieAdminServlet" enctype="multipart/form-data" method="POST">
-            <div class="movie-add">
-                <h1>Thay Đổi Thông Tin Phim</h1>
-                <input readonly value="${movieByID.movieID}" required="true" type="text" name="movieID" placeholder="ID phim"><br>
-                <input required="true" type="text" name="movieName" placeholder="Tên phim"><br>
-                <input required="true" type="text" name="movieContent" placeholder="Nội ung phim"><br>
-                <input required="true" type="text" name="actor" placeholder="Các diễn viên"><br>
-                <input required="true" type="text" name="director" placeholder="Đạo Diễn"><br>
-                <input required="true" type="number" name="age" placeholder="Giới hạn tuổi"><br>
-                <input required="true" type="text" name="movieImage" value="" placeholder="Tên hình ảnh phim"/><br>
-                <input required="true" type="file" name="file" accept="image/png, image/jpg"/><br>
-            </div>
-            <div class="check-button">
-                <a href="LoadAllMovieAdminServlet"><input type="button" name="" value="Quay Lại"></a>
-                <input type="submit" name="" value="Xác Nhận">
-            </div>
-        </form>
-        <c:set value="${requestScope.ERRORS}" var="errors" />
+        <div class="form-container">
+            <h1>Danh Sách Phim</h1>
+            <table border="1px solid black">
+                <tr>
+                    <th>movieID</th>
+                    <th>movieName</th>
+                    <th>movieContent</th>
+                    <th>actor</th>
+                    <th>director</th>
+                    <th>age</th>
+                    <th>image</th>
+                    <th>function</th>
+                </tr>
 
-        <%
-            MovieDTO existingMovie = (MovieDTO) request.getAttribute("existingMovie");
-            Boolean modifyMovie = (Boolean) request.getAttribute("modifyMovie");
-
-            if (existingMovie == null) {
-        %>
-        <p class="error-message">${errors}</p>
-        <%
-            }
-            if (Boolean.TRUE.equals(modifyMovie)) {
-        %>
-        <p class="success-message">Thay đổi thông tin phim thành công !</p>
-        <%
-            }
-        %>
-
+                <c:forEach items="${requestScope.allMovies}" var="allMovies">
+                    <tr>
+                        <td>${allMovies.getMovieID()}</td>
+                        <td>${allMovies.getMovieName()}</td>
+                        <td>${allMovies.getMovieContent()}</td>
+                        <td>${allMovies.getActor()}</td>
+                        <td>${allMovies.getDirector()}</td>
+                        <td>${allMovies.getAge()}</td>
+                        <td><img style="height: 100px; width: 100px" src="img/${allMovies.getMovieImage()}"/></td>
+                        <td>
+                            <a href="LoadFromMovieToModifyMovieServlet?id=${allMovies.movieID}">Modify movie</a>
+                            <br>
+                            <br>
+                            <a href="LoadFromMovieToAddShowTimeServlet?id=${allMovies.movieID}">Add new show time</a>
+                            <c:set value="${requestScope.allShowTimesByID}" var="showTime" />
+                            <br>
+                            <br>
+                            <a href="LoadAllShowTimeAdminServlet?id=${allMovies.movieID}">Show All show time</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <a href="adminWeb-page.jsp"><input type="button" name="" value="Quay Lại"></a>
     </body>
 </html>
+<!--            <table border="1px solid black">
+                <tr>
+                    <th>function</th>
+                </tr>
+                <c:forEach items="${sessionScope.allShowTimesByID}" var="showTime">
+                    <tr>
+                        <%--<c:if test="${showTime.movieID == movie.movieID}">--%>
+                        <td>
+                            <a href="LoadAllShowTimeAdminServlet?id=${showTime.showTimeID}">Show All show time</a>
+                        </td>
+                        <%--</c:if>--%>
+                    </tr>
+                </c:forEach>
+            </table>-->

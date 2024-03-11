@@ -3,24 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import movie.MovieDAO;
+import movie.MovieDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
-public class LogoutServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/LoadFromMovieToModifyMovieServlet"})
+public class LoadFromMovieToModifyMovieServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,20 +34,30 @@ public class LogoutServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            HttpSession session = request.getSession(false);
-            session.invalidate();
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher("signin.jsp");
-            rd.forward(request, response);
-            out.close();
+        try (PrintWriter out = response.getWriter()) {
+            String id_raw = request.getParameter("id");
+            int id = 0;
+            try {
+                id = Integer.parseInt(id_raw);
+                MovieDAO dao = new MovieDAO();
+                MovieDTO movieByID = null;
+                movieByID = dao.searchByID(id);
+                if (movieByID != null) {
+                    request.setAttribute("movieByID", movieByID);        
+                } else {
+                    System.out.println("kh co movieID ne` !");
+                }
+                request.getRequestDispatcher("modifyMovie-Admin.jsp").forward(request, response);
+            } catch (NumberFormatException e) {
+                System.out.println("parse sai");
+                e.printStackTrace();
+            }
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -57,7 +69,11 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadFromMovieToModifyMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -71,7 +87,11 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoadFromMovieToModifyMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

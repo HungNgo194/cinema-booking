@@ -13,6 +13,7 @@
                 margin: 0;
                 padding: 20px;
                 background-color: #f9f9f9;
+                text-align: center
             }
 
             .container {
@@ -137,6 +138,37 @@
                 color: green;
                 text-align: center;
             }
+             .check-button {
+                text-align: center;
+            }
+
+            .check-button input[type="submit"],
+            .check-button input[type="button"] {
+                padding: 10px 20px;
+                background-color: red;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+
+            .check-button input[type="submit"]:hover,
+            .check-button input[type="button"]:hover {
+                background-color: #0056b3;
+            }
+
+            .check-button a {
+                text-decoration: none;
+            }
+
+            .check-button a input[type="button"] {
+                background-color: #dc3545;
+            }
+
+            .check-button a input[type="button"]:hover {
+                background-color: #c82333;
+            }
         </style>
     </head>
     <body>
@@ -177,7 +209,7 @@
                 </c:forEach>
             </table>
         </div>
-        <a href="adminWeb-page.jsp"><input type="button" name="" value="Quay Lại"></a>
+        <a class="check-button" href="adminWeb-page.jsp"><input type="button" name="" value="Quay Lại"></a>
     </body>
 </html>
 <!--            <table border="1px solid black">

@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,8 +46,9 @@ public class UserPageAllServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             AccountDAO dao = new AccountDAO();
             account.AccountDTO check = dao.checkExistAccount(account.getUserName(), account.getPassword());
-            url = "userWeb-page.jsp";
-            response.sendRedirect(url);
+            url = "LoadAllMovieServlet?url=userWeb-page.jsp";
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         } catch (SQLException ex) {
             System.out.println("SQL: ");
             ex.printStackTrace();

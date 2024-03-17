@@ -26,14 +26,14 @@ public class TicketDTO {
         this.bookingID = bookingID;
     }
 
-    public int getTicketID() {
-        return ticketID;
+    public TicketDTO(int showTimeID, String seatID, String bookingID) {
+        this.showTimeID = showTimeID;
+        this.seatID = seatID;
+        this.bookingID = bookingID;
     }
 
-    public void setTicketID(int ticketID) {
-        this.ticketID = ticketID;
-    }
-
+    
+    
     public int getShowTimeID() {
         return showTimeID;
     }
@@ -58,9 +58,15 @@ public class TicketDTO {
         this.bookingID = bookingID;
     }
 
-    @Override
-    public String toString() {
-        return "Ticket{" + "ticketID=" + ticketID + ", showTimeID=" + showTimeID + ", seatID=" + seatID + ", bookingID=" + bookingID + '}';
+    public int getTicketID() {
+        return ticketID;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Ticket{" + "ticketID=" + ticketID + ", showTimeID=" + showTimeID + ", seatID=" + seatID + ", bookingID=" + bookingID + '}';
+//    }
+    public void setTicketID(int ticketID) {
+        this.ticketID = ticketID;
+    }
 }

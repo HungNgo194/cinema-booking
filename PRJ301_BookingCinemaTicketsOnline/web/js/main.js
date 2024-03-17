@@ -15,6 +15,28 @@ $(document).ready(function () {
 		}
 	});
 
+	$('.profile__btn').on('click', function() {
+		$(this).toggleClass('profile__btn--active');
+		$('.profile__nav').toggleClass('profile__nav--active');
+		$('.body').toggleClass('body--active');
+
+		if ($('.profile__search-btn').hasClass('active')) {
+			$('.profile__search-btn').toggleClass('active');
+			$('.profile__search').toggleClass('profile__search--active');
+		}
+	});
+
+	$('.user__btn').on('click', function() {
+		$(this).toggleClass('user__btn--active');
+		$('.profile__nav').toggleClass('profile__nav--active');
+		$('.body').toggleClass('body--active');
+
+		if ($('.profile__search-btn').hasClass('active')) {
+			$('.profile__search-btn').toggleClass('active');
+			$('.profile__search').toggleClass('profile__search--active');
+		}
+	});
+
 	/*==============================
 	Search
 	==============================*/
@@ -58,13 +80,13 @@ $(document).ready(function () {
 	});
 
 	$('.home__carousel').owlCarousel({
-		mouseDrag: false,
-		touchDrag: false,
+		mouseDrag: true,
+		touchDrag: true,
 		dots: false,
 		loop: true,
-		autoplay: false,
+		autoplay: true,
 		smartSpeed: 600,
-		margin: 30,
+		margin: 12,
 		responsive : {
 			0 : {
 				items: 2,
@@ -79,7 +101,58 @@ $(document).ready(function () {
 				items: 4,
 			},
 			1200 : {
+				items: 5,
+			},
+		}
+	});
+
+	$('.content__bg').owlCarousel({
+		animateOut: 'fadeOut',
+		animateIn: 'fadeIn',
+		mouseDrag: false,
+		touchDrag: false,
+		items: 1,
+		dots: false,
+		loop: true,
+		autoplay: false,
+		smartSpeed: 600,
+		margin: 0,
+	});
+
+	$('.content__bg .item').each( function() {
+		if ($(this).attr("data-bg")){
+			$(this).css({
+				'background': 'url(' + $(this).data('bg') + ')',
+				'background-position': 'center center',
+				'background-repeat': 'no-repeat',
+				'background-size': 'cover'
+			});
+		}
+	});
+
+	$('.content__carousel').owlCarousel({
+		mouseDrag: false,
+		touchDrag: false,
+		dots: false,
+		loop: true,
+		autoplay: false,
+		smartSpeed: 600,
+		margin: 12,
+		responsive : {
+			0 : {
+				items: 2,
+			},
+			576 : {
+				items: 2,
+			},
+			768 : {
+				items: 3,
+			},
+			992 : {
 				items: 4,
+			},
+			1200 : {
+				items: 5,
 			},
 		}
 	});
@@ -91,11 +164,25 @@ $(document).ready(function () {
 		$('.home__carousel, .home__bg').trigger('prev.owl.carousel');
 	});
 
+	// Event handlers for content navigation
+	$('.content__nav--next').on('click', function () {
+		$('.content__carousel, .content__bg').trigger('next.owl.carousel');
+	});
+	$('.content__nav--prev').on('click', function () {
+		$('.content__carousel, .content__bg').trigger('prev.owl.carousel');
+	});
+
 	$(window).on('resize', function() {
 		var itemHeight = $('.home__bg').height();
 		$('.home__bg .item').css("height", itemHeight + "px");
 	});
 	$(window).trigger('resize');
+
+	document.querySelectorAll('.qna__question').forEach(item => {
+		item.addEventListener('click', event => {
+			event.target.nextElementSibling.classList.toggle('open');
+		});
+	});
 
 	/*==============================
 	Tabs
@@ -481,4 +568,19 @@ $(document).ready(function () {
 		return false;
 	}
 	$(window).on('load', initializeThirdSlider());
+});
+
+const checkboxNam = document.getElementById('checkbox_nam');
+const checkboxNu = document.getElementById('checkbox_nu');
+
+checkboxNam.addEventListener('change', () => {
+    if (checkboxNam.checked) {
+        checkboxNu.checked = false; // Uncheck "Nữ" if "Nam" is checked
+    }
+});
+
+checkboxNu.addEventListener('change', () => {
+    if (checkboxNu.checked) {
+        checkboxNam.checked = false; // Uncheck "Nam" if "Nữ" is checked
+    }
 });

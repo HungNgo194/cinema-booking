@@ -1,45 +1,42 @@
-<%-- 
-    Document   : adminWeb-page
-    Created on : Jan 30, 2024, 3:16:17 PM
-    Author     : Admin
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<!-- Font -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
-
-<!-- CSS -->
-<link rel="stylesheet" href="css/bootstrap-reboot.min.css">
-<link rel="stylesheet" href="css/bootstrap-grid.min.css">
-<link rel="stylesheet" href="css/owl.carousel.min.css">
-<link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-<link rel="stylesheet" href="css/nouislider.min.css">
-<link rel="stylesheet" href="css/ionicons.min.css">
-<link rel="stylesheet" href="css/plyr.css">
-<link rel="stylesheet" href="css/photoswipe.css">
-<link rel="stylesheet" href="css/default-skin.css">
-<link rel="stylesheet" href="css/main.css">
-
-<!-- Favicons -->
-<link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="icon/favicon-32x32.png">
-<link rel="apple-touch-icon" sizes="72x72" href="icon/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="icon/apple-touch-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="144x144" href="icon/apple-touch-icon-144x144.png">
-
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="author" content="Dmitry Volkov">
 <!DOCTYPE html>
-<html>
+<html lang="en">
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ADMIN</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Font -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="css/owl.carousel.min.css">
+        <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/ionicons.min.css">
+        <link rel="stylesheet" href="css/plyr.css">
+        <link rel="stylesheet" href="css/photoswipe.css">
+        <link rel="stylesheet" href="css/default-skin.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <!-- Favicons -->
+        <link rel="icon" type="image/png" href="img/logo.jpg" sizes="32x32">
+        <link rel="apple-touch-icon" href="icon/favicon-32x32.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="icon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="icon/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="icon/apple-touch-icon-144x144.png">
+
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="Dmitry Volkov">
+        <title>Admin</title>
+
     </head>
-    <body>
+
+    <body class="body">
+        <!-- header -->
         <header class="header">
             <div class="header__wrap">
                 <div class="container">
@@ -47,31 +44,52 @@
                         <div class="col-12">
                             <div class="header__content">
                                 <!-- header logo -->
-                                <a href="adminWeb-page.jsp" class="header__logo">
-                                    <img src="img/logo.svg" alt="">
+                                <a href="index.html" class="header__logo">
+                                    <img src="img/logo.jpg" alt="">
                                 </a>
                                 <!-- end header logo -->
 
-
-                                <!-- end dropdown -->
+                                <!-- header nav -->
+                                <ul class="header__nav">
+                                    <li class="header__nav-item">
+                                        <a href="index2.html" class="header__nav-link">Phim</a>
+                                    </li>
+                                </ul>
                                 <!-- end header nav -->
 
                                 <!-- header auth -->
                                 <div class="header__auth">
-                                    <button class="header__search-btn" type="button">
-                                        <i class="icon ion-ios-search"></i>
-                                    </button>
-                                    <li class="dropdown header__nav-item">
-                                        <a style=" border-radius: 100px/100px;
-                                           background: black;
-                                           padding: 20px; "
-                                           class="dropdown-toggle header__nav-link header__nav-link--more" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user"></i></a>
-                                        <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
-                                            <li><a href="LogoutServlet">Log out</a></li>
-                                            <li><a href="404.html">404 Page</a></li>
-                                            <li><a href="UpdateProfileServlet?action=show-profile">Show Profile</a></li>
+                                    <form action="#" class="header__search">
+                                        <div class="header__search-content">
+                                            <input type="text" placeholder="Tìm phim...">
+                                            <button type="button">
+                                                <i class="icon ion-ios-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    <!-- dropdown -->
+                                    <div class="dropdown profile__dropdown-menu">
+                                        <button class="profile__btn" type="button">
+                                            <i class="icon ion-ios-person"></i>
+                                        </button>
+
+                                        <ul class="profile__nav">
+                                            <li class="profile__nav-item">
+                                                <a href="LogoutServlet" class="profile__nav-link">Log out</a>
+                                            </li>
+
+                                            <li class="profile__nav-item">
+                                                <a href="404.html" class="profile__nav-link">404 Page</a>
+                                            </li>
+
+                                            <li class="profile__nav-item">
+                                                <a href="UpdateProfileServlet?action=show-profile"
+                                                   class="profile__nav-link">Show Profile</a>
+                                            </li>
                                         </ul>
-                                    </li>
+                                    </div>
+                                    <!-- end dropdown -->
                                 </div>
                                 <!-- end header auth -->
 
@@ -87,76 +105,69 @@
                     </div>
                 </div>
             </div>
-            <form action="#" class="header__search">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="header__search-content">
-                                <input type="text" placeholder="Search for a movie, TV Series that you are looking for">
+        </header>
+        <!-- end header -->
 
-                                <button type="button">search</button>
-                            </div>
-                        </div>
+        <!-- admin home -->
+        <section class="admin">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="home__title">Chào mừng bạn đến với trang Admin</h1>
+                        <ul class="admin__nav">
+                            <!-- admin item -->
+                            <li class="admin__nav-item-title">
+                                <a class="dropdown-toggle admin__nav-link" data-toggle="collapse" href="#movies"
+                                   aria-expanded="false">
+                                    <span class="menu-title">Phim</span>
+                                </a>
+
+                                <div class="collapse" id="movies">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="admin__nav-item">
+                                            <a class="admin__nav-link" href="addNewMovie-Admin.jsp">Thêm phim</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- end admin item -->
+
+                            <!-- admin item -->
+                            <li class="admin__nav-item-title">
+                                <a class="dropdown-toggle admin__nav-link" data-toggle="collapse" href="#showtimes"
+                                   aria-expanded="false">
+                                    <span class="menu-title">List of movie</span>
+                                </a>
+
+                                <div class="collapse" id="showtimes">
+                                    <ul class="nav flex-column sub-menu">
+                                        <li class="admin__nav-item">
+                                            <a class="admin__nav-link" href="LoadAllMovieAdminServlet">List Of Movies</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- end admin item -->
+                        </ul>
                     </div>
                 </div>
-            </form>
+            </div>
+        </section>
+        <!-- end admin home -->
 
-            <!-- end header search -->
-        </header>
-       
+    </body>
 
-    <li style="margin-top: 10%; margin-left: 5%" class="header__nav-item">
-        <a class="dropdown-toggle header__nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-            <i class="icon-disc menu-icon"></i>
-            <span class="menu-title">Movies</span>
-            <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="ui-basic">
-            <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="addNewMovie-Admin.jsp">Add new Movie</a></li>
-            </ul>
-        </div>
-    </li>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.mousewheel.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.min.js"></script>
+    <script src="js/wNumb.js"></script>
+    <script src="js/nouislider.min.js"></script>
+    <script src="js/plyr.min.js"></script>
+    <script src="js/jquery.morelines.min.js"></script>
+    <script src="js/photoswipe.min.js"></script>
+    <script src="js/photoswipe-ui-default.min.js"></script>
+    <script src="js/main.js"></script>
 
-    <li style="margin-top: 10px; margin-left: 5%"  class="header__nav-item">
-        <a class="dropdown-toggle header__nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-            <i class="icon-head menu-icon"></i>
-            <span class="menu-title">Show Times</span>
-            <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="auth">
-            <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="addNewShowTime-Admin.jsp">Add new ShowTime</a></li>
-                <i class="fa-solid fa-user"></i>
-                <li class="nav-item"> <a class="nav-link" href="SearchShowTimeAdminServlet">Modify ShowTime</a></li>        
-            </ul>
-        </div>
-    </li>
-    
-    <li style="margin-top: 10px; margin-left: 5%"  class="header__nav-item">
-        <a class="dropdown-toggle header__nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-            <i class="icon-head menu-ico"></i>
-            <span class="menu-title">List Of Movies</span>
-            <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="auth">
-            <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="LoadAllMovieAdminServlet">List Of Movies</a></li>
-            </ul>
-        </div>
-    </li>
-    
-</body>
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/jquery.mousewheel.min.js"></script>
-<script src="js/jquery.mCustomScrollbar.min.js"></script>
-<script src="js/wNumb.js"></script>
-<script src="js/nouislider.min.js"></script>
-<script src="js/plyr.min.js"></script>
-<script src="js/jquery.morelines.min.js"></script>
-<script src="js/photoswipe.min.js"></script>
-<script src="js/photoswipe-ui-default.min.js"></script>
-<script src="js/main.js"></script>
 </html>

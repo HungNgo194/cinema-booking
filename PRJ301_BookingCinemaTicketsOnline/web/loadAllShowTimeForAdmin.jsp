@@ -56,7 +56,7 @@
             margin-top: 10px;
         }
 
-        .form-container input[type="submit"] {
+        .form-container check-button {
             padding: 12px 24px; 
             background-color: #1aafff; 
             color: #fff; 
@@ -71,22 +71,43 @@
             margin-bottom: 50px;
         }
 
-        .form-container input[type="submit"]:hover {
+        .check-button {
+            text-align: center;
+        }
+
+        .check-button input[type="submit"],
+        .check-button input[type="button"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .check-button input[type="submit"]:hover,
+        .check-button input[type="button"]:hover {
             background-color: #0056b3;
         }
 
-        .form-container h1 {
-            font-size: 35px; 
-            color: #333; 
-            margin-bottom: 20px; 
-            text-align: center; 
+        .check-button a {
+            text-decoration: none;
+        }
+
+        .check-button a input[type="button"] {
+            background-color: #dc3545;
+        }
+
+        .check-button a input[type="button"]:hover {
+            background-color: #c82333;
         }
 
 
     </style>
     <body>
-    <div class="form-container">
-        <h1>Danh Sách xuất chiếu</h1>
+        <div class="form-container">
+            <h1>Danh Sách xuất chiếu</h1>
             <table border="1">
                 <tr>
                     <th>ShowTime ID</th>
@@ -114,6 +135,9 @@
                     </tr>
                 </c:forEach>
             </table>
-    </div>
-</body>
+            <div class="check-button">
+                <a href="LoadAllMovieAdminServlet"><input type="button" name="" value="Quay Lại"></a>
+            </div>
+        </div>
+    </body>
 </html>

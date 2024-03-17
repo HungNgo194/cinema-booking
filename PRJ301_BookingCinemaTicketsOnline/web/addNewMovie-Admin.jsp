@@ -125,7 +125,7 @@
                 <input required="true" type="file" name="file" accept="image/png, image/jpg"/><br>
             </div>
             <div class="check-button">
-                <a href="LoadAllMovieAdminServlet"><input type="button" name="" value="Quay Lại"></a>
+                <a href="adminWeb-page.jsp"><input type="button" name="" value="Quay Lại"></a>
                 <input type="submit" name="" value="Xác Nhận">
                 <%
                     MovieDTO existingMovie = (MovieDTO) request.getAttribute("existingMovie");

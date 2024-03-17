@@ -118,7 +118,7 @@ public class ModifyShowTimeAdminServlet extends HttpServlet {
                         List<SeatDetailDTO> checkExist = seatDAO.getAllByShowTimeID(showTimeID);
                         boolean canModifyShowTime = true;
                         for (SeatDetailDTO seatDetailDTO : checkExist) {
-                            if (seatDetailDTO.isSeatStatus() == false) {
+                            if (seatDetailDTO.isSeatStatus() == true) {
                                 canModifyShowTime = false;
                                 break;
                             }

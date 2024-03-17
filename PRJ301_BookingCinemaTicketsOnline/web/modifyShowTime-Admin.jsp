@@ -187,12 +187,12 @@
                     <input readonly value="${getShowTimeByID.movieID}" required="true" name="movieID" placeholder="ID phim"><br>
                     <br>
                     Tình Trạng Phim:
-                    <label style="text-align: center"><input type="radio" name="showStatus" value="Exist" checked=""><span>Tồn tại</span></label>
-                    <label style="text-align: center"><input type="radio" name="showStatus" value="Not exist"><span>Không tồn tại</span></label>
+                    <label style="text-align: center"><input type="radio" name="showStatus" value="true" checked=""><span>Tồn tại</span></label>
+                    <label style="text-align: center"><input type="radio" name="showStatus" value="false"><span>Không tồn tại</span></label>
             </div>
             <br>
             <div class="check-button">
-                <a href="adminWeb-page.jsp"><input type="button" name="" value="Quay Lại"></a>
+                <a href="LoadAllMovieAdminServlet"><input type="button" name="" value="Quay Lại"></a>
                 <input type="submit" name="" value="Xác Nhận">
             </div>
             <%-- Check if timeFormatError attribute is present --%>

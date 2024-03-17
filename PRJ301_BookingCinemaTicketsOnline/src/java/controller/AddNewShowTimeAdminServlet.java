@@ -103,7 +103,7 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
                         Boolean showTime = dao.insertNewShowTime(openDate, closeDate, hourStart, hourEnd, showStatus, roomID, movieID);
                         request.setAttribute("showTime", showTime);
                         if (showTime) {
-                            ShowTimeDTO getLastestShowTime = dao.getLatestShowTime(); 
+                            ShowTimeDTO getLastestShowTime = dao.getLatestShowTime();
                             SeatDetailDAO seatDao = new SeatDetailDAO();
                             int numSeatsToAdd = 20;
 
@@ -123,13 +123,13 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
                         } else {
                             System.out.println("Failed to insert show time.");
                         }
-                    } else {
-                        System.out.println("sai ngay");
-                        request.setAttribute("openDateAfterCloseDate", openDate.isAfter(closeDate));
                     }
-                    request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
-
+                } else {
+                    System.out.println("sai ngay");
+                    request.setAttribute("openDateAfterCloseDate", openDate.isAfter(closeDate));
                 }
+                request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
+
             } catch (StackOverflowError | SQLException e) {
                 e.printStackTrace();
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input provided");
@@ -140,7 +140,7 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
                 request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
             }
         }
-    }
+    }   
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

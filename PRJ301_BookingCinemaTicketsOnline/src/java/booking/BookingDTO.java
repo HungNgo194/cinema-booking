@@ -6,6 +6,7 @@
 package booking;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -16,13 +17,13 @@ public class BookingDTO {
     private String bookingID;
     private int numberOfBooking;
     private int priceTotal;
-    private Date bookingDate;
+    private LocalDate bookingDate;
     private String userName;
 
     public BookingDTO() {
     }
 
-    public BookingDTO(String bookingID, int numberOfBooking, int priceTotal, Date bookingDate, String userName) {
+    public BookingDTO(String bookingID, int numberOfBooking, int priceTotal, LocalDate bookingDate, String userName) {
         this.bookingID = bookingID;
         this.numberOfBooking = numberOfBooking;
         this.priceTotal = priceTotal;
@@ -54,11 +55,11 @@ public class BookingDTO {
         this.priceTotal = priceTotal;
     }
 
-    public Date getBookingDate() {
+    public LocalDate getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(Date bookingDate) {
+    public void setBookingDate(LocalDate bookingDate) {
         this.bookingDate = bookingDate;
     }
 

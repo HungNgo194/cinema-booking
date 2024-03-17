@@ -1,0 +1,166 @@
+.final-content {
+
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.3) inset;
+    padding: 40px 0;
+    -webkit-border-radius: 0 50px 0 50px;
+    border-radius: 0 50px 0 50px;
+    text-align: center;
+    z-index: 999;
+    margin: 40px auto 40px auto;
+    padding: 30px 50px;
+    max-width: 900px;
+}
+
+.confirm-box {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+.confirm-cus {
+    margin: 30px auto 0 auto;
+    background-color: #f2f2f2;
+    padding: 10px 20px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    text-align: start;
+}
+
+.confirm-cus p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 5px 0;
+    color: #666;
+}
+
+.confirm-box>div {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+.confirm-mark {
+    width: auto;
+    max-width: 60%;
+    text-align: left;
+    padding: 5px 10px 5px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #666;
+
+}
+
+/* POSTER */
+.confirm-film-pic img {
+    display: block;
+    height: 450px;
+    width: auto;
+}
+
+.header-text {
+    font-size: 30px;
+    font-style: italic;
+}
+
+.confirm-film {
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.confirm-film-text {
+    text-align: left;
+}
+
+/*  */
+.confirm-ticket {
+    margin: 0 auto;
+    padding: 0;
+    display: table !important;
+    border-spacing: 1px;
+
+}
+
+.confirm-ticket>.confirm-text {
+    float: none;
+    display: block;
+    display: table-cell;
+    vertical-align: middle;
+    width: calc(100% - 80px);
+    background-color: #f2f2f2;
+}
+
+/* bill */
+.confirm-total {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirm-total-promotion {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirm-total-pay {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+/*  */
+
+.confirm-value {
+    width: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #444;
+    font-weight: bold;
+}
+
+.cardWrap {
+    display: block;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+
+/*  */
+.final-form {
+    text-align: left;
+}
+
+.payment_check {
+    margin-bottom: 30px;
+}
+
+.input-but1 input {
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+/* BUTTON */
+.input-but1 input {
+    font-size: 20px;
+    padding: 15px;
+    border: 2px solid;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 30px 30px 30px 0;
+    color: peru;
+    margin-bottom: 20px;
+}

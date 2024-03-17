@@ -29,7 +29,7 @@ public class SeatDetailDAO {
             stm = con.prepareStatement(query.toString());
 
             stm.setString(1, seatID);
-            stm.setBoolean(2, true);
+            stm.setBoolean(2, false);
             stm.setInt(3, roomID);
             stm.setInt(4, showTimeID);
 
@@ -81,4 +81,101 @@ public class SeatDetailDAO {
         }
         return list;
     }
+
+    public ArrayList<SeatDetailDTO> getAvailableSeats(int roomID, int showTimeID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ArrayList<SeatDetailDTO> seats = new ArrayList<>();
+        StringBuilder query = new StringBuilder("select seatID from SEATDETAILS where showtimeID = ? order by seatID");
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query.toString());
+
+            stm.setInt(1, showTimeID);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String seatId = rs.getString("seatID");
+                SeatDetailDTO seat = new SeatDetailDTO(seatId, true, roomID, showTimeID);
+                seats.add(seat);
+            }
+            return seats;
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: " + e);
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return seats;
+    }
+
+    public ArrayList<SeatDetailDTO> getUnavailableSeats(int roomID, int showTimeID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ArrayList<SeatDetailDTO> seats = new ArrayList<>();
+        StringBuilder query = new StringBuilder("select seatID from SEATDETAILS where roomID = ? and showtimeID = ? and seatStatus = 1");
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query.toString());
+
+            stm.setInt(1, roomID);
+            stm.setInt(2, showTimeID);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                // Process each result and initialize seatId
+                String seatId = rs.getString("seatID");
+                SeatDetailDTO seat = new SeatDetailDTO(seatId, true, roomID, showTimeID);
+                seats.add(seat);
+            }
+            return seats;
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: " + e);
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return seats; // Return an empty ArrayList if there are no results
+    }
+
+    public SeatDetailDTO modifiedStatus(String seatId, int roomID, int showTimeID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE SEATDETAILS SET seatStatus = 1 where seatID = ? and roomID = ?");
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query.toString());
+
+            stm.setString(1, seatId);
+            stm.setInt(2, roomID);
+
+            stm.executeUpdate();
+
+            SeatDetailDTO seat = new SeatDetailDTO(seatId, true, roomID, showTimeID);
+            return seat;
+
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: " + e);
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
+
 }

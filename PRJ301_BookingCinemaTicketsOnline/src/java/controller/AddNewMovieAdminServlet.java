@@ -56,8 +56,9 @@ public class AddNewMovieAdminServlet extends HttpServlet {
                     ServletFileUpload upload = new ServletFileUpload(factory);
                     List<FileItem> items = upload.parseRequest(request);
                     Hashtable<String, String> params = new Hashtable<>();
-                    String img = null;
                     String extension = null;
+                    String img = null;
+                    int count = 0;
                     for (FileItem item : items) {
                         if (item.isFormField()) {
                             params.put(item.getFieldName(), item.getString());
@@ -73,15 +74,16 @@ public class AddNewMovieAdminServlet extends HttpServlet {
                                 String RealPath = getPath() + "/web/img/" + fileName;
                                 System.out.println("RealPath: " + RealPath);
                                 File saveFile = new File(RealPath);
-
+                                String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+                                System.out.println(baseName);
+                                extension = fileName.substring(fileName.lastIndexOf('.'));
+                                saveFile = new File(RealPath.replace(fileName, baseName + "_" + count + extension));
                                 if (saveFile.exists()) {
+                                    count = 0;
                                     System.out.println("File already exists: " + saveFile.getName());
-                                    String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
-                                    extension = fileName.substring(fileName.lastIndexOf('.'));
-                                    int count = 1;
                                     do {
-                                        saveFile = new File(RealPath.replace(fileName, baseName + "_" + count + extension));
                                         count++;
+                                        saveFile = new File(RealPath.replace(fileName, baseName + "_" + count + extension));
                                     } while (saveFile.exists());
                                     System.out.println("Renamed file: " + saveFile.getName());
                                 }
@@ -110,7 +112,8 @@ public class AddNewMovieAdminServlet extends HttpServlet {
                         MovieDTO existingMovie = dao.checkExistMovie(movieName);
                         request.setAttribute("existingMovie", existingMovie);
                         if (existingMovie == null) {
-                            boolean addNewMovie = dao.addNewMovie(movieName, movieContent, actor, director, age, img + extension);
+                            boolean addNewMovie = dao.addNewMovie(movieName, movieContent, actor, director, age, img + "_" + count + extension);
+                            System.out.println(extension);
                             System.out.println("Khởi tạo phim thành công !");
                             request.setAttribute("addNewMovie", addNewMovie);
                         } else {

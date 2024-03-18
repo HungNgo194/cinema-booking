@@ -5,7 +5,6 @@
  */
 package controller;
 
-import account.AccountDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import movie.MovieDAO;
 import movie.MovieDTO;
 
@@ -26,8 +24,8 @@ import movie.MovieDTO;
  *
  * @author ROG STRIX
  */
-@WebServlet(name = "LoadAllMovieServlet", urlPatterns = {"/LoadAllMovieServlet"})
-public class LoadAllMovieServlet extends HttpServlet {
+@WebServlet(name = "SearchMovieServlet", urlPatterns = {"/SearchMovieServlet"})
+public class SearchMovieServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,19 +39,15 @@ public class LoadAllMovieServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = request.getParameter("url");
-        HttpSession session = request.getSession();
-        AccountDTO account = (AccountDTO) session.getAttribute("account");
-        try {
-            MovieDAO Mdao = new MovieDAO();
-            List<MovieDTO> result = Mdao.getAllJoin();
-            request.setAttribute("MOVIES", result);
-            session.setAttribute("account", account);
-        } catch (SQLException ex) {
-            Logger.getLogger(LoadAllMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
+        String movieName = request.getParameter("movieName");
+        try (PrintWriter out = response.getWriter()) {
+            MovieDAO dao = new MovieDAO();
+            List<MovieDTO> list = dao.searchByName(movieName);
+            request.setAttribute("MOVIES", list);
+            RequestDispatcher rd = request.getRequestDispatcher("index2.jsp");
             rd.forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(SearchMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

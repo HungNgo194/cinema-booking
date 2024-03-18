@@ -1,7 +1,7 @@
 package SendEmailPassword;
 
-
 import java.util.Properties;
+import java.util.Random;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -10,8 +10,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-
 
 public class SendEmail {
 
@@ -22,6 +20,16 @@ public class SendEmail {
     String receiverEmail = null;
     static String emailSubject;
     static String emailBody;
+
+    public String sendRandom() {
+        Random rd = new Random();
+        int num = rd.nextInt(99999);
+        return String.format("%05d", num);
+    }
+
+    public SendEmail() {
+
+    }
 
     public SendEmail(String receiverEmail, String subject, String body) {
         //receiver email
@@ -46,15 +54,15 @@ public class SendEmail {
                     return new PasswordAuthentication(senderEmail, senderPassword);
                 }
             });
-            
+
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(senderEmail));
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(this.receiverEmail));
             msg.setSubject(this.emailSubject);
             msg.setText(this.emailBody);
-            
+
             Transport.send(msg);
-            
+
         } catch (MessagingException e) {
             System.out.println(e);
         }

@@ -5,29 +5,22 @@
  */
 package controller;
 
-import account.AccountDTO;
+import SendEmailPassword.SendEmail;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import movie.MovieDAO;
-import movie.MovieDTO;
 
 /**
  *
- * @author ROG STRIX
+ * @author Admin
  */
-@WebServlet(name = "LoadAllMovieServlet", urlPatterns = {"/LoadAllMovieServlet"})
-public class LoadAllMovieServlet extends HttpServlet {
+@WebServlet(name = "VerifyServlet", urlPatterns = {"/VerifyServlet"})
+public class VerifyServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,23 +34,34 @@ public class LoadAllMovieServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = request.getParameter("url");
+        String userName = request.getParameter("email");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
         HttpSession session = request.getSession();
-        AccountDTO account = (AccountDTO) session.getAttribute("account");
-        try {
-            MovieDAO Mdao = new MovieDAO();
-            List<MovieDTO> result = Mdao.getAllJoin();
-            request.setAttribute("MOVIES", result);
-            session.setAttribute("account", account);
-        } catch (SQLException ex) {
-            Logger.getLogger(LoadAllMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        String action = request.getParameter("action");
+        SendEmail send = new SendEmail();
+        final String code = send.sendRandom();
+
+        String ms = "Your verify code: " + code;
+        request.setAttribute("code", code);
+        request.setAttribute("email", email);
+        request.setAttribute("password", password);
+        SendEmail s = new SendEmail(email, "VERIFY EMAIL", ms);
+        request.getRequestDispatcher("verify.jsp").forward(request, response);
+
+        String rCode = request.getParameter("veriCode");
+        if (rCode.equals("code")) {
+            request.setAttribute("email", userName);
+            request.setAttribute("password", password);
+            request.getRequestDispatcher("SignupServlet").forward(request, response);
+        } else {
+            request.setAttribute("error", "WRONG VERIFY CODE");
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
         }
+
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -72,14 +76,7 @@ public class LoadAllMovieServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

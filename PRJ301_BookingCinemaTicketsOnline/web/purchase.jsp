@@ -18,11 +18,11 @@
     <body>
         <div class="nav-header">
             <nav class="nav-container">
-                <a href="#" class="nav-logo"><img src="images/logo.jpg" alt="logo"></a>
+                <a href="LoadAllMovieServlet?url=userWeb-page.jsp" class="nav-logo"><img src="images/logo.jpg" alt="logo"></a>
 
                 <div class="nav-menu" id="nav-menu">
                     <ul class="nav-list">
-                        <li class="nav-item"><a href="#" class="nav-link">Phim</a></li>
+                        <li class="nav-item"><a href="LoadAllMovieServlet?url=index2.jsp" class="nav-link">Phim</a></li>
                         <li class="nav-item"><a href="#" class="nav-link">Khuyến Mãi</a></li>
                     </ul>
 
@@ -62,13 +62,17 @@
                         <p>Email: <strong>${user.getEmail()}</strong></p>
                         <p>Phone: <strong>${user.getPhoneNumber()}</strong></p>
                     </div>
-                        <c:set var="movie" value="${requestScope.MOVIE}"/>
+                    <c:set var="movie" value="${requestScope.MOVIE}"/>
                     <c:set var="date" value="${requestScope.SHOWDATE}"/>
                     <c:set var="time" value="${requestScope.SHOWTIME}"/>
                     <div class="confirm-box">
                         <div class="confirm-film">
-                            <div class="confirm-film-pic"><img
-                                    src="img/${movie.getMovieImage()}">
+                            <div class="confirm-film-pic" 
+                                 style="float: left;
+                                 gap:1em">
+
+                                <img src="img/${movie.getMovieImage()}">
+                                <input type="hidden" name="MOVIE" value="${movie.getMovieID()}">
                             </div>
 
                             <div class="confirm-film-text">
@@ -85,13 +89,12 @@
                         <div class="confirm-ticket">
                             <div class="confirm-mark">Ghế</div>
                             <div class="confirm-">
-
                                 <ul>                              
                                     <li>         
                                         <div class="each-ticket" style="width: 295px;">
                                             <c:set var="seats" value="${requestScope.availableSeats}" />
+                                            <input type="hidden" name="seatAvailable" value="${requestScope.seatArray}"/>
 
-                                            <input type="text" name="seatArray" value="${requestScope.seatArray}"/>
                                             <c:forEach var="seat" items="${seats}">
                                                 <div class="inside-each" ">
                                                     <div class="confirm-mark">
@@ -162,10 +165,7 @@
 
                 <div class="input-but1">
                     <input type="hidden" name="amount" value="${requestScope.priceAfterDiscount}">
-                    <input type="hidden" name="seatArray" value="${requestScope.listSeats}">
-                    <input type="hidden" name="movieId" value="${movie.getMovieID()}">
-
-                    
+                    <input type="hidden" name="uniqueShow" value="${requestScope.uniqueShow}">
                     <input type="button" class="cancel" value="Quay lại" id="payment-back" data-link="booking.jsp">
                     <input type="submit" class="ok" value="Thanh toán" id="payment-next">
 
@@ -173,32 +173,7 @@
             </form>
         </div>
         <script src="./js/purchase.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script type="text/javascript">
-            $("#frmCreateOrder").submit(function () {
-                var postData = $("#frmCreateOrder").serialize();
-                var submitUrl = $("#frmCreateOrder").attr("action");
-                $.ajax({
-                    type: "POST",
-                    url: submitUrl,
-                    data: postData,
-                    dataType: 'JSON',
-                    success: function (x) {
-                        if (x.code === '00') {
-                            if (window.vnpay) {
-                                vnpay.open({width: 768, height: 600, url: x.data});
-                            } else {
-                                location.href = x.data;
-                            }
-                            return false;
-                        } else {
-                            alert(x.Message);
-                        }
-                    }
-                });
-                return false;
-            });
-        </script>       
+     
     </body>
 
 </html>

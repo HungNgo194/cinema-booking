@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Font -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700"
-              rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
 
         <!-- CSS -->
         <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
@@ -47,15 +45,15 @@
                         <div class="col-12">
                             <div class="header__content">
                                 <!-- header logo -->
-                                <a href="LoadAllMovieServlet?url=userWeb-page.jsp" class="header__logo">
-                                    <img src="images/logo.jpg" alt="">
+                                <a href="index.html" class="header__logo">
+                                    <img src="img/logo.jpg" alt="">
                                 </a>
                                 <!-- end header logo -->
 
                                 <!-- header nav -->
                                 <ul class="header__nav">
                                     <li class="header__nav-item">
-                                        <a href="LoadAllMovieServlet?url=index2.jsp" class="header__nav-link">Phim</a>
+                                        <a href="index2.html" class="header__nav-link">Phim</a>
                                     </li>
                                 </ul>
                                 <!-- end header nav -->
@@ -63,15 +61,15 @@
                                 <!-- header auth -->
                                 <div class="header__auth">
                                     <form action="#" class="header__search">
-                                        <div class="header__search-content">
-                                            <input type="text" placeholder="Tìm phim...">
+<div class="header__search-content">
+<input type="text" placeholder="Tìm phim...">
+
                                             <button type="button">
                                                 <i class="icon ion-ios-search"></i>
                                             </button>
                                         </div>
                                     </form>
 
-                                    <!-- dropdown -->
                                     <div class="dropdown profile__dropdown-menu">
                                         <button class="profile__btn" type="button">
                                             <i class="icon ion-ios-person"></i>
@@ -107,71 +105,32 @@
         </header>
         <!-- end header -->
 
-        <!-- home -->
-        <section class="home home--bg">
+        <!-- profile -->
+        <section class="profile">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
-                        <h1 class="home__title">Phim đang chiếu</h1>
-
-                        <button class="home__nav home__nav--prev" type="button">
-                            <i class="icon ion-ios-arrow-round-back"></i>
-                        </button>
-                        <button class="home__nav home__nav--next" type="button">
-                            <i class="icon ion-ios-arrow-round-forward"></i>
-                        </button>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="owl-carousel home__carousel">
-                            <!-- card -->
-                            <c:set var="movies" value="${requestScope.MOVIES}"/>
-                            <c:forEach items="${movies}" var="movie">
-                                <div class="col-6 col-sm-12 col-lg-6">
-                                    <div class="card card--list">
-                                        <div class="row">
-                                            <div class="">
-                                                <div class="card__cover">
-                                                    <a href="LoadMovieServlet?button=${movie.movieName}"> 
-                                                        <img src="img/${movie.getMovieImage()}" alt="" style="height:300px; width: 200px;">
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="">
-                                                <div class="card__content">
-                                                    <h3 class="card__title1" style="max-width: 200px;">
-                                                        <a href="#">
-                                                            <input readonly="readonly"
-                                                                   type="text"
-                                                                   name="movieName" 
-                                                                   value="${movie.movieName}" 
-                                                                   style="font-size: 20px;
-                                                                   border: none;
-                                                                   background-color: transparent;
-                                                                   outline: none;
-                                                                   color: inherit;
-                                                                   cursor: default;
-                                                                   height: 100px; 
-                                                                   width: 200px;
-                                                                   color: white;
-                                                                   overflow-wrap: break-word; /* Áp dụng overflow-wrap cho input */
-                                                                   ">
-                                                        </a>
-                                                    </h3>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col-12">                  
+                        <!-- profile info -->
+                        <div class="profile__info">
+                            <h1 class="profile__title">Thông tin tài khoản</h1>
+                            <c:forEach items="${requestScope.BookingInfo}" var="bookingInfo">
+                            <div class="profile__content">
+                                <ul>
+                                    <li>${bookingInfo.getBookingID()}</li>
+                                    <li>${bookingInfo.getNumberOfBooking()}</li>
+                                    <li>${bookingInfo.getPriceTotal()}</li>
+<li>${bookingInfo.getBookingDate()}</li>
+                                    <li>${bookingInfo.getUserName()}</li>
+</ul>
+                            </div>
                             </c:forEach>
                         </div>
+                        <!-- end profile info -->                    
                     </div>
                 </div>
             </div>
         </section>
-        <!-- end home -->
+        <!-- end profile -->
 
         <!-- footer -->
         <footer class="footer">
@@ -210,6 +169,12 @@
         <script src="js/photoswipe-ui-default.min.js"></script>
         <script src="js/main.js"></script>
         <script src="js/jsCuaAn.js"></script>
+
+        <!-- <div class="footer">
+            <p>andmse182449@gmail.com</p>
+            <p>Address: 100 Dien Bien Phu,District 3, HCMC</p>
+            <h5>&copy; Copyright 2021. Chanel.com</h5>
+        </div> -->
     </body>
 
 </html>

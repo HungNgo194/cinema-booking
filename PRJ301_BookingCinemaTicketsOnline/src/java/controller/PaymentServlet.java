@@ -64,8 +64,8 @@ public class PaymentServlet extends HttpServlet {
         
         String showTime = request.getParameter("showTime");
         String showDate = request.getParameter("showDate");
-        String seatArray = request.getParameter("seatArray");
-        String movieID = request.getParameter("movieId");
+        String seatArray = request.getParameter("seatAvailable");
+        String movieID = request.getParameter("movies");
         
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
@@ -75,7 +75,7 @@ public class PaymentServlet extends HttpServlet {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", bankCode);
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", showDate + "&" + showTime + "&" + movieID + "&" + seatArray);
+        vnp_Params.put("vnp_OrderInfo", showTime + "va" + showDate + "va" + movieID + "va" + seatArray);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", PaymentConfig.vnp_ReturnUrl);

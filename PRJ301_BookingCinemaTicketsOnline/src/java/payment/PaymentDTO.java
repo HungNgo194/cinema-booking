@@ -7,8 +7,8 @@ package payment;
 
 import account.AccountDTO;
 import booking.BookingDTO;
-import java.sql.Date;
 import java.time.LocalDate;
+
 /**
  *
  * @author Admin
@@ -26,21 +26,21 @@ public class PaymentDTO {
       ,[userName] Object
     */
     
-  private Long id;
-  private int amount;
-  private String orderInfo;
-  private String responseCode;
-  private int transactionNo;
-  private String bank;
-  private LocalDate payDate;
-  private String transactionStatus;
-  private BookingDTO booking;
-  private AccountDTO account;
+    private long id;
+    private int amount;
+    private String orderInfo;
+    private String responseCode;
+    private String transactionNo;
+    private String bank;
+    private LocalDate payDate;
+    private String transactionStatus;
+    private BookingDTO booking;
+    private AccountDTO account;
 
     public PaymentDTO() {
     }
 
-    public PaymentDTO(Long id, int amount, String orderInfo, String responseCode, int transactionNo, String bank, LocalDate payDate, String transactionStatus, BookingDTO booking, AccountDTO account) {
+    public PaymentDTO(long id, int amount, String orderInfo, String responseCode, String transactionNo, String bank, LocalDate payDate, String transactionStatus, BookingDTO booking, AccountDTO account) {
         this.id = id;
         this.amount = amount;
         this.orderInfo = orderInfo;
@@ -53,11 +53,11 @@ public class PaymentDTO {
         this.account = account;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -85,11 +85,11 @@ public class PaymentDTO {
         this.responseCode = responseCode;
     }
 
-    public int getTransactionNo() {
+    public String getTransactionNo() {
         return transactionNo;
     }
 
-    public void setTransactionNo(int transactionNo) {
+    public void setTransactionNo(String transactionNo) {
         this.transactionNo = transactionNo;
     }
 
@@ -132,5 +132,7 @@ public class PaymentDTO {
     public void setAccount(AccountDTO account) {
         this.account = account;
     }
-  
+
+    
+    
 }

@@ -19,6 +19,50 @@ import java.util.List;
  */
 public class MovieDAO {
 
+    public List<MovieDTO> getAllJoin() throws SQLException {
+        List<MovieDTO> list = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        StringBuilder query = new StringBuilder("select "
+                + "m.movieID,m.movieName,m.movieContent,m.actor,m.director,m.age,m.movieImage from MOVIE m join SHOWTIME s "
+                + "on m.movieID = s.movieID "
+                + "where showStatus = 1 "
+                + "group by m.movieID,m.movieName,m.movieContent,m.actor,m.director,m.age,m.movieImage ");
+        try {
+            String sql = null;
+            sql = String.valueOf(query);
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int movieID = rs.getInt("movieID");
+                String movieName = rs.getString("movieName");
+                String movieContent = rs.getString("movieContent");
+                String actor = rs.getString("actor");
+                String director = rs.getString("director");
+                int age = rs.getInt("age");
+                String movieImage = rs.getString("movieImage");
+                MovieDTO movie = new MovieDTO(movieID, movieName, movieContent, actor, director, age, movieImage);
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL: ");
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
     public List<MovieDTO> getAll() throws SQLException {
         List<MovieDTO> list = new ArrayList<>();
         Connection con = null;
@@ -103,7 +147,7 @@ public class MovieDAO {
         }
         return null;
     }
-    
+
     public MovieDTO checkExistMovieById(int movieID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -259,9 +303,12 @@ public class MovieDAO {
             stm.setString(4, director);
             stm.setInt(5, age);
             stm.setString(6, movieImage);
-            stm.setInt(7, movieID); 
-            stm.executeUpdate();
-            return true;
+            stm.setInt(7, movieID);
+            int e = stm.executeUpdate();
+            if (e > 0) {
+                return true;
+            }
+
         } catch (SQLException e) {
             System.out.println("An SQL error occurred: ");
             e.printStackTrace();
@@ -286,18 +333,14 @@ public class MovieDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<MovieDTO> list = new ArrayList<>();
-        StringBuilder query = new StringBuilder("SELECT * FROM MOVIE ");
-        if (movieName != null && !movieName.isEmpty()) {
-            query.append(" WHERE movieName like ? ");
-        }
+        StringBuilder query = new StringBuilder("SELECT * FROM MOVIE WHERE movieName like ?");
+
         try {
             con = DBUtils.getConnection();
             String sql;
             sql = String.valueOf(query);
             stm = con.prepareStatement(sql);
-            if (movieName != null && !movieName.isEmpty()) {
-                stm.setString(1, "%" + movieName + "%");
-            }
+            stm.setString(1, "%" + movieName + "%");
             rs = stm.executeQuery();
             while (rs.next()) {
                 int movieID = rs.getInt("movieID");
@@ -367,4 +410,5 @@ public class MovieDAO {
         }
         return movie;
     }
+
 }

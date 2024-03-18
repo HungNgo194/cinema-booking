@@ -64,17 +64,17 @@ public class BookingServlet extends HttpServlet {
         String selectedSeat = request.getParameter("seat"); // lấy chuỗi các ghế ngồi 
         request.setAttribute("seatArray", selectedSeat);
         String[] seats = selectedSeat.split(","); // tách chuỗi thành từng ghế khác nhau
-
-//        List availableSeats = new ArrayList<SeatDTO>();
+        int id = Integer.parseInt(request.getParameter("uniqueShow"));
         request.setAttribute("availableSeats", seats); // gửi attribute 
         String url = "";
         try {
             MovieDAO Mdao = new MovieDAO();
+            if (id != 0) {
+                request.setAttribute("uniqueShow", Integer.parseInt(request.getParameter("uniqueShow")));
+            }
 
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             int numOfBookings = Integer.parseInt(numOfBook_raw);
             int totalPrice = Integer.parseInt(totalPrice_withoutCommas);
-//            java.sql.Date sqlDate = java.sql.Date.valueOf(currentDate); // xử lí thời gian đặt chỗ vào đúng lúc mua vé 
             int eachTicketPrice = (int) ((double) totalPrice / numOfBookings); // chia lấy tiền của từng vé 
             // MEMBERSHIPDAO
             MembershipDAO mDao = new MembershipDAO();

@@ -5,23 +5,19 @@
  */
 package controller;
 
+import booking.BookingDAO;
 import cinema.CinemaDAO;
 import cinema.CinemaDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -32,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import movie.MovieDAO;
-import movie.MovieDTO;
+import seatDetail.SeatDetailDAO;
 import showTime.ShowTimeDAO;
 import showTime.ShowTimeDTO;
 
@@ -62,32 +58,43 @@ public class LoadMovieServlet extends HttpServlet {
         try {
             MovieDAO dao = new MovieDAO();
             CinemaDAO Cdao = new CinemaDAO();
+            SeatDetailDAO SDdao = new SeatDetailDAO();
             ShowTimeDAO Sdao = new ShowTimeDAO();
             List<CinemaDTO> cinemaList = Cdao.getAllCinemas();
-            List<String> showTimeStringList = Sdao.getAllShowTimes(dao.checkExistMovie(movieName).getMovieID());
-            List<String> sendedTimeList = new ArrayList<>();
-
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            List<ShowTimeDTO> showTimeStringList = Sdao.getAllShowTimes(dao.checkExistMovie(movieName).getMovieID());
+            List<LocalDate> sendedTimeList = new ArrayList<>();
             Date date2 = Calendar.getInstance().getTime();
             LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            // ngăn việc reset hàng ghế khi có booking 
+            BookingDAO bdao = new BookingDAO();
+            boolean move = bdao.checkAll();
 
-            for (String origin_date : showTimeStringList) {
-                LocalDate compare_date = LocalDate.parse(origin_date, dateFormatter);
-                int comparison = compare_date.compareTo(localDate2);
-                if (comparison > 0 || comparison == 0) {
-                    sendedTimeList.add(origin_date);
-                } else {
-                    Sdao.setShowTimeStatus(dao.checkExistMovie(movieName).getMovieID(), compare_date);
+            for (ShowTimeDTO showtime : showTimeStringList) {
+                LocalDate currentDate = showtime.getOpenDate();
+                int comparison = currentDate.compareTo(localDate2);
+
+                // duyệt khi currentDate = hoặc > localDate2
+                while (comparison < 0) {
+
+                    if (!move) {
+                        SDdao.modifiedAllStatus(showtime.getShowTimeID());
+                    }
+                    // update ngày của showtime 
+                    currentDate = currentDate.plusDays(1);
+                    showtime.setOpenDate(currentDate);
+                    // gán lại giá trị của comp
+                    comparison = currentDate.compareTo(localDate2);
                 }
+                sendedTimeList.add(showtime.getOpenDate());
             }
-
+            Set<LocalDate> uniqueTimes = new HashSet<>(sendedTimeList);
+            sendedTimeList.clear();
+            sendedTimeList.addAll(uniqueTimes);
             request.setAttribute("CINEMA", cinemaList);
             session.setAttribute("SHOWTIMELIST", sendedTimeList);
             request.setAttribute("MOVIE", dao.checkExistMovie(movieName));
             request.setAttribute("movieName", movieName);
             url = "booking.jsp";
-//             url="LoadAllShowTimeServlet?url=booking.jsp";
-
         } catch (SQLException ex) {
             Logger.getLogger(LoadMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

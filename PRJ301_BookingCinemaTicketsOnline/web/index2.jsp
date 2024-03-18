@@ -51,45 +51,49 @@
                         <div class="col-12">
                             <div class="header__content">
                                 <!-- header logo -->
-                                <a href="index.html" class="header__logo">
-                                    <img src="img/logo.jpg" alt="">
+                                <a href="LoadAllMovieServlet?url=userWeb-page.jsp" class="header__logo">
+                                    <img src="images/logo.jpg" alt="">
                                 </a>
                                 <!-- end header logo -->
 
                                 <!-- header nav -->
                                 <ul class="header__nav">
                                     <li class="header__nav-item">
-                                        <a href="index2.html" class="header__nav-link">Phim</a>
+                                        <a href="LoadAllMovieServlet?url=index2.jsp" class="header__nav-link">Phim</a>
                                     </li>
                                 </ul>
                                 <!-- end header nav -->
 
                                 <!-- header auth -->
                                 <div class="header__auth">
-                                    <form action="#" class="header__search">
+                                    <form action="SearchMovieServlet" class="header__search">
                                         <div class="header__search-content">
-                                            <input type="text" placeholder="Tìm phim...">
-
-                                            <button type="button">
-                                                <i class="icon ion-ios-search"></i>
+                                            <input type="text" name="movieName" placeholder="Tìm phim...">
+                                            <button type="submit" class="icon ion-ios-search">
                                             </button>
                                         </div>
                                     </form>
 
-                                    <a href="signin.html" class="header__sign-in">
-                                        <i class="icon ion-ios-log-in"></i>
-                                        <span>Đăng kí</span>
-                                    </a>
+                                    <!-- dropdown -->
+                                    <div class="dropdown profile__dropdown-menu">
+                                        <button class="profile__btn" type="button">
+                                            <i class="icon ion-ios-person"></i>
+                                        </button>
+
+                                        <ul class="profile__nav">
+                                            <li class="profile__nav-item">
+                                                <a href="LogoutServlet" class="profile__nav-link">Log out</a>
+                                            </li>
+
+                                            <li class="profile__nav-item">
+                                                <a href="LoadMemberShipServlet?action=show-profile"
+                                                   class="profile__nav-link">Show Profile</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- end dropdown -->
                                 </div>
                                 <!-- end header auth -->
-
-                                <!-- header menu btn -->
-                                <button class="header__btn" type="button">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </button>
-                                <!-- end header menu btn -->
                             </div>
                         </div>
                     </div>
@@ -126,9 +130,7 @@
                                                     <img src="img/${movie.getMovieImage()}" alt="" style="
                                                          height:300px;
                                                          ">
-                                                    <!--                                                    <a href="#" class="card__play">
-                                                                                                            <i class="icon ion-ios-play"></i>
-                                                                                                        </a>-->
+
                                                 </div>
                                             </div>
 
@@ -136,19 +138,19 @@
                                                 <div class="card__content">
                                                     <h3 class="card__title">
                                                         <a href="#"><input readonly="readonly"
-                                                                                       type="text"
-                                                                                       name="movieName" 
-                                                                                       value="${movie.movieName}" 
-                                                                                       style=" 
-                                                                                       font-size: larger;
-                                                                                       border: none;
-                                                                                       background-color: transparent;
-                                                                                       outline: none;
-                                                                                       color: inherit;
-                                                                                       width: 350px;
-                                                                                       cursor: default;
-                                                                                       height: 100px; 
-                                                                                       ">
+                                                                           type="text"
+                                                                           name="movieName" 
+                                                                           value="${movie.movieName}" 
+                                                                           style=" 
+                                                                           font-size: larger;
+                                                                           border: none;
+                                                                           background-color: transparent;
+                                                                           outline: none;
+                                                                           color: inherit;
+                                                                           width: 350px;
+                                                                           cursor: default;
+                                                                           height: 100px; 
+                                                                           ">
                                                         </a>
                                                     </h3>
 

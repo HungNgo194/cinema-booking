@@ -72,22 +72,23 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
 
                 DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
                 hourStart = LocalTime.parse(hourStart_raw, formatter2);
-                hourEnd = LocalTime.parse(hourEnd_raw, formatter2);
+hourEnd = LocalTime.parse(hourEnd_raw, formatter2);
 
                 showStatus = Boolean.parseBoolean(showStatus_raw);
                 roomID = Integer.parseInt(roomID_raw);
                 movieID = Integer.parseInt(movieID_raw);
                 ShowTimeDAO dao = new ShowTimeDAO();
                 List<ShowTimeDTO> existingShowTimes = dao.getShowTimesForRoomAndDateRangeForAddAction(movieID, roomID, openDate, closeDate);
+                if (existingShowTimes.isEmpty()) {
+                    request.setAttribute("notExist", "phòng phim không tồn tại");
+                }
                 // ngay bat dau < ngay ket thuc
                 if (!openDate.isAfter(closeDate)) {
                     for (ShowTimeDTO existingShowTime : existingShowTimes) {
                         LocalTime existingStart = existingShowTime.getHourStart().minusMinutes(30);  // coi lai
                         LocalTime existingEnd = existingShowTime.getHourEnd().plusMinutes(30);
                         // 4 trường hợp - check thử các trường hợp
-                        if (existingShowTime.equals("") || existingShowTime == null) {
-                            request.setAttribute("notExist", "phòng phim không tồn tại");
-                        }
+
                         if (hourStart.isBefore(existingEnd) && hourEnd.isAfter(existingStart)) {
                             System.out.println("overlap showTime");
                             request.setAttribute("existingShowTime", existingShowTime);
@@ -119,17 +120,16 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
                                         break;
                                     }
                                 }
-                            }
-                        } else {
-                            System.out.println("Failed to insert show time.");
+}
                         }
+                    } else {
+                        System.out.println("Failed to insert show time.");
                     }
                 } else {
                     System.out.println("sai ngay");
                     request.setAttribute("openDateAfterCloseDate", openDate.isAfter(closeDate));
                 }
                 request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
-
             } catch (StackOverflowError | SQLException e) {
                 e.printStackTrace();
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input provided");
@@ -140,7 +140,7 @@ public class AddNewShowTimeAdminServlet extends HttpServlet {
                 request.getRequestDispatcher("addNewShowTime-Admin.jsp").forward(request, response);
             }
         }
-    }   
+    }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

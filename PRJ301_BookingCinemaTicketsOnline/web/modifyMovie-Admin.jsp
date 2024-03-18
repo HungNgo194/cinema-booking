@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Modify Movie</title>
         <style>
@@ -150,11 +151,11 @@
             <div class="movie-add">
                 <h1>Thay Đổi Thông Tin Phim</h1>
                 <input readonly value="${movieByID.movieID}" required="true" type="text" name="movieID" placeholder="ID phim"><br>
-                <input required="true" type="text" name="movieName" placeholder="Tên phim"><br>
-                <input required="true" type="text" name="movieContent" placeholder="Nội ung phim"><br>
-                <input required="true" type="text" name="actor" placeholder="Các diễn viên"><br>
-                <input required="true" type="text" name="director" placeholder="Đạo Diễn"><br>
-                <input required="true" type="number" name="age" placeholder="Giới hạn tuổi"><br>
+                <input required="true" type="text" name="movieName" placeholder="Tên phim" value=""><br>
+                <input required="true" type="text" name="movieContent" placeholder="Nội ung phim"value=""><br>
+                <input required="true" type="text" name="actor" placeholder="Các diễn viên"value=""><br>
+                <input required="true" type="text" name="director" placeholder="Đạo Diễn"value=""><br>
+                <input required="true" type="number" name="age" placeholder="Giới hạn tuổi"value=""><br>
                 <input required="true" type="text" name="movieImage" value="" placeholder="Tên hình ảnh phim"/><br>
                 <input required="true" type="file" name="file" accept="image/png, image/jpg"/><br>
             </div>

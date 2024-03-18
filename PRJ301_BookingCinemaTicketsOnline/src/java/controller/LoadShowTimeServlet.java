@@ -58,7 +58,12 @@ public class LoadShowTimeServlet extends HttpServlet {
             LocalDate localDate = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             LocalDate date = LocalDate.parse(showtime, formatter);
 
-            List<ShowTimeDTO> result = dao.getShowTimesWithOpenDateAndMovieId(date, Mdao.checkExistMovie(movieName).getMovieID());
+            List<ShowTimeDTO> result = null;
+            result = dao.getShowTimesWithOpenDateAndMovieId(date, Mdao.checkExistMovie(movieName).getMovieID());
+            if (result.size() == 0) {
+                result = dao.getAllShowTimesUnique(Mdao.checkExistMovie(movieName).getMovieID());
+                
+            }
             List<ShowTimeDTO> haha = new ArrayList<>();
             List<LocalTime> hoho = new ArrayList<>();
             for (ShowTimeDTO localTime : result) {

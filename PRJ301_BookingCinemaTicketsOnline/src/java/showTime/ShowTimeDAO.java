@@ -99,12 +99,11 @@ public class ShowTimeDAO {
     }
 
     public ShowTimeDTO getShowTimeByID(int showTimeID) throws SQLException {
-        List list = new ArrayList();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         ShowTimeDTO showTime = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM SHOWTIME WHERE showTimeID = ?");
+        StringBuilder query = new StringBuilder("SELECT * FROM SHOWTIME WHERE showTimeID = ? and showStatus = 1");
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query.toString());
@@ -361,22 +360,117 @@ public class ShowTimeDAO {
         }
         return null;
     }
-    
+
     // MINH AN 
-      public List<String> getAllShowTimes(int movieID1) throws SQLException {
+    public List<ShowTimeDTO> getAllShowTimes(int movieID1) throws SQLException {
+        List<ShowTimeDTO> list = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String query = "SELECT * "
+                + "FROM SHOWTIME "
+                + "WHERE movieID = ? "
+                + "AND closeDate >= CONVERT(date, GETDATE()) and showStatus = 1";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setInt(1, movieID1);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int showTimeID = rs.getInt("showTimeID");
+                LocalDate openDate = rs.getDate("openDate").toLocalDate();
+                LocalDate closeDate = rs.getDate("closeDate").toLocalDate();
+                LocalTime hourStart = rs.getTime("hourStart").toLocalTime();
+                LocalTime hourEnd = rs.getTime("hourEnd").toLocalTime();
+                boolean showStatus = rs.getBoolean("showStatus");
+                int roomID = rs.getInt("roomID");
+                int movieID = rs.getInt("movieID");
+
+                ShowTimeDTO showTime = new ShowTimeDTO(showTimeID, openDate, closeDate, hourStart, hourEnd, showStatus, roomID, movieID);
+                list.add(showTime);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    public List<ShowTimeDTO> getAllShowTimesUnique(int movieID1) throws SQLException {
+        List<ShowTimeDTO> list = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM SHOWTIME WHERE movieID = ? AND DATEDIFF(DAY, GETDATE(), openDate) < 1 and DATEDIFF(DAY, GETDATE(), closeDate) >= 0 AND showStatus = 1 GROUP BY "
+                + "    closeDate, "
+                + "    showTimeID, "
+                + "    openDate, "
+                + "    hourStart, "
+                + "    hourEnd, "
+                + "    roomID, "
+                + "    movieID, "
+                + "    showStatus";
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query);
+            stm.setInt(1, movieID1);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int showTimeID = rs.getInt("showTimeID");
+                LocalDate openDate = rs.getDate("openDate").toLocalDate();
+                LocalDate closeDate = rs.getDate("closeDate").toLocalDate();
+                LocalTime hourStart = rs.getTime("hourStart").toLocalTime();
+                LocalTime hourEnd = rs.getTime("hourEnd").toLocalTime();
+                boolean showStatus = rs.getBoolean("showStatus");
+                int roomID = rs.getInt("roomID");
+                int movieID = rs.getInt("movieID");
+
+                ShowTimeDTO showTime = new ShowTimeDTO(showTimeID, openDate, closeDate, hourStart, hourEnd, showStatus, roomID, movieID);
+                list.add(showTime);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: ");
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
+    public List<String> getAllCloseDate(int movieID1) throws SQLException {
         List<String> list = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String query = "SELECT openDate FROM SHOWTIME WHERE movieID = ? GROUP BY openDate";
+        String query = "SELECT closeDate FROM SHOWTIME WHERE movieID = ? GROUP BY closeDate";
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query);
             stm.setInt(1, movieID1); // Set parameter after preparing the statement
             rs = stm.executeQuery();
             while (rs.next()) {
-                LocalDate openDate = rs.getDate("openDate").toLocalDate();
-                list.add(openDate.toString());
+                LocalDate closeDate = rs.getDate("closeDate").toLocalDate();
+                list.add(closeDate.toString());
             }
             return list;
         } catch (SQLException e) {
@@ -408,7 +502,7 @@ public class ShowTimeDAO {
             stm.setDate(1, Date.valueOf(openDate));
             stm.setInt(2, movieID);
             rs = stm.executeQuery();
-           while (rs.next()) {
+            while (rs.next()) {
                 int showTimeID = rs.getInt("showTimeID");
                 LocalDate openDate1 = rs.getDate("openDate").toLocalDate();
                 LocalDate closeDate = rs.getDate("closeDate").toLocalDate();
@@ -439,6 +533,7 @@ public class ShowTimeDAO {
             }
         }
     }
+
     public List<ShowTimeDTO> getShowTimeId2(LocalDate openDate, int movieID) throws SQLException {
         List<ShowTimeDTO> list = new ArrayList<>();
         Connection con = null;
@@ -508,7 +603,6 @@ public class ShowTimeDAO {
         return result;
     }
 
- 
     public List<ShowTimeDTO> getShowTimesForRoomAndDateRange(int roomID, LocalDate openDate, LocalDate closeDate) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -552,7 +646,7 @@ public class ShowTimeDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         ShowTimeDTO showTime = null;
-        StringBuilder query = new StringBuilder("SELECT * FROM SHOWTIME WHERE showTimeID = ?");
+        StringBuilder query = new StringBuilder("SELECT * FROM SHOWTIME WHERE showTimeID = ? and showStatus = 1");
 
         try {
             String sql = null;
@@ -581,7 +675,6 @@ public class ShowTimeDAO {
         return showTime;
     }
 
-  
     // to set showtime status to 0
     public void setShowTimeStatus(int movieID, LocalDate openDate) throws SQLException {
         Connection con = null;

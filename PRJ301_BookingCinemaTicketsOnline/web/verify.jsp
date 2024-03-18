@@ -46,32 +46,25 @@
                     <div class="col-12">
                         <div class="sign__content">
                             <!-- registration form -->
-                            <form name="form" action="./VerifyServlet" class="sign__form" method="post" onsubmit="return validLogin();">
+                            <form name="form" action="./CheckVerifyServlet" class="sign__form" method="post" onsubmit="return validLogin();">
                                 <a href="index.html" class="sign__logo">
                                     <img src="img/logo.jpg" alt="">
                                 </a>
 
                                 <div class="sign__group">
-                                    <input required="true" type="email" class="sign__input" placeholder="Username" name="email">
-                                </div>
-
-                                <div class="sign__group">
-                                    <input required="true" type="password" class="sign__input" placeholder="Password" name="password">
-                                </div>
-
-                                <div class="sign__group">
-                                    <input required="true" type="password" class="sign__input" placeholder="Confirm Password" name="confirmPassword">
+                                    <input type="text" class="sign__input" placeholder="Enter verify code" name="veriCode">
                                 </div>
 
                                 <div class="sign__group sign__group--checkbox">
                                     <input required="true" id="remember" name="remember" type="checkbox" checked="checked">
                                     <label for="remember">Tôi đồng ý với <a href="#">Điều khoản</a></label>
                                 </div>
-                                <!--                                <button class="sign__btn" type="button">Sign up</button>-->
+<!--                                <button class="sign__btn" type="button">Sign up</button>-->
                                 <!--<button class="sign__btn" type="button">Đăng ký</button>-->
+                                <input type="hidden" name="email" value="${requestScope.email}"/>
+                                <input type="hidden" name="password" value="${requestScope.password}"/>
+                                <input type="hidden" name="code" value="${requestScope.code}"/>
                                 <input type="submit" class="sign__btn" value="Đăng ký">
-
-                                <span class="sign__text">Đã có tài khoản? <a href="signin.jsp">Đăng nhập!</a></span>
                             </form>
                             <!-- registration form -->
                         </div>
@@ -93,19 +86,5 @@
         <script src="js/photoswipe.min.js"></script>
         <script src="js/photoswipe-ui-default.min.js"></script>
         <script src="js/main.js"></script>
-        <script>
-                                function validLogin() {
-                                    var password = document.form.password.value;
-                                    var confirmPassword = document.form.confirmPassword.value;
-
-                                    if (password !== confirmPassword) {
-                                        alert("Passwords do not match.");
-                                        document.form.confirmPassword.focus();
-                                        return false;
-                                    }
-                                    alert("Sign up successfully !!");
-                                    return true;
-                                }
-        </script>
     </body>
 </html>

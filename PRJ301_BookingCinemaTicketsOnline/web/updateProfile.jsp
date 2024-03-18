@@ -215,7 +215,11 @@
                             </div>
                         </div>
                         <!-- end profile info -->
-
+                        <div class="profile__view">
+                            <form action="BookingInfoServlet" method="get">
+                                <input type="submit" value="View Profile">
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -233,7 +237,6 @@
                             <li><a href="#">Email : andmse182449@gmail.com</a></li>
                         </ul>
                     </div>
-
                     <!-- footer copyright -->
                     <div class="col-12">
                         <div class="footer__copyright">

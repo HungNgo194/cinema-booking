@@ -22,20 +22,15 @@
     - Seat Selection: Provides an interactive seating layout or seat map for users to choose their preferred seat(s) for an event.
     - Seat Availability: Shows real-time availability of seats, until a specific user purchases any of seats, they wil turn into unavailable status.
 - **Payment Method**
-    - E-wallet: Engages a MoMo e-wallet payment after the "Ticket booking" process.
+    - E-wallet: Engages a VNPAY e-wallet payment after the "Ticket booking" process.
     - Payment Confirmation: Sends notifications to users' accounts after successful payment, providing them with the booking details and a unique reference number.
 - **Booking Management**
     - Booking History: Displays users' booking history, including past and upcoming events, ticket details, and payment information.
-    - Membership: After every booking attempt, users will accumulate an amount of money. Once they reach a specific achievement, their bill(s) will receive a discount.
-- **Customer Support**
-  - Helpdesk and FAQs: Provides a helpdesk or FAQ section to address common queries and assist users in troubleshooting issues.
 - **Admin Management**
   - Provides a centralized interface for the admin to access and manage various functionalities of the ticket booking system.
   - Presents an overview of key system metrics, such as total bookings, revenue, and user statistics.
   - Allows the admin to create (add), edit, and delete events in the system.
-  - Enables the admin to view user booking history.
-  - Provides an overview of all bookings made by users.
-  - Enables the admin to view and manage payment transactions.
+
 
 ##  GRAPHICAL USER INTERFACE (GUI)
 ![](img_gui/gui1.jpg)
@@ -47,7 +42,20 @@
 ![](img_gui/gui7.jpg)
 ![](img_gui/gui8.jpg)
 
-##  ENTITY RELATIONSHIP DIAGRAM (ERD)
-![](img_gui/ERD.png)
-![](img_gui/table_db.jpg
-)
+##  ENTITY RELATIONSHIP DIAGRAM
+![](img_gui/table_db.jpg)
+
+
+## SYSTEM DESIGN
+![](img_gui/system_design.jpeg)
+## CONCLUSION
+- **ALL SKILLS THAT WE GAIN:**
+  - Learn how to research documents on the internet such as stackoverflow.
+  - Debug skill improved.
+  - Learn how to do tasks with team (Teamwork skill).
+  - Gain knownledge about other fields such as APIs, Google Library, Email Library, Payment Enviroment.
+  - Level up based skill such as Java, HTML, CSS, Javascript, using database.
+- **DRAWBACKS:**
+  - Not really focusing on designing database that need to be fixed several times during the project.
+  - Not really using Git skill during the project.
+  - Need back up plans for bad situations.

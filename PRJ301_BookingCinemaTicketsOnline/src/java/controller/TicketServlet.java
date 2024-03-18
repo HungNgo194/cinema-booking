@@ -5,6 +5,7 @@
  */
 package controller;
 
+import SendEmailPassword.SendEmail;
 import account.AccountDTO;
 import booking.BookingDAO;
 import booking.BookingDTO;
@@ -14,7 +15,6 @@ import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import movie.MovieDAO;
 import movie.MovieDTO;
 import payment.PaymentConfig;
 import payment.PaymentDAO;
@@ -59,13 +60,31 @@ public class TicketServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    public String convertedWithComma(int raw_price) {
+        // Convert eachTicketPrice to String
+        StringBuilder convertedEachTicket = new StringBuilder();
+        // Convert again to string with commas
+        String priceString = String.valueOf(raw_price);
+        for (int i = priceString.length() - 1; i >= 0; i--) {
+            if ((priceString.length() - i) % 3 == 1 && i != priceString.length() - 1) {
+                convertedEachTicket.insert(0, ",");
+            }
+            convertedEachTicket.insert(0, priceString.charAt(i));
+        }
+
+        // Use convertedEachTicket.toString() as the formatted string
+        String formattedPrice = convertedEachTicket.toString();
+        return formattedPrice;
+
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
+        AccountDTO account = (AccountDTO) session.getAttribute("account");
         BookingDTO booking = (BookingDTO) session.getAttribute("booking"); // lấy attributte booking từ servlet booking
 
-        /*
         Map fields = new HashMap();
         for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
             String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
@@ -74,6 +93,7 @@ public class TicketServlet extends HttpServlet {
                 fields.put(fieldName, fieldValue);
             }
         }
+        String vnp_TransactionStatus = request.getParameter("vnp_TransactionStatus");
 
         String vnp_SecureHash = request.getParameter("vnp_SecureHash");
         if (fields.containsKey("vnp_SecureHashType")) {
@@ -83,139 +103,109 @@ public class TicketServlet extends HttpServlet {
             fields.remove("vnp_SecureHash");
         }
         String signValue = PaymentConfig.hashAllFields(fields);
-        String vnp_TransactionStatus = request.getParameter("vnp_TransactionStatus");;
-        String vnp_TxnRef = request.getParameter("vnp_TxnRef");
-        String vnp_Amount = request.getParameter("vnp_Amount");
-        String vnp_TransactionNo = request.getParameter("vnp_TransactionNo");
-        String vnp_BankCode = request.getParameter("vnp_BankCode");
-        String vnp_PayDate = request.getParameter("vnp_PayDate");
-
-        String message = "";
+        String ms = "";
+        TicketDTO ticket = new TicketDTO();
+        PaymentDTO payment = new PaymentDTO();
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(vnp_TransactionStatus)) {
-                message += "GIAO DICH THANH CONG";
-            } else {
-                message += "GIAO DICH KHONG THANH CCONG";
-            }
+                String vnp_TxnRef = request.getParameter("vnp_TxnRef");
+                String vnp_OrderInfo = request.getParameter("vnp_OrderInfo");
+                String vnp_Amount = request.getParameter("vnp_Amount");
+                String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
+                String vnp_TransactionNo = request.getParameter("vnp_TransactionNo");
+                String vnp_BankCode = request.getParameter("vnp_BankCode");
+                String vnp_PayDate = request.getParameter("vnp_PayDate");
 
-        } else {
-            message += "CHU KI KHONG HOP LE";
-        }
-        
-        request.setAttribute("message", message);
-        request.getRequestDispatcher("return_payment.jsp").forward(request, response);
-    }
-        
-         */
-        Map fields = new HashMap();
-        for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
-            String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
-            String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                fields.put(fieldName, fieldValue);
-            }
-        }
+                String orderInfoList[] = vnp_OrderInfo.trim().split("&");
 
-        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-        if (fields.containsKey("vnp_SecureHashType")) {
-            fields.remove("vnp_SecureHashType");
-        }
-        if (fields.containsKey("vnp_SecureHash")) {
-            fields.remove("vnp_SecureHash");
-
-        }
-        String signValue = PaymentConfig.hashAllFields(fields);
-        String vnp_TransactionStatus = request.getParameter("vnp_TransactionStatus");;
-        String vnp_TxnRef = request.getParameter("vnp_TxnRef");
-        String vnp_Amount = request.getParameter("vnp_Amount");
-        String vnp_TransactionNo = request.getParameter("vnp_TransactionNo");
-        String vnp_BankCode = request.getParameter("vnp_BankCode");
-        String vnp_PayDate = request.getParameter("vnp_PayDate");
-        String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
-
-        Long payId = Long.parseLong(vnp_TxnRef);
-        int amount = Integer.parseInt(vnp_Amount);
-
-        AccountDTO account = (AccountDTO) session.getAttribute("account");
-        LocalDate payDate = null;
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-            payDate = LocalDate.parse(vnp_PayDate, formatter);
-        } catch (Exception e) {
-        }
-
-        String vnp_OrderInfo = request.getParameter("vnp_OrderInfo");
-
-        String infoList[] = vnp_OrderInfo.trim().split("&");
-        String showDate = infoList[0];
-        String showTime = infoList[1];
-        int movieId = Integer.parseInt(infoList[2]) / 100;
-        int transactionNo = Integer.parseInt(vnp_TransactionNo);
-
-        String availableSeats[] = infoList[3].split(",");
-        ArrayList tickets = new ArrayList<TicketDTO>();
-        PaymentDTO payment = null;
-        
-        String message = "";
-        if (signValue.equals(vnp_SecureHash)) {
-            if ("00".equals(vnp_TransactionStatus)) {
+                String movieID = orderInfoList[2];
+                String availableSeat = orderInfoList[3];  // lấy attribute từ servlet booking
+                String showTime = orderInfoList[1];
+                String showDate = orderInfoList[0];
+                String[] availableSeats = availableSeat.split(",");
+                boolean next = false;
                 try {
+                    TicketDAO tk = new TicketDAO();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     LocalDate date = LocalDate.parse(showDate, formatter);
                     DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
                     LocalTime time = LocalTime.parse(showTime, formatter2);
-
                     String bookingId = booking.getBookingID(); // lấy booking ID của thằng booking được lấy từ session
-                    int numOfBook = booking.getNumberOfBooking(); // tương tự
-
-                    // SAVE BOOKING
+                    // SAVE BOOKING 
                     BookingDAO bdao = new BookingDAO();
                     bdao.createBooking(booking.getBookingID(), booking.getNumberOfBooking(), booking.getPriceTotal(), booking.getBookingDate(), booking.getUserName());
                     // END BOOKING
-
                     SeatDetailDAO sd = new SeatDetailDAO();
                     ShowTimeDAO sdao = new ShowTimeDAO();
                     int showTimeID = 0;
                     int roomID = 0;
-                    List<ShowTimeDTO> ShowTimeList = sdao.getShowTimeId2(date, movieId);
-                    for (ShowTimeDTO showTimeDTO : ShowTimeList) {
-                        if (showTimeDTO.getHourStart() == time) {
-                            showTimeID = showTimeDTO.getShowTimeID();
-                            roomID = showTimeDTO.getRoomID();
+                    List<ShowTimeDTO> ShowTimeList = new ArrayList<>();
+                    ShowTimeList = sdao.getShowTimeId2(date, Integer.parseInt(movieID));
+                    if (ShowTimeList.size() == 0) {
+                        showTimeID = Integer.parseInt(request.getParameter("uniqueShow"));
+                        ShowTimeList.add(sdao.getShowTimeByID(showTimeID));
+                        roomID = sdao.getShowTimeByID(showTimeID).getRoomID();
+                        next = true;
+                    }
+                    if (ShowTimeList.size() == 1) {
+
+                        for (ShowTimeDTO showTimeDTO : ShowTimeList) {
+                            System.out.println(showTimeDTO.getHourStart());
+                            if (showTimeDTO.getHourStart().equals(time)) {
+                                showTimeID = showTimeDTO.getShowTimeID();
+                                roomID = sdao.getShowTimeByID(showTimeID).getRoomID();
+                            }
                         }
                     }
-                    // cái dưới đây để chỉnh seatStatus thành 1 khi ghế được đặt hoàn tất, Hưng tự gọi lại ở trang cuối nha
-                    for (String availableSeat : availableSeats) {
-                        sd.modifiedStatus(availableSeat, roomID, showTimeID);
+//             cái dưới đây để chỉnh seatStatus thành 1 khi ghế được đặt hoàn tất
+                    for (String seatID : availableSeats) {
+                        sd.modifiedStatus(seatID, showTimeID);
+                        tk.createTicket(showTimeID, seatID, bookingId);
+                        ticket.setShowTimeID(showTimeID);
+                        ticket.setSeatID(seatID);
+                        ticket.setBookingID(bookingId);
                     }
-                    TicketDAO tk = new TicketDAO();
-                    // với mỗi ticket thì nó sẽ gọi thằng dưới đây để xử lí từng cái 
-                    for (int i = 0; i < numOfBook; i++) {
-                        tk.createTicket(showTimeID, availableSeats[i], bookingId);
-                        TicketDTO ticket = new TicketDTO(showTimeID, availableSeats[i], bookingId);
-                        tickets.add(ticket);
-                    }
-                    PaymentDAO pmdao = new PaymentDAO();
-                    pmdao.createPayment(payId, amount, vnp_OrderInfo, vnp_ResponseCode, transactionNo, vnp_BankCode, payDate, vnp_TransactionStatus, booking, account);
-                    payment = new PaymentDTO(payId, amount, vnp_OrderInfo, vnp_ResponseCode, transactionNo, vnp_BankCode, payDate, vnp_TransactionStatus, booking, account);
+                    String final_price = convertedWithComma(booking.getPriceTotal());
+                    request.setAttribute("totalPaid", final_price);
                     
+                    MovieDAO mdao = new MovieDAO();
+                   
+                    
+                    DateTimeFormatter payFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+                    LocalDate paydate = LocalDate.parse(vnp_PayDate, formatter);
+                    PaymentDAO pdao = new PaymentDAO();
+                    payment = pdao.createPayment(Long.parseLong(vnp_TxnRef), Integer.parseInt(vnp_Amount), vnp_OrderInfo, vnp_ResponseCode, vnp_TransactionNo, vnp_BankCode, paydate, vnp_TransactionStatus, booking, account);
+                    String message = "TICKET INFORMATION" + "\n"
+                            + "Booking code: " + booking.getBookingID() + "\n"
+                            + "Moive: " + mdao.searchByID(roomID).getMovieName() + "\n"
+                            + "Date: " + date + "\n"
+                            + "Time: " + time + "\n"
+                            + "Room: " + roomID + "\n"
+                            + "Number of tickets: " + booking.getNumberOfBooking() + "\n"
+                            + "Seats: " + availableSeat + "\n" + "\n"
+                            + "PAYMENT INFORMATION" + "\n"
+                            + "Total momey: " + final_price + "\n"
+                            + "Transaction ID: " + vnp_TxnRef + "\n"
+                            + "Order description: " + "Payment for movie tickets." + "\n"
+                            + "Bank code: " + vnp_BankCode + "\n"
+                            + "Payment time: " + paydate;
+                    
+                    SendEmail send = new SendEmail(account.getEmail(), "RẠP CHIẾU PHIM NHỮNG CẬU TRAI THÂN MẬT", message);
+                    ms += "Giao dich thanh cong";
                 } catch (SQLException ex) {
                     Logger.getLogger(TicketServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                message += "GIAO DICH THANH CONG";
-                request.setAttribute("booking", booking);
-                request.setAttribute("ticket", tickets);
-                request.setAttribute("payment", payment);
-                
             } else {
-                message += "GIAO DICH KHONG THANH CCONG";
+                ms += "Giao dich that bai";
             }
 
         } else {
-            message += "CHU KI KHONG HOP LE";
+            ms += "Chu ky khong hop le";
         }
-        request.setAttribute("message", message);
-        request.getRequestDispatcher("return_payment.jsp").forward(request, response);
+        request.setAttribute("ticket", ticket);
+        request.setAttribute("payment", payment);
+        RequestDispatcher rd = request.getRequestDispatcher("transaction.jsp");
+        rd.forward(request, response);
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

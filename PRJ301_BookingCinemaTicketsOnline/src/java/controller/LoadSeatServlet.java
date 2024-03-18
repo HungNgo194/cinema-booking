@@ -57,6 +57,7 @@ public class LoadSeatServlet extends HttpServlet {
         String movieName = request.getParameter("movie");
         String roomID = request.getParameter("roomID");
         String lay = request.getParameter("lay");
+
         try {
             ShowTimeDAO Sdao = new ShowTimeDAO();
             MovieDAO Mdao = new MovieDAO();;
@@ -69,7 +70,15 @@ public class LoadSeatServlet extends HttpServlet {
             LocalTime time = LocalTime.parse(detailTime, formatter2);
             int movieID = Mdao.checkExistMovie(movieName).getMovieID();
 //        
-            List<Integer> showTimeIDs = Sdao.getShowTimeWithopenDateAndRoomID(date, Integer.parseInt(roomID), movieID);
+            List<Integer> showTimeIDs = new ArrayList<>();
+            showTimeIDs = Sdao.getShowTimeWithopenDateAndRoomID(date, Integer.parseInt(roomID), movieID);
+            request.setAttribute("uniqueShow", "0");
+            if (showTimeIDs.size() == 0) {
+                int id = Integer.parseInt(request.getParameter("showTimeID"));
+                showTimeIDs.add(id);
+                request.setAttribute("uniqueShow", Sdao.getShowTimeByID(id).getShowTimeID());
+
+            }
             List<ShowTimeDTO> listOfShowTimes = new ArrayList<>();
             for (Integer id : showTimeIDs) {
                 ShowTimeDTO result = Sdao.getShowTimesWithID(id);
@@ -77,6 +86,7 @@ public class LoadSeatServlet extends HttpServlet {
                     listOfShowTimes.add(result);
                 }
             }
+
             CinemaDAO Cdao = new CinemaDAO();
             List<CinemaDTO> cinemaList = Cdao.getAllCinemas();
             SeatDetailDAO seatCheck = new SeatDetailDAO();

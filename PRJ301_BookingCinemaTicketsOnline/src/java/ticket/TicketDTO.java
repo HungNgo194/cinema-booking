@@ -26,14 +26,6 @@ public class TicketDTO {
         this.bookingID = bookingID;
     }
 
-    public TicketDTO(int showTimeID, String seatID, String bookingID) {
-        this.showTimeID = showTimeID;
-        this.seatID = seatID;
-        this.bookingID = bookingID;
-    }
-
-    
-    
     public int getShowTimeID() {
         return showTimeID;
     }

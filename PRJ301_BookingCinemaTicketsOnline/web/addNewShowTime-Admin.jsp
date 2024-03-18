@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Add New Show Time</title>
         <style>
@@ -84,10 +85,10 @@
                     <input type="hidden" required="true" name="showTimeID" placeholder="showTimeID"><br>
                     <input type="date" required="true" name="openDate" placeholder="openDate"><br>
                     <input type="date" required="true" name="closeDate" placeholder="closeDate"><br>
-                    <input type="text" required="true" name="director" placeholder="director"><br>
                     <input type="time" required="true" name="hourStart" placeholder="hourStart"><br>
                     <input type="time" required="true" name="hourEnd" placeholder="hourEnd"><br>
                     <input type="number" required="true" name="roomID" placeholder="roomID"><br>
+                    <input type="hidden" required="true" value="1" name="showStatus" placeholder="showStatus">
                     <input type="number" readonly value="${movieByID.movieID}" name="movieID" placeholder="movieID"><br>
                 </div>
                 <div class="check-button">
@@ -144,4 +145,3 @@
         </div>
     </body>
 </html>
-

@@ -46,45 +46,20 @@
                         <div class="col-12">
                             <div class="header__content">
                                 <!-- header logo -->
-                                <a href="index.html" class="header__logo">
+                                <a href="LoadAllMovieServlet?url=index.jsp" class="header__logo">
                                     <img src="img/logo.jpg" alt="">
                                 </a>
-                                <!-- end header logo -->
-
-                                <!-- header nav -->
                                 <ul class="header__nav">
                                     <li class="header__nav-item">
-                                        <a href="index2.html" class="header__nav-link">Phim</a>
+                                        <a href="signin.jsp" class="header__nav-link">Phim</a>
                                     </li>
                                 </ul>
-                                <!-- end header nav -->
-
-                                <!-- header auth -->
                                 <div class="header__auth">
-                                    <form action="#" class="header__search">
-                                        <div class="header__search-content">
-                                            <input type="text" placeholder="Tìm phim...">
-
-                                            <button type="button">
-                                                <i class="icon ion-ios-search"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-
                                     <a href="signin.jsp" class="header__sign-in">
                                         <i class="icon ion-ios-log-in"></i>
                                         <span>Đăng nhập</span>
                                     </a>
                                 </div>
-                                <!-- end header auth -->
-
-                                <!-- header menu btn -->
-                                <button class="header__btn" type="button">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </button>
-                                <!-- end header menu btn -->
                             </div>
                         </div>
                     </div>

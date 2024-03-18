@@ -148,21 +148,20 @@ public class SeatDetailDAO {
         return seats; // Return an empty ArrayList if there are no results
     }
 
-    public SeatDetailDTO modifiedStatus(String seatId, int roomID, int showTimeID) throws SQLException {
+    public boolean modifiedStatus(String seatId, int showTimeID) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        StringBuilder query = new StringBuilder("UPDATE SEATDETAILS SET seatStatus = 1 where seatID = ? and roomID = ?");
+        StringBuilder query = new StringBuilder("UPDATE SEATDETAILS SET seatStatus = 1 where seatID = ? and showtimeID = ?");
         try {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(query.toString());
 
             stm.setString(1, seatId);
-            stm.setInt(2, roomID);
-
-            stm.executeUpdate();
-
-            SeatDetailDTO seat = new SeatDetailDTO(seatId, true, roomID, showTimeID);
-            return seat;
+            stm.setInt(2, showTimeID);
+            int e = stm.executeUpdate();
+            if (e > 0) {
+                return true;
+            }
 
         } catch (SQLException e) {
             System.out.println("An SQL error occurred: " + e);
@@ -175,7 +174,34 @@ public class SeatDetailDAO {
                 con.close();
             }
         }
-        return null;
+        return false;
     }
 
+    public boolean modifiedAllStatus(int showTimeID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        StringBuilder query = new StringBuilder("UPDATE SEATDETAILS SET seatStatus = 0 where showtimeID = ?");
+        try {
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(query.toString());
+
+            stm.setInt(1, showTimeID);
+            int e = stm.executeUpdate();
+            if (e > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("An SQL error occurred: " + e);
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

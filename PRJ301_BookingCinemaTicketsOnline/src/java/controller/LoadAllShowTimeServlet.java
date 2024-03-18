@@ -16,7 +16,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import movie.MovieDAO;
 import showTime.ShowTimeDAO;
+import showTime.ShowTimeDTO;
 
 /**
  *
@@ -59,22 +62,36 @@ public class LoadAllShowTimeServlet extends HttpServlet {
             ShowTimeDAO Sdao = new ShowTimeDAO();
             CinemaDAO Cdao = new CinemaDAO();
             List<CinemaDTO> cinemaList = Cdao.getAllCinemas();
-            List<String> showTimeStringList = Sdao.getAllShowTimes(dao.checkExistMovie(movieName).getMovieID());
-            List<String> sendedTimeList = new ArrayList<>();
-
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            List<ShowTimeDTO> showTimeStringList = Sdao.getAllShowTimes(dao.checkExistMovie(movieName).getMovieID());
             Date date2 = Calendar.getInstance().getTime();
-            LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
+            LocalDate localDate = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-            for (String origin_date : showTimeStringList) {
-                LocalDate compare_date = LocalDate.parse(origin_date, dateFormatter);
-                int comparison = compare_date.compareTo(localDate2);
-                if (comparison > 0 || comparison == 0) {
-                    sendedTimeList.add(origin_date);
-                } else {
-                    Sdao.setShowTimeStatus(dao.checkExistMovie(movieName).getMovieID(), compare_date);
+            List<LocalDate> sendedTimeList = new ArrayList<>();
+
+            for (ShowTimeDTO showTime : showTimeStringList) {
+//                LocalDate compare_date = LocalDate.parse(origin_date, dateFormatter);
+//                int comparison = compare_date.compareTo(localDate2);
+//                if (comparison > 0 || comparison == 0) {
+                LocalDate currentDate = showTime.getOpenDate();
+                int comparison = currentDate.compareTo(localDate);
+
+                // Iterate while currentDate is equal to or greater than localDate2
+                while (comparison < 0) {
+                    // Update currentDate to the next day
+                    currentDate = currentDate.plusDays(1);
+                    showTime.setOpenDate(currentDate);
+                    // Update comparison for the next iteration
+                    comparison = currentDate.compareTo(localDate);
                 }
+                sendedTimeList.add(showTime.getOpenDate());
+//                } else {
+//                    Sdao.setShowTimeStatus(dao.checkExistMovie(movieName).getMovieID(), compare_date);
+//                }
             }
+            Set<LocalDate> uniqueTimes = new HashSet<>(sendedTimeList);
+            sendedTimeList.clear();
+            sendedTimeList.addAll(uniqueTimes);
             request.setAttribute("CINEMA", cinemaList);
             request.setAttribute("show", showtime);
             session.setAttribute("SHOWTIMELIST", sendedTimeList);

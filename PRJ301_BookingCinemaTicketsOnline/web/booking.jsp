@@ -28,14 +28,12 @@
         <!-- HEADER -->
         <div class="nav-header">
             <nav class="nav-container">
-                <a href="#" class="nav-logo"><img src="images/logo.jpg" alt="logo"></a>
+                <a href="LoadAllMovieServlet?url=userWeb-page.jsp" class="nav-logo"><img src="images/logo.jpg" alt="logo"></a>
 
                 <div class="nav-menu" id="nav-menu">
                     <ul class="nav-list">
-                        <li class="nav-item"><a href="#" class="nav-link">Phim</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link">Lịch Chiếu</a></li>
+                        <li class="nav-item"><a href="LoadAllMovieServlet?url=index2.jsp" class="nav-link">Phim</a></li>
                         <li class="nav-item"><a href="#" class="nav-link">Khuyến Mãi</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link">Hỏi & Đáp</a></li>
                     </ul>
 
                     <!-- Close button -->
@@ -135,6 +133,7 @@
                                                         <input type="hidden" name="lay" value="${show}"/>
                                                         <input type="hidden" name="cinema" value="${cinemas}"/>
                                                         <input type="hidden" name="roomID" value="${time.getRoomID()}"/>
+                                                        <input type="hidden" name="showTimeID" value="${time.getShowTimeID()}"/>
                                                         <div class="item-time">
 
                                                             <input type="submit" id="time" name="detailTime" value="${time.getHourStart()}"
@@ -227,7 +226,7 @@
             </div>
             <form action="./BookingServlet?movieName=${movie.getMovieName()}" method="POST">
                 <div class="order-wrap">
-
+                    <input type="hidden" name="uniqueShow" value="${requestScope.uniqueShow}">
                     <c:set var="timeDetail" value="${requestScope.detailTime}"/>
 
                     <div class="final-check">
@@ -275,7 +274,7 @@
                             border-radius: 30px 30px 30px 0;"
                             disabled>THANH TOÁN
                     </button>
-                    <input type="button" class="back-btn" value="QUAY LẠI" data-link="LoadMovieServlet?movieName=${movie.getMovieName()}">
+                    <input type="button" class="back-btn" value="QUAY LẠI" data-link="LoadAllMovieServlet?url=index2.jsp">
                 </div>
             </form>
             <script src="js/booking.js"></script>

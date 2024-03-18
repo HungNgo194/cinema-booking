@@ -122,6 +122,7 @@ public class TicketServlet extends HttpServlet {
                 String availableSeat = orderInfoList[3];  // lấy attribute từ servlet booking
                 String showTime = orderInfoList[1];
                 String showDate = orderInfoList[0];
+                String uniqueShow = orderInfoList[4];
                 String[] availableSeats = availableSeat.split(",");
                 boolean next = false;
                 try {
@@ -142,7 +143,7 @@ public class TicketServlet extends HttpServlet {
                     List<ShowTimeDTO> ShowTimeList = new ArrayList<>();
                     ShowTimeList = sdao.getShowTimeId2(date, Integer.parseInt(movieID));
                     if (ShowTimeList.size() == 0) {
-                        showTimeID = Integer.parseInt(request.getParameter("uniqueShow"));
+                        showTimeID = Integer.parseInt(uniqueShow);
                         ShowTimeList.add(sdao.getShowTimeByID(showTimeID));
                         roomID = sdao.getShowTimeByID(showTimeID).getRoomID();
                         next = true;
@@ -172,7 +173,7 @@ public class TicketServlet extends HttpServlet {
                    
                     
                     DateTimeFormatter payFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-                    LocalDate paydate = LocalDate.parse(vnp_PayDate, formatter);
+                    LocalDate paydate = LocalDate.parse(vnp_PayDate, payFormatter);
                     PaymentDAO pdao = new PaymentDAO();
                     payment = pdao.createPayment(Long.parseLong(vnp_TxnRef), Integer.parseInt(vnp_Amount), vnp_OrderInfo, vnp_ResponseCode, vnp_TransactionNo, vnp_BankCode, paydate, vnp_TransactionStatus, booking, account);
                     String message = "TICKET INFORMATION" + "\n"

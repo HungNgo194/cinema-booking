@@ -55,8 +55,9 @@ public class PaymentServlet extends HttpServlet {
             a += amount_raw[i];
         }
         int amount = Integer.parseInt(a)*100;
-        String bankCode = "VNBANK";
-        
+       // String bankCode = "VNBANK";
+        String bankCode = "VISA";
+//        String vnp_CardType=VISA
         String vnp_TxnRef = PaymentConfig.getRandomNumber(8);
         String vnp_IpAddr = PaymentConfig.getIpAddress(request);
 
@@ -66,7 +67,7 @@ public class PaymentServlet extends HttpServlet {
         String showDate = request.getParameter("showDate");
         String seatArray = request.getParameter("seatAvailable");
         String movieID = request.getParameter("movies");
-        
+        String uniqueShow = request.getParameter("uniqueShow");
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
@@ -75,7 +76,7 @@ public class PaymentServlet extends HttpServlet {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", bankCode);
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", showTime + "va" + showDate + "va" + movieID + "va" + seatArray);
+        vnp_Params.put("vnp_OrderInfo", showDate  + "&" + showTime + "&" + movieID + "&" + seatArray + "&" + uniqueShow);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", PaymentConfig.vnp_ReturnUrl);

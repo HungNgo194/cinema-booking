@@ -165,7 +165,8 @@
 
                 <div class="input-but1">
                     <input type="hidden" name="amount" value="${requestScope.priceAfterDiscount}">
-                    <input type="hidden" name="uniqueShow" value="${requestScope.uniqueShow}">
+                    <input type="hidden" name="movies" value="${requestScope.MOVIE.movieID}"/>
+                        <input type="hidden" name="uniqueShow" value="${requestScope.uniqueShow}">
                     <input type="button" class="cancel" value="Quay lại" id="payment-back" data-link="booking.jsp">
                     <input type="submit" class="ok" value="Thanh toán" id="payment-next">
 
@@ -173,7 +174,32 @@
             </form>
         </div>
         <script src="./js/purchase.js"></script>
-     
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $("#frmCreateOrder").submit(function () {
+                var postData = $("#frmCreateOrder").serialize();
+                var submitUrl = $("#frmCreateOrder").attr("action");
+                $.ajax({
+                    type: "POST",
+                    url: submitUrl,
+                    data: postData,
+                    dataType: 'JSON',
+                    success: function (x) {
+                        if (x.code === '00') {
+                            if (window.vnpay) {
+                                vnpay.open({width: 768, height: 600, url: x.data});
+                            } else {
+                                location.href = x.data;
+                            }
+                            return false;
+                        } else {
+                            alert(x.Message);
+                        }
+                    }
+                });
+                return false;
+            });
+        </script>      
     </body>
 
 </html>

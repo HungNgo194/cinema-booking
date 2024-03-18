@@ -104,6 +104,7 @@ public class TicketServlet extends HttpServlet {
         }
         String signValue = PaymentConfig.hashAllFields(fields);
         String ms = "";
+        String final_price = "";
         TicketDTO ticket = new TicketDTO();
         PaymentDTO payment = new PaymentDTO();
         if (signValue.equals(vnp_SecureHash)) {
@@ -166,7 +167,7 @@ public class TicketServlet extends HttpServlet {
                         ticket.setSeatID(seatID);
                         ticket.setBookingID(bookingId);
                     }
-                    String final_price = convertedWithComma(booking.getPriceTotal());
+                    final_price = convertedWithComma(booking.getPriceTotal());
                     request.setAttribute("totalPaid", final_price);
                     
                     MovieDAO mdao = new MovieDAO();
@@ -192,19 +193,21 @@ public class TicketServlet extends HttpServlet {
                             + "Payment time: " + paydate;
                     
                     SendEmail send = new SendEmail(account.getEmail(), "RẠP CHIẾU PHIM NHỮNG CẬU TRAI THÂN MẬT", message);
-                    ms += "Giao dich thanh cong";
+                    ms += "TRANSACTION SUCCESSFULLl! Thank you for supporting us";
                 } catch (SQLException ex) {
                     Logger.getLogger(TicketServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                ms += "Giao dich that bai";
+                ms += "TRANSACTION FAILED! Check your PAYMENT DETAIL CAREFULLY!!";
             }
 
         } else {
-            ms += "Chu ky khong hop le";
+            ms += "TRANSACTION FAILED! Invalid Signature";
         }
         request.setAttribute("ticket", ticket);
         request.setAttribute("payment", payment);
+        request.setAttribute("totalPaid", final_price);
+        request.setAttribute("message", ms);
         RequestDispatcher rd = request.getRequestDispatcher("transaction.jsp");
         rd.forward(request, response);
     }

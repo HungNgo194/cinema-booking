@@ -1,5 +1,185 @@
 ﻿USE [BookingCinemaTicketsOnline]
 GO
+/****** Object:  Table [dbo].[ACCOUNT]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ACCOUNT](
+	[userName] [varchar](200) NOT NULL,
+	[password] [varchar](200) NOT NULL,
+	[fullName] [nvarchar](200) NULL,
+	[googleID] [varchar](200) NULL,
+	[googleName] [varchar](200) NULL,
+	[email] [varchar](200) NULL,
+	[phoneNumber] [varchar](200) NULL,
+	[gender] [nvarchar](200) NULL,
+	[role] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[userName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[BOOKING]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BOOKING](
+	[bookingID] [varchar](200) NOT NULL,
+	[numberOfBooking] [int] NULL,
+	[priceTotal] [money] NULL,
+	[bookingDate] [date] NULL,
+	[userName] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[bookingID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CINEMA]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CINEMA](
+	[cinemaID] [int] IDENTITY(1,1) NOT NULL,
+	[cinemaName] [nvarchar](200) NULL,
+	[city] [nvarchar](200) NULL,
+	[address] [nvarchar](200) NULL,
+	[hotline] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[cinemaID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MEMBERSHIP]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MEMBERSHIP](
+	[memberID] [uniqueidentifier] NOT NULL,
+	[totalSpend] [money] NULL,
+	[discount] [int] NULL,
+	[userName] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[memberID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MOVIE]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MOVIE](
+	[movieID] [int] IDENTITY(1,1) NOT NULL,
+	[movieName] [nvarchar](200) NULL,
+	[movieContent] [nvarchar](max) NULL,
+	[actor] [nvarchar](200) NULL,
+	[director] [nvarchar](200) NULL,
+	[age] [int] NULL,
+	[movieImage] [nvarchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[movieID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PAYMENT]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PAYMENT](
+	[id] [decimal](19, 2) NOT NULL,
+	[amount] [int] NULL,
+	[orderInfo] [nvarchar](250) NULL,
+	[responseCode] [char](5) NULL,
+	[transactionNo] [int] NULL,
+	[bank] [char](5) NULL,
+	[payDate] [date] NULL,
+	[transactionStatus] [char](5) NULL,
+	[bookingID] [varchar](200) NULL,
+	[userName] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ROOM]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ROOM](
+	[roomID] [int] IDENTITY(1,1) NOT NULL,
+	[numberOfSeats] [int] NULL,
+	[cinemaID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[roomID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SEATDETAILS]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SEATDETAILS](
+	[seatID] [varchar](3) NOT NULL,
+	[seatStatus] [bit] NULL,
+	[roomID] [int] NULL,
+	[showtimeID] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[seatID] ASC,
+	[showtimeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SHOWTIME]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SHOWTIME](
+	[showTimeID] [int] IDENTITY(1,1) NOT NULL,
+	[openDate] [date] NULL,
+	[closeDate] [date] NULL,
+	[hourStart] [time](7) NULL,
+	[hourEnd] [time](7) NULL,
+	[showStatus] [bit] NULL,
+	[roomID] [int] NULL,
+	[movieID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[showTimeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TICKET]    Script Date: 3/18/2024 10:17:01 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TICKET](
+	[ticketID] [int] IDENTITY(1,1) NOT NULL,
+	[showTimeID] [int] NULL,
+	[seatID] [varchar](3) NULL,
+	[bookingID] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ticketID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 INSERT [dbo].[ACCOUNT] ([userName], [password], [fullName], [googleID], [googleName], [email], [phoneNumber], [gender], [role]) VALUES (N'admin2@gmail.com', N'1', N'mĩnh', NULL, NULL, N'admin2@gmail.com', N'9181231', N'Nam', 0)
 INSERT [dbo].[ACCOUNT] ([userName], [password], [fullName], [googleID], [googleName], [email], [phoneNumber], [gender], [role]) VALUES (N'Andmse182449@fpt.edu.vn', N'123', N'mĩnh', NULL, NULL, N'Andmse182449@fpt.edu.vn', N'9181231', N'Nam', 0)
 INSERT [dbo].[ACCOUNT] ([userName], [password], [fullName], [googleID], [googleName], [email], [phoneNumber], [gender], [role]) VALUES (N'Phucadmin', N'1', NULL, NULL, NULL, NULL, NULL, NULL, 1)
@@ -7,6 +187,8 @@ GO
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'2fb2f966-289e-453a-8ba6-78f4e03a511d', 4, 280000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'304ecf32-16f8-4f95-abc5-a1152b69b8ed', 1, 70000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'30a3c0b6-9618-41cf-8c3f-3592a074ecec', 2, 140000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'30d9b475-c81b-4cfa-831e-32d42430549b', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'5173171b-c996-40ae-b5b5-c82a606562d4', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'admin2@gmail.com')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'53e579c7-8f8f-407f-a0ee-15dea0d17ebf', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'608d9d3b-cf88-4c63-a301-b9b740713fbf', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'61c7f613-f01e-4d10-b0d5-10913ba6dcfb', 2, 140000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
@@ -14,10 +196,20 @@ INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDa
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'6e490f98-905a-449a-9074-c08b89cf2b2f', 1, 70000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'72872954-22fa-404a-a96b-83292dedf482', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'admin2@gmail.com')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'739ca3f6-c0b6-4fef-b733-a4812afef239', 4, 280000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'73f2525f-2647-44c1-8cc6-bbdde2136ead', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'7de65335-c413-4240-9054-2760d23bb52d', 2, 140000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'83855808-b577-4490-a6c4-71d1585ecf63', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'admin2@gmail.com')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'86926d92-37b3-4862-9b81-46584731c377', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'96c31eee-8409-499b-a5d5-165b58701c47', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'9f683e0b-ba98-41db-9b77-e4d492baa7e9', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'a15265a3-cd74-4147-b1b8-9b6d97c8108c', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'a4f43dfe-0db5-4a02-bbe0-04a19696aac5', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'admin2@gmail.com')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'b4057bb4-2822-4f11-a36c-3358576f061d', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'b418ba60-422a-4052-a528-95911b0bef61', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'admin2@gmail.com')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'b664596f-58f0-4442-b6d9-78442cdb8674', 1, 70000.0000, CAST(N'2024-03-18' AS Date), N'admin2@gmail.com')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'b7889fe6-6d72-46a2-ac10-eb6b92f58a77', 2, 140000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'd91bafa3-7d1f-4982-8b09-302d2f825b8e', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
+INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'e31ac9cd-1304-48ac-b0ce-be3ec8151a04', 2, 140000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'e3abc944-6ef0-4783-9cbb-a141d8a6d613', 4, 280000.0000, CAST(N'2024-03-18' AS Date), N'Andmse182449@fpt.edu.vn')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'f3d143ff-a1d1-49bc-91c4-0e1a06f45f56', 2, 140000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
 INSERT [dbo].[BOOKING] ([bookingID], [numberOfBooking], [priceTotal], [bookingDate], [userName]) VALUES (N'f3f4f4f9-e5bd-47e0-8ab7-4e055caabcb4', 1, 70000.0000, CAST(N'2024-03-17' AS Date), N'admin2@gmail.com')
@@ -28,15 +220,6 @@ SET IDENTITY_INSERT [dbo].[CINEMA] ON
 INSERT [dbo].[CINEMA] ([cinemaID], [cinemaName], [city], [address], [hotline]) VALUES (1, N'NCTTM Thảo Điền (TP.HCM)', N'BARIA', N'123 Nguyễn Đình Chiểu, Phường An Phú, Thảo Điền, Quận 2, TP. Hồ Chí Minh', N'961792119')
 SET IDENTITY_INSERT [dbo].[CINEMA] OFF
 GO
-SET IDENTITY_INSERT [dbo].[ROOM] ON 
-
-INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (1, 20, 1)
-INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (2, 20, 1)
-INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (3, 20, 1)
-INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (4, 20, 1)
-INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (5, 20, 1)
-SET IDENTITY_INSERT [dbo].[ROOM] OFF
-GO
 SET IDENTITY_INSERT [dbo].[MOVIE] ON 
 
 INSERT [dbo].[MOVIE] ([movieID], [movieName], [movieContent], [actor], [director], [age], [movieImage]) VALUES (1, N'Song of the South', N'Song of the South (Dat Rung Phuong Nam) is based on the same name novel written by Author Doan Gioi. It''s a serial journey of a lost boy, named An, who experiences various adventures and tragedies on his way to looking for his father.', N' Bang Di, Hong Anh, Vi Van Hua', N'Quang Dung Nguyen', 13, N'drpn.jpg')
@@ -46,18 +229,14 @@ INSERT [dbo].[MOVIE] ([movieID], [movieName], [movieContent], [actor], [director
 INSERT [dbo].[MOVIE] ([movieID], [movieName], [movieContent], [actor], [director], [age], [movieImage]) VALUES (5, N'Mai', N'Restlessly haunted by the past, Mai is greeted by a new dawn when she reluctantly befriends the neighborhood ladies'' man. But when her yesterday catches up to her today, what will become of her tomorrow?', N' Huynh Uyen An,Hong Dao,Phuong Anh Dao', N'Tran Thanh', 18, N'mai_0.jpg')
 SET IDENTITY_INSERT [dbo].[MOVIE] OFF
 GO
-SET IDENTITY_INSERT [dbo].[SHOWTIME] ON 
+SET IDENTITY_INSERT [dbo].[ROOM] ON 
 
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (1, CAST(N'2024-03-30' AS Date), CAST(N'2024-03-31' AS Date), CAST(N'07:00:00' AS Time), CAST(N'17:33:00' AS Time), 1, 1, 1)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (8, CAST(N'2024-03-30' AS Date), CAST(N'2024-03-31' AS Date), CAST(N'21:38:00' AS Time), CAST(N'22:38:00' AS Time), 1, 5, 1)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (9, CAST(N'2024-03-15' AS Date), CAST(N'2024-03-18' AS Date), CAST(N'23:50:00' AS Time), CAST(N'20:56:00' AS Time), 1, 4, 1)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (10, CAST(N'2024-03-16' AS Date), CAST(N'2024-03-16' AS Date), CAST(N'22:50:00' AS Time), CAST(N'20:56:00' AS Time), 1, 1, 1)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (11, CAST(N'2024-03-16' AS Date), CAST(N'2024-03-18' AS Date), CAST(N'23:50:00' AS Time), CAST(N'19:59:00' AS Time), 1, 3, 1)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (16, CAST(N'2024-03-17' AS Date), CAST(N'2024-03-19' AS Date), CAST(N'21:57:00' AS Time), CAST(N'22:04:00' AS Time), 1, 2, 2)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (17, CAST(N'2024-03-31' AS Date), CAST(N'2024-04-04' AS Date), CAST(N'22:00:00' AS Time), CAST(N'23:00:00' AS Time), 1, 1, 3)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (18, CAST(N'2024-04-01' AS Date), CAST(N'2024-04-03' AS Date), CAST(N'10:15:00' AS Time), CAST(N'11:15:00' AS Time), 1, 1, 4)
-INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (19, CAST(N'2024-04-02' AS Date), CAST(N'2024-04-05' AS Date), CAST(N'10:16:00' AS Time), CAST(N'11:19:00' AS Time), 1, 2, 5)
-SET IDENTITY_INSERT [dbo].[SHOWTIME] OFF
+INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (1, 20, 1)
+INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (2, 20, 1)
+INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (3, 20, 1)
+INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (4, 20, 1)
+INSERT [dbo].[ROOM] ([roomID], [numberOfSeats], [cinemaID]) VALUES (5, 20, 1)
+SET IDENTITY_INSERT [dbo].[ROOM] OFF
 GO
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A0', 0, 1, 1)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A0', 0, 5, 8)
@@ -73,7 +252,7 @@ INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALU
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 0, 4, 9)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 0, 1, 10)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 0, 3, 11)
-INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 0, 2, 16)
+INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 1, 2, 16)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 0, 1, 17)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 0, 1, 18)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A1', 0, 2, 19)
@@ -82,7 +261,7 @@ INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALU
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 0, 4, 9)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 0, 1, 10)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 0, 3, 11)
-INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 0, 2, 16)
+INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 1, 2, 16)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 0, 1, 17)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 0, 1, 18)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A2', 0, 2, 19)
@@ -101,7 +280,7 @@ INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALU
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A4', 0, 1, 10)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A4', 0, 3, 11)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A4', 1, 2, 16)
-INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A4', 0, 1, 17)
+INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A4', 1, 1, 17)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A4', 0, 1, 18)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A4', 0, 2, 19)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'A5', 0, 1, 1)
@@ -164,7 +343,7 @@ INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALU
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 0, 4, 9)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 0, 1, 10)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 0, 3, 11)
-INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 0, 2, 16)
+INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 1, 2, 16)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 0, 1, 17)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 0, 1, 18)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B1', 0, 2, 19)
@@ -173,7 +352,7 @@ INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALU
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 0, 4, 9)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 0, 1, 10)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 0, 3, 11)
-INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 0, 2, 16)
+INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 1, 2, 16)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 0, 1, 17)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 0, 1, 18)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B2', 0, 2, 19)
@@ -211,7 +390,7 @@ INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALU
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B6', 0, 3, 11)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B6', 1, 2, 16)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B6', 0, 1, 17)
-INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B6', 0, 1, 18)
+INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B6', 1, 1, 18)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B6', 0, 2, 19)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B7', 0, 1, 1)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B7', 0, 5, 8)
@@ -241,6 +420,19 @@ INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALU
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B9', 0, 1, 18)
 INSERT [dbo].[SEATDETAILS] ([seatID], [seatStatus], [roomID], [showtimeID]) VALUES (N'B9', 0, 2, 19)
 GO
+SET IDENTITY_INSERT [dbo].[SHOWTIME] ON 
+
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (1, CAST(N'2024-03-30' AS Date), CAST(N'2024-03-31' AS Date), CAST(N'07:00:00' AS Time), CAST(N'17:33:00' AS Time), 1, 1, 1)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (8, CAST(N'2024-03-30' AS Date), CAST(N'2024-03-31' AS Date), CAST(N'21:38:00' AS Time), CAST(N'22:38:00' AS Time), 1, 5, 1)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (9, CAST(N'2024-03-15' AS Date), CAST(N'2024-03-18' AS Date), CAST(N'23:50:00' AS Time), CAST(N'20:56:00' AS Time), 1, 4, 1)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (10, CAST(N'2024-03-16' AS Date), CAST(N'2024-03-16' AS Date), CAST(N'22:50:00' AS Time), CAST(N'20:56:00' AS Time), 1, 1, 1)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (11, CAST(N'2024-03-16' AS Date), CAST(N'2024-03-18' AS Date), CAST(N'23:50:00' AS Time), CAST(N'19:59:00' AS Time), 1, 3, 1)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (16, CAST(N'2024-03-17' AS Date), CAST(N'2024-03-19' AS Date), CAST(N'21:57:00' AS Time), CAST(N'22:04:00' AS Time), 1, 2, 2)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (17, CAST(N'2024-03-31' AS Date), CAST(N'2024-04-04' AS Date), CAST(N'22:00:00' AS Time), CAST(N'23:00:00' AS Time), 1, 1, 3)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (18, CAST(N'2024-04-01' AS Date), CAST(N'2024-04-03' AS Date), CAST(N'10:15:00' AS Time), CAST(N'11:15:00' AS Time), 1, 1, 4)
+INSERT [dbo].[SHOWTIME] ([showTimeID], [openDate], [closeDate], [hourStart], [hourEnd], [showStatus], [roomID], [movieID]) VALUES (19, CAST(N'2024-04-02' AS Date), CAST(N'2024-04-05' AS Date), CAST(N'10:16:00' AS Time), CAST(N'11:19:00' AS Time), 1, 2, 5)
+SET IDENTITY_INSERT [dbo].[SHOWTIME] OFF
+GO
 SET IDENTITY_INSERT [dbo].[TICKET] ON 
 
 INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (8, 9, N'B5', N'f3f4f4f9-e5bd-47e0-8ab7-4e055caabcb4')
@@ -268,5 +460,99 @@ INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (
 INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (31, 16, N'B9', N'608d9d3b-cf88-4c63-a301-b9b740713fbf')
 INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (32, 16, N'A3', N'a4f43dfe-0db5-4a02-bbe0-04a19696aac5')
 INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (33, 16, N'B3', N'a4f43dfe-0db5-4a02-bbe0-04a19696aac5')
+INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (34, 16, N'A2', N'83855808-b577-4490-a6c4-71d1585ecf63')
+INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (35, 16, N'B2', N'83855808-b577-4490-a6c4-71d1585ecf63')
+INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (36, 16, N'A1', N'b664596f-58f0-4442-b6d9-78442cdb8674')
+INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (39, 16, N'B1', N'b418ba60-422a-4052-a528-95911b0bef61')
+INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (43, 17, N'A4', N'9f683e0b-ba98-41db-9b77-e4d492baa7e9')
+INSERT [dbo].[TICKET] ([ticketID], [showTimeID], [seatID], [bookingID]) VALUES (49, 18, N'B6', N'86926d92-37b3-4862-9b81-46584731c377')
 SET IDENTITY_INSERT [dbo].[TICKET] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ_userName]    Script Date: 3/18/2024 10:17:01 AM ******/
+ALTER TABLE [dbo].[ACCOUNT] ADD  CONSTRAINT [UQ_userName] UNIQUE NONCLUSTERED 
+(
+	[userName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ_userName3]    Script Date: 3/18/2024 10:17:01 AM ******/
+ALTER TABLE [dbo].[MEMBERSHIP] ADD  CONSTRAINT [UQ_userName3] UNIQUE NONCLUSTERED 
+(
+	[userName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ_movieName]    Script Date: 3/18/2024 10:17:01 AM ******/
+ALTER TABLE [dbo].[MOVIE] ADD  CONSTRAINT [UQ_movieName] UNIQUE NONCLUSTERED 
+(
+	[movieName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[BOOKING] ADD  DEFAULT (newid()) FOR [bookingID]
+GO
+ALTER TABLE [dbo].[MEMBERSHIP] ADD  DEFAULT (newid()) FOR [memberID]
+GO
+ALTER TABLE [dbo].[BOOKING]  WITH CHECK ADD  CONSTRAINT [FK_userName1] FOREIGN KEY([userName])
+REFERENCES [dbo].[ACCOUNT] ([userName])
+GO
+ALTER TABLE [dbo].[BOOKING] CHECK CONSTRAINT [FK_userName1]
+GO
+ALTER TABLE [dbo].[MEMBERSHIP]  WITH CHECK ADD  CONSTRAINT [FK_user1] FOREIGN KEY([userName])
+REFERENCES [dbo].[ACCOUNT] ([userName])
+GO
+ALTER TABLE [dbo].[MEMBERSHIP] CHECK CONSTRAINT [FK_user1]
+GO
+ALTER TABLE [dbo].[PAYMENT]  WITH CHECK ADD  CONSTRAINT [FK_bookingID2] FOREIGN KEY([bookingID])
+REFERENCES [dbo].[BOOKING] ([bookingID])
+GO
+ALTER TABLE [dbo].[PAYMENT] CHECK CONSTRAINT [FK_bookingID2]
+GO
+ALTER TABLE [dbo].[PAYMENT]  WITH CHECK ADD  CONSTRAINT [FK_userName4] FOREIGN KEY([userName])
+REFERENCES [dbo].[ACCOUNT] ([userName])
+GO
+ALTER TABLE [dbo].[PAYMENT] CHECK CONSTRAINT [FK_userName4]
+GO
+ALTER TABLE [dbo].[ROOM]  WITH CHECK ADD  CONSTRAINT [FK_cinemaID1] FOREIGN KEY([cinemaID])
+REFERENCES [dbo].[CINEMA] ([cinemaID])
+GO
+ALTER TABLE [dbo].[ROOM] CHECK CONSTRAINT [FK_cinemaID1]
+GO
+ALTER TABLE [dbo].[SEATDETAILS]  WITH CHECK ADD  CONSTRAINT [FK_roomID3] FOREIGN KEY([roomID])
+REFERENCES [dbo].[ROOM] ([roomID])
+GO
+ALTER TABLE [dbo].[SEATDETAILS] CHECK CONSTRAINT [FK_roomID3]
+GO
+ALTER TABLE [dbo].[SEATDETAILS]  WITH CHECK ADD  CONSTRAINT [FK_showTimeID2] FOREIGN KEY([showtimeID])
+REFERENCES [dbo].[SHOWTIME] ([showTimeID])
+GO
+ALTER TABLE [dbo].[SEATDETAILS] CHECK CONSTRAINT [FK_showTimeID2]
+GO
+ALTER TABLE [dbo].[SHOWTIME]  WITH CHECK ADD  CONSTRAINT [FK_MovieID1] FOREIGN KEY([movieID])
+REFERENCES [dbo].[MOVIE] ([movieID])
+GO
+ALTER TABLE [dbo].[SHOWTIME] CHECK CONSTRAINT [FK_MovieID1]
+GO
+ALTER TABLE [dbo].[SHOWTIME]  WITH CHECK ADD  CONSTRAINT [FK_roomID1] FOREIGN KEY([roomID])
+REFERENCES [dbo].[ROOM] ([roomID])
+GO
+ALTER TABLE [dbo].[SHOWTIME] CHECK CONSTRAINT [FK_roomID1]
+GO
+ALTER TABLE [dbo].[TICKET]  WITH CHECK ADD  CONSTRAINT [FK_bookingID1] FOREIGN KEY([bookingID])
+REFERENCES [dbo].[BOOKING] ([bookingID])
+GO
+ALTER TABLE [dbo].[TICKET] CHECK CONSTRAINT [FK_bookingID1]
+GO
+ALTER TABLE [dbo].[TICKET]  WITH CHECK ADD  CONSTRAINT [FK_seatID_showtimeID] FOREIGN KEY([seatID], [showTimeID])
+REFERENCES [dbo].[SEATDETAILS] ([seatID], [showtimeID])
+GO
+ALTER TABLE [dbo].[TICKET] CHECK CONSTRAINT [FK_seatID_showtimeID]
+GO
+ALTER TABLE [dbo].[TICKET]  WITH CHECK ADD  CONSTRAINT [FK_showTimeID1] FOREIGN KEY([showTimeID])
+REFERENCES [dbo].[SHOWTIME] ([showTimeID])
+GO
+ALTER TABLE [dbo].[TICKET] CHECK CONSTRAINT [FK_showTimeID1]
 GO

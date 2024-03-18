@@ -101,7 +101,7 @@
         <div class="container-sec" style="margin-top: 300px;">
             <h1>Successful Purchase</h1>
             <div class="message">
-                <p>Your purchase was successful! Thank you for supporting us.</p>
+                <p>${requestScope.message}</p>
             </div>
             <div class="detailly">
                 <c:set var="b" value="${sessionScope.booking}"/>

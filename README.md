@@ -45,9 +45,10 @@
 ##  ENTITY RELATIONSHIP DIAGRAM
 ![](img_gui/table_db.jpg)
 
-
 ## SYSTEM DESIGN
-![](img_gui/system_design.jpeg)
+![](img_gui/structure1.jpg)
+![](img_gui/structure2.jpg)
+![](img_gui/structure3.jpg)
 ## CONCLUSION
 - **ALL SKILLS THAT WE GAIN:**
   - Learn how to research documents on the internet such as stackoverflow.

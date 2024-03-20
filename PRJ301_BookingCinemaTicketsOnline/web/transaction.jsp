@@ -99,7 +99,7 @@
         </header>
         
         <div class="container-sec" style="margin-top: 300px;">
-            <h1>Successful Purchase</h1>
+            <h1>${requestScope.title}</h1>
             <div class="message">
                 <p>${requestScope.message}</p>
             </div>
@@ -108,7 +108,7 @@
                 <c:set var="money" value="${requestScope.totalPaid}"/>
                 <p><strong>Booking ID: </strong>${b.getBookingID()}</p>
                 <p><strong>Amount Paid: </strong>${money}VNĐ</p>
-                <h5><strong>Please check your E-mail for detail information</strong></h5>
+                <h5><strong>${requestScope.ms1}</strong></h5>
                 <p>For any queries, please contact our customer support.</p>
             </div>
         </div>

@@ -3,19 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/web/purchase.jsp</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/web/bookingInfo.jsp</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/src/java/movie/MovieDTO.java</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/web/index2.jsp</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/web/booking.jsp</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/web/signup.jsp</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/src/java/controller/PaymentServlet.java</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/src/java/controller/BookingInfoServlet.java</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/web/index.jsp</file>
             <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/web/transaction.jsp</file>
             <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/src/java/controller/TicketServlet.java</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/src/java/controller/BookingServlet.java</file>
-            <file>file:/D:/back-up-prj301/PRJ301_BookingCinemaTicketsOnline/src/java/utils/DBUtils.java</file>
         </group>
     </open-files>
 </project-private>

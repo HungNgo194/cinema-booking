@@ -72,7 +72,6 @@ public class BookingServlet extends HttpServlet {
             if (id != 0) {
                 request.setAttribute("uniqueShow", Integer.parseInt(request.getParameter("uniqueShow")));
             }
-
             int numOfBookings = Integer.parseInt(numOfBook_raw);
             int totalPrice = Integer.parseInt(totalPrice_withoutCommas);
             int eachTicketPrice = (int) ((double) totalPrice / numOfBookings); // chia lấy tiền của từng vé 

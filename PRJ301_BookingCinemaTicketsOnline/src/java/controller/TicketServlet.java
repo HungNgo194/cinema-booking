@@ -103,7 +103,9 @@ public class TicketServlet extends HttpServlet {
             fields.remove("vnp_SecureHash");
         }
         String signValue = PaymentConfig.hashAllFields(fields);
+        String title = "";
         String ms = "";
+        String ms1 = "";
         String final_price = "";
         TicketDTO ticket = new TicketDTO();
         PaymentDTO payment = new PaymentDTO();
@@ -118,12 +120,12 @@ public class TicketServlet extends HttpServlet {
                 String vnp_PayDate = request.getParameter("vnp_PayDate");
 
                 String orderInfoList[] = vnp_OrderInfo.trim().split("&");
-
-                String movieID = orderInfoList[2];
-                String availableSeat = orderInfoList[3];  // lấy attribute từ servlet booking
-                String showTime = orderInfoList[1];
                 String showDate = orderInfoList[0];
-                String uniqueShow = orderInfoList[4];
+                String showTime = orderInfoList[1];
+                String movieID = orderInfoList[2];
+                String availableSeat = orderInfoList[3]; 
+                
+                
                 String[] availableSeats = availableSeat.split(",");
                 boolean next = false;
                 try {
@@ -144,12 +146,13 @@ public class TicketServlet extends HttpServlet {
                     List<ShowTimeDTO> ShowTimeList = new ArrayList<>();
                     ShowTimeList = sdao.getShowTimeId2(date, Integer.parseInt(movieID));
                     if (ShowTimeList.size() == 0) {
+                        String uniqueShow = orderInfoList[4];
                         showTimeID = Integer.parseInt(uniqueShow);
                         ShowTimeList.add(sdao.getShowTimeByID(showTimeID));
                         roomID = sdao.getShowTimeByID(showTimeID).getRoomID();
                         next = true;
                     }
-                    if (ShowTimeList.size() == 1) {
+                    if (ShowTimeList.size() != 0) {
 
                         for (ShowTimeDTO showTimeDTO : ShowTimeList) {
                             System.out.println(showTimeDTO.getHourStart());
@@ -179,7 +182,7 @@ public class TicketServlet extends HttpServlet {
                     payment = pdao.createPayment(Long.parseLong(vnp_TxnRef), Integer.parseInt(vnp_Amount), vnp_OrderInfo, vnp_ResponseCode, vnp_TransactionNo, vnp_BankCode, paydate, vnp_TransactionStatus, booking, account);
                     String message = "TICKET INFORMATION" + "\n"
                             + "Booking code: " + booking.getBookingID() + "\n"
-                            + "Moive: " + mdao.searchByID(roomID).getMovieName() + "\n"
+                            + "Moive: " + mdao.searchByID(Integer.parseInt(movieID)).getMovieName() + "\n"
                             + "Date: " + date + "\n"
                             + "Time: " + time + "\n"
                             + "Room: " + roomID + "\n"
@@ -193,17 +196,23 @@ public class TicketServlet extends HttpServlet {
                             + "Payment time: " + paydate;
                     
                     SendEmail send = new SendEmail(account.getEmail(), "RẠP CHIẾU PHIM NHỮNG CẬU TRAI THÂN MẬT", message);
-                    ms += "TRANSACTION SUCCESSFULLl! Thank you for supporting us";
+                    title += "SUCCESSFULL PURCHASE";
+                    ms += "TRANSACTION SUCCESSFULL! Thank you for supporting us";
+                    ms1 += "Please check your E-mail for detail information";
                 } catch (SQLException ex) {
                     Logger.getLogger(TicketServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
+                title += "PURCHASE FAILED";
                 ms += "TRANSACTION FAILED! Check your PAYMENT DETAIL CAREFULLY!!";
             }
 
         } else {
+            title += "PURCHASE FAILED";
             ms += "TRANSACTION FAILED! Invalid Signature";
         }
+        request.setAttribute("title", title);
+        request.setAttribute("ms1", ms1);
         request.setAttribute("ticket", ticket);
         request.setAttribute("payment", payment);
         request.setAttribute("totalPaid", final_price);

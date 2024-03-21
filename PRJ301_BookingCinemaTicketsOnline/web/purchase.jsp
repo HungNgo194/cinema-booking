@@ -158,7 +158,7 @@
                         <div style="font-size: larger;">
                             <input type="radio" class="payment_method_radio" value="momo" name="payment_method">
                             <span class="payment_method_icon"></span> 
-                            Thanh toán qua ngân hàng VNB
+                            Thanh toán qua Thẻ Thanh Toán Quốc Tế (VISA)
                         </div>
                     </div>
                 </div>

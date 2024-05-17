@@ -70,6 +70,7 @@ public class PaymentConfig {
         return digest;
     }
 
+    // Util for VNPAY
     public static String hashAllFields(Map fields) {
         List fieldNames = new ArrayList(fields.keySet());
         Collections.sort(fieldNames);

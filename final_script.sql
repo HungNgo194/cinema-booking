@@ -1,4 +1,5 @@
-﻿USE [BookingCinemaTicketsOnline]
+﻿--CREATE DATABASE [BookingCinemaTicketsOnline]
+USE [BookingCinemaTicketsOnline]
 GO
 /****** Object:  Table [dbo].[ACCOUNT]    Script Date: 3/18/2024 10:17:01 AM ******/
 SET ANSI_NULLS ON
